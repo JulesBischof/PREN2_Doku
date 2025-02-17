@@ -22,11 +22,10 @@
 # *.pdf
 
 ## Generated if empty string is given at "Please type another file name for output:"
-.pdf
+Main.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
-*.bbl-SAVE-ERROR
 *.bcf
 *.blg
 *-blx.aux
@@ -216,7 +215,7 @@ sympy-plots-for-*.tex/
 
 # pythontex
 *.pytxcode
-pythontex-files-*/
+pythontex-files% \section{new Subfile}-*/
 
 # tcolorbox
 *.listing
@@ -240,7 +239,7 @@ pythontex-files-*/
 *.ver
 
 # easy-todo
-*.lod
+*.lod% \section{new Subfile}
 
 # xcolor
 *.xcp
@@ -305,3 +304,4 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+.DS_Store

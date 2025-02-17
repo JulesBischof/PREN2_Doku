@@ -1,0 +1,137 @@
+% --------------- Basic Table # Simple table with horizontal and vertical lines.
+
+\begin{table}[h]                                    % h = here
+    \centering
+    \begin{tabular}{|c|c|c|}                        % c=centered, l=left, r=right
+        \hline
+        Column 1 & Column 2 & Column 3 \\ \hline
+        Row 1    & Data 1   & Data 2   \\ \hline
+        Row 2    & Data 3   & Data 4   \\ \hline
+    \end{tabular}
+    \caption{A basic table}
+    \label{tab:basic}
+\end{table}
+
+
+
+% --------------- Table with Multirow for spanning rows # Table with Multirow: Includes cells that span multiple rows using the multirow package.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \multirow{2}{*}{Rowspan} & Column 1 & Column 2 \\ \cline{2-3}
+                                 & Data 1   & Data 2   \\ \hline
+        Row 2                    & Data 3   & Data 4   \\ \hline
+    \end{tabular}
+    \caption{Table with multirow cells}
+    \label{tab:multirow}
+\end{table}
+
+\multirow{2}{*}{Rowspan}        % creates a cell that spans two rows.
+\cline{2-3}                     % creates a horizontal line spanning columns 2 and 3.
+
+
+
+% ------------- Table with Fixed Column Widths # Table with Fixed Column Widths: Uses p{width} for fixed-width columns and text wrapping.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{3cm}|p{5cm}|}
+        \hline
+        Short Column & Long Column                                                                 \\ \hline
+        Text         & This is a longer text that will wrap to fit within the width of the column. \\ \hline
+        More Text    & Another example of a long text that will wrap.                              \\ \hline
+    \end{tabular}
+    \caption{Table with fixed column widths}
+    \label{tab:fixedwidth}
+\end{table}
+
+p{3cm} % specifies a column width of 3 cm and allows text to wrap within that width.
+
+
+
+% ------------- Table with Multi-column # Table with Multi-column: Merges multiple columns into one using \multicolumn.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{Merged Columns} & Column 3          \\ \hline
+        Row 1                                & Data 1   & Data 2 \\ \hline
+        Row 2                                & Data 3   & Data 4 \\ \hline
+    \end{tabular}
+    \caption{Table with merged columns}
+    \label{tab:multicolumn}
+\end{table}
+
+\multicolumn{2}{|c|}{Merged Columns} % merges two columns into one with centered text.
+
+
+
+% ------------- Table with Booktabs # Complex Table with Booktabs: Uses the booktabs package for a more polished look.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        Column 1 & Column 2 & Column 3 \\ \midrule
+        Row 1    & Data 1   & Data 2   \\
+        Row 2    & Data 3   & Data 4   \\
+        Row 3    & Data 5   & Data 6   \\ \bottomrule
+    \end{tabular}
+    \caption{Table with booktabs}
+    \label{tab:booktabs}
+\end{table}
+
+\toprule, \midrule, \bottomrule % create top, middle, and bottom horizontal lines, respectively.
+
+
+
+% ------------- get Colour in Tables
+
+\usepackage[table]{xcolor} % Load xcolor with the table option
+
+
+
+% -------------  Creating a Basic Table with Colored Rows
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \rowcolor{gray!30} % Light gray background color for the header row
+        Column 1 & Column 2 & Column 3 \\ \hline
+        \rowcolor{yellow!20} % Light yellow background color for this row
+        Row 1 & Data 1 & Data 2 \\ \hline
+        \rowcolor{cyan!10} % Light cyan background color for this row
+        Row 2 & Data 3 & Data 4 \\ \hline
+        \rowcolor{white} % Default color (no background color)
+        Row 3 & Data 5 & Data 6 \\ \hline
+    \end{tabular}
+    \caption{Table with colored rows}
+    \label{tab:coloredrows}
+\end{table}
+
+
+
+% -------------  Creating a Basic Table with Colored Columns
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|>{\columncolor{red!10}}c|>{\columncolor{green!10}}c|>{\columncolor{blue!10}}c|}
+        \hline
+        Column 1 & Column 2 & Column 3 \\ \hline
+        Row 1 & Data 1 & Data 2 \\ \hline
+        Row 2 & Data 3 & Data 4 \\ \hline
+        Row 3 & Data 5 & Data 6 \\ \hline
+    \end{tabular}
+    \caption{Table with colored columns}
+    \label{tab:coloredcolumns}
+\end{table}
+
+
+gray!30: 30%        -- gray color.
+yellow!20: 20%      -- yellow color.
+cyan!10: 10%        -- cyan color.
+white: Default color (no background).

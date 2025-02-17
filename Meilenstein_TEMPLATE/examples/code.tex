@@ -1,0 +1,26 @@
+% Code import examples 
+
+% ---------- settings
+
+\captionsetup[lstlisting]{labelformat=empty}    % disables Listing 16: [xyz] statements. 
+
+% ---------- write code directly in doc
+
+\begin{lstlisting}[style=mystyle, caption={Ein einfacher C-Code}]
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+\end{lstlisting}
+
+% ---------- Import C-Code from "code.c"
+
+\lstinputlisting[style=CStyle]{code.c}
+
+% ----------- format simple Code snippets
+
+This is a text with \texttt{inline code}.
+
+Here is an example of \lstinline{inline code} in a sentence.
