@@ -18,14 +18,14 @@
 
 \pagestyle{fancy}
 \fancyhf{}                                      % empty all headers
-\fancyhead[L]{Sprint \Abgabenummer}        % top left
+\fancyhead[L]{Sprint Planning}        % top left
 \fancyhead[C]{Team 10}                          % top middle
 \fancyhead[R]{PREN 2}                           % top right
 \fancyfoot[R]{\thepage}                         % pagenumber in footer
 
 \fancypagestyle{nofooter}{
     \fancyhf{}                                  % Leert Fusszeile und Kopfzeile
-    \fancyhead[L]{Sprint \Abgabenummer}    % Kopfzeile links
+    \fancyhead[L]{Sprint Planning}    % Kopfzeile links
     \fancyhead[C]{Team 10}                      % Kopfzeile Mitte
     \fancyhead[R]{PREN 2}                       % Kopfzeile rechts
 }
@@ -53,7 +53,7 @@
 	{\scshape\large Manuel Zihlmann\par}
 
 	\vspace{1.5cm}
-	{\huge\bfseries Sprint \Abgabenummer \par}
+	{\huge\bfseries Sprint Planning}
 
 	\vspace{1cm}
 
@@ -93,12 +93,12 @@
 \tableofcontents
 \newpage
 
-\subfile{./subfiles/ziele.tex}
+% Sprint 1
+\subfile{./subfiles/sprint1.tex}
 \newpage
 
-\subfile{./subfiles/risiken.tex}
-\newpage
-
+% Sprint 2
+% ...
 
 \thispagestyle{nofooter}
 \newpage
