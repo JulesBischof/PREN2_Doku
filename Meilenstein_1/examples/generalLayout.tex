@@ -1,0 +1,156 @@
+% ------------ Title Page
+
+\begin{titlepage}
+    \centering
+    \vspace*{1in}
+
+    \Huge
+    \textbf{Title of the Document}
+
+    \vspace{0.5in}
+
+    \LARGE
+    Subtitle or Description
+
+    \vspace{1.5in}
+
+    \textbf{Author Name}
+
+    \vfill
+
+    A Thesis Submitted for the Degree of\\ Doctor of Philosophy\\ in the Department
+    of Example\\ University Name
+
+    \vspace{0.8in}
+
+    \textbf{Month Year}
+
+\end{titlepage}
+
+% ------------ Headers and Footers
+
+\documentclass{article}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+
+% Header
+\fancyhead[L]{Left Header} % Left side of header
+\fancyhead[C]{Center Header} % Center of header
+\fancyhead[R]{Right Header} % Right side of header
+
+% Footer
+\fancyfoot[L]{Left Footer} % Left side of footer
+\fancyfoot[C]{\thepage} % Center of footer with page number
+\fancyfoot[R]{Right Footer} % Right side of footer
+
+% ------------- Page numbers
+
+\begin{document}
+
+% Page number settings
+\pagenumbering{arabic} % Use Arabic numerals (1, 2, 3, ...)
+% \pagenumbering{roman} % Use Roman numerals (i, ii, iii, ...)
+% \pagenumbering{Roman} % Use uppercase Roman numerals (I, II, III, ...)
+% \pagenumbering{alph} % Use lowercase letters (a, b, c, ...)
+% \pagenumbering{Alph} % Use uppercase letters (A, B, C, ...)
+
+\section{Introduction}
+This document demonstrates different page number styles.
+\end{document}
+
+% ------------- restart page numbering
+
+\documentclass{article}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+...
+\end{titlepage}
+
+\newpage
+\pagenumbering{arabic} % Restart page numbering from this point
+\setcounter{page}{1}
+
+\section{Introduction}
+This page starts with page number 1.
+
+\newpage
+\section{Next Section}
+Continues page numbering from previous section.
+
+\end{document}
+
+% -------------- Page Layout 
+
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+
+\begin{document}
+
+\section{Introduction}
+This document uses custom page margins.
+
+\end{document}
+
+% ------------- create appendix-table of content
+
+% ---- basic appendix
+
+\documentclass{article}
+\usepackage{appendix} % For appendix functionality
+
+\begin{document}
+
+\tableofcontents % Table of contents
+\newpage
+
+\section{Introduction}
+This is the introduction section.
+
+\section{Main Content}
+This is the main content section.
+
+% Adding appendices
+\newpage
+\begin{appendices}
+\section{First Appendix}
+This is the first appendix.
+
+\section{Second Appendix}
+This is the second appendix.
+\end{appendices}
+
+\end{document}
+
+% --------------- use tocobibind - appendix add to table of content
+
+\documentclass{report}
+\usepackage{tocbibind} % Automatically include appendix in the table of contents
+
+\begin{document}
+
+\tableofcontents % Table of contents
+\newpage
+
+\chapter{Introduction}
+This is the introduction chapter.
+
+\chapter{Main Content}
+This is the main content chapter.
+
+% Adding appendices
+\appendix
+\chapter{First Appendix}
+\section{Details of the First Appendix}
+Detailed content for the first appendix.
+
+\chapter{Second Appendix}
+\section{Details of the Second Appendix}
+Detailed content for the second appendix.
+
+\end{document}
+

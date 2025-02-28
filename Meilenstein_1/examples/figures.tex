@@ -1,0 +1,35 @@
+% ---------- Include a graphic with default settings
+
+\begin{figure}[h] % 'h' means here, placing the figure at the location in the text
+    \centering % Center the figure on the page
+    \includegraphics[width=0.5\textwidth]{example-image/path} % Adjust the width to 50% of text width
+    \caption{An example of a basic graphic} % Caption for the figure
+    \label{fig:example} % Label for referencing the figure
+\end{figure}
+
+% ---------- Include a graphic with specified width and height
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth, height=0.5\textheight]{example-image}
+    \caption{Graphic with specific width and height}
+    \label{fig:size}
+\end{figure}
+
+% ---------- Scale the graphic to a specific percentage of its original size
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.75]{example-image}
+    \caption{Scaled graphic}
+    \label{fig:scale}
+\end{figure}
+
+% ---------- Include a rotated graphic
+\begin{figure}[h]
+    \centering
+    \includegraphics[angle=45, width=0.5\textwidth]{example-image}
+    \caption{Rotated graphic by 45 degrees}
+    \label{fig:rotate}
+\end{figure}
+
+% ---------- reference to specific label in text
+Figure \ref{fig:example} shows an example image.

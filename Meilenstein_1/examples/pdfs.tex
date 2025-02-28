@@ -1,0 +1,15 @@
+% ------------------ include pdfs
+
+% basic import
+\includepdf{./pdfs/filename}
+
+% specific pages // [pages=-] means all pages, [pages={1,3,5}] specific ones
+% options... fitpaper=true, width, angle, ...
+\includepdf[page=1]{./pdfs/filename}
+
+% import landscape
+\begin{landscape}
+    \includepdf[angle=90]{./pdfs/...}
+\end{landscape}
+
+% labeling a pdf as a figure needs to be done with the figure environment
