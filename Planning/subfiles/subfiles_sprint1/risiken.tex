@@ -1,10 +1,8 @@
 \documentclass[main.tex]{subfiles} % Subfile-Class
 
-
 %==============================================================================%
 %                                   Subfile                                    %
 %==============================================================================%
-
 
 \begin{document}
 
@@ -15,78 +13,65 @@
 
 \subsubsection{Maschinenbau}
 \begin{table}[H]
-    
-    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
+
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
         \hline
-        \textbf{\#} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
+        \textbf{\#}                                 & \textbf{Sprint} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
 
         \hline
-        % -----------------
-        \rowcolor{green!30}
-        \refstepcounter{counter} 1.\arabic{counter}
-                    &                 &             &             &                       \\
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 1.\arabic{counter} &                 &                 &             &             &                       \\
         \hline
 
     \end{tabularx}
-    \caption{CAP}
+    \caption{Erkannte Risiken aus dem Bereich der Mechanik}
 \end{table}
 
 \subsubsection{Elektrotechnik}
 \setcounter{counter}{0}
 \begin{table}[H]
-    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
         \hline
-        \textbf{\#} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
+        \textbf{\#}                                 & \textbf{Sprint} & \textbf{Risiko}                                                         & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen}                                                                                         \\
 
         \hline
-        % -----------------
-        \rowcolor{green!30}
-        \refstepcounter{counter} 2.\arabic{counter}
-                    &                 &             &             &                       \\
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 2.\arabic{counter} & Prepare         & Beim Zusammenlöten der Prints kam es zu Fehlern                         & 4           & 3           & Vorbereitungsphase verzögert sich                                                                             \\
         \hline
-
-        \rowcolor{orange!30}
-        \refstepcounter{counter} 2.\arabic{counter}
-                    &                 &             &             &                       \\
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 2.\arabic{counter} & 2               & Powerbudget ist nicht ausreichend                                       & 3           & 2           & Es müssen Einsparungen bei der Leistung der Motoren getroffen werden                                          \\
+        \hline
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 2.\arabic{counter} & 1               & Bei Printplattenfertigung kam es zu Fehlern                             & 4           & 2           & Das Konzept muss umgestellt werden, Aufgaben z.B. von anderen PCB's übernommen.                               \\
+        \hline
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 2.\arabic{counter} & 1               & RS422 Schnittstelle und das Busprotokoll funktioniert nicht zuverlässig & 4           & 2           & Es sind Steckplätze zum Überbrücken dieser Schnittstelle vorgesehen, darauf muss dann zurückgegriffen werden. \\
         \hline
 
     \end{tabularx}
-    \caption{CAP}
+    \caption{Erkannte Risiken aus dem Bereich der Elektrotechnik}
 \end{table}
 
 \subsubsection{Informatik}
 \setcounter{counter}{0}
 \begin{table}[H]
-    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
         \hline
-        \textbf{\#} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
+        \textbf{\#}                                 & \textbf{Sprint} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
 
         \hline
-        % -----------------
-        \rowcolor{green!30}
-        \refstepcounter{counter} 3.\arabic{counter}
-                    &                 &             &             &                       \\
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 3.\arabic{counter} &                 &                 &             &             &                       \\
         \hline
 
     \end{tabularx}
-    \caption{CAP}
+    \caption{Erkannte Risiken aus dem Bereich der Informatik}
 \end{table}
 
-
 \end{document}
-
-% \begin{table}[H]
-%     \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
-%         \hline
-%         \textbf{\#} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
-
-%         \hline
-%         % -----------------
-%         \rowcolor{green!30}
-%         \refstepcounter{counter}~\label{tabrow:risks_1_1}1.\arabic{counter}
-%                     &                 &             &             &                       \\
-%         \hline
-
-%     \end{tabularx}
-%     \caption{CAP}~\label{tab:RISK}
-% \end{table}
