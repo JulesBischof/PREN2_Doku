@@ -84,16 +84,23 @@
 \begin{table}[H]
     \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}p{0.5cm}|>{\raggedright\arraybackslash}p{1.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{0.75cm}|>{\centering\arraybackslash}p{0.75cm}|>{\raggedright\arraybackslash}X|}
         \hline
-        \textbf{\#}                                 & \textbf{Sprint} & \textbf{Risiko} & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen} \\
-
+        \textbf{\#}                                 & \textbf{Sprint} & \textbf{Risiko}                                                                                  & \textbf{SA} & \textbf{EW} & \textbf{Auswirkungen}                                            \\
         \hline
         % ---------------------------------------------------------------------------------------------------------------------------------------------------------
         \rowcolor{white!30}
-        \refstepcounter{counter} 3.\arabic{counter} &                 &                 &             &             &                       \\
+        \refstepcounter{counter} 3.\arabic{counter} & Prepare         & Kommunikation zwischen Controllern funktioniert nicht                                            & 3           & 2           & Vorbereitungsphase verzögert sich, ggf. muss alternative Kommunikation implementiert werden. \\
         \hline
-
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 3.\arabic{counter} & 1               & Bildverarbeitung (Interpretation) funktioniert nicht zuverlässig                                  & 4           & 2           & Algorithmus muss angepasst werden, was zu Verzögerungen führen kann.        \\
+        \hline
+        % ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        \rowcolor{white!30}
+        \refstepcounter{counter} 3.\arabic{counter} & 1               & Prozessorleistung für die Bildverarbeitung ist zu gering                                         & 4           & 2           & Leistungsoptimierung (andere Programmiersprache) oder Hardware-Upgrade erforderlich, Zeitplan kann sich verzögern.       \\
+        \hline
     \end{tabularx}
     \caption{Erkannte Risiken aus dem Bereich der Informatik}
 \end{table}
+
 
 \end{document}
