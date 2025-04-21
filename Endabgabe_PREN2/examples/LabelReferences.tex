@@ -1,0 +1,30 @@
+
+\ref{label}: Shows the number of the referenced label.
+
+\pageref{label}: Shows the page number of the referenced label.
+
+\nameref{label}: Shows the name or title of the referenced label, if using the nameref package.
+
+% --------- example ref & nameref
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{nameref}
+
+\begin{document}
+
+\section{Introduction}
+\label{sec:intro}
+
+See Section \nameref{sec:intro}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image}
+    \caption{An example image}
+    \label{fig:example}
+\end{figure}
+
+Figure \ref{fig:example} is shown in \nameref{fig:example}.
+
+\end{document}

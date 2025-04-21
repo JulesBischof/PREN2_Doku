@@ -14,18 +14,16 @@
 %                                    Header                                    %
 %==============================================================================%
 
-\newcommand{\Abgabenummer}{1}
-
 \pagestyle{fancy}
 \fancyhf{}                                      % empty all headers
-\fancyhead[L]{Sprint Planning}        % top left
+\fancyhead[L]{Abschlussbericht}        % top left
 \fancyhead[C]{Team 10}                          % top middle
 \fancyhead[R]{PREN 2}                           % top right
 \fancyfoot[R]{\thepage}                         % pagenumber in footer
 
 \fancypagestyle{nofooter}{
 	\fancyhf{}                                  % Leert Fusszeile und Kopfzeile
-	\fancyhead[L]{Sprint Planning}    % Kopfzeile links
+	\fancyhead[L]{Abschlussbericht}    % Kopfzeile links
 	\fancyhead[C]{Team 10}                      % Kopfzeile Mitte
 	\fancyhead[R]{PREN 2}                       % Kopfzeile rechts
 }
@@ -38,10 +36,11 @@
 
 \begin{titlepage}
 	\centering
+	[ABBILDUUNG FAHRZEUG] \par
 	% \includegraphics[width=0.15\textwidth]{example-image-1x1}\par\vspace{1cm}
 	{\scshape\LARGE Hochschule Luzern \par}
 	\vspace{1cm}
-	{\scshape\Large PREN 1 Team 10\par}
+	{\scshape\Large PREN 2 Team 10\par}
 	\vspace{1cm}
 
 	% Autoren zentriert
@@ -53,14 +52,14 @@
 	{\scshape\large Manuel Zihlmann\par}
 
 	\vspace{1.5cm}
-	{\huge\bfseries Sprint Planning}
+	{\huge\bfseries Abschlussbericht \par}
 
 	\vspace{1cm}
 
-	% \begin{figure}[H]
-	% 	\centering
-	% 	\includegraphics[width=0.85\textwidth]{Render_Baugruppe.pdf}
-	% \end{figure}
+	\begin{figure}[H]
+		\centering
+		% \includegraphics[width=0.85\textwidth]{Render_Baugruppe.pdf}
+	\end{figure}
 
 	\vfill
 	% Bottom of the page
@@ -80,9 +79,7 @@
 	\hline
 	\textbf{Version} & \textbf{Datum} & \textbf{Verfasser} & \textbf{Änderungen} \\
 	\hline
-	1.0              & 07.03.2025     & Team 10            & Team 10
-
-	\\
+	x.x              & dd.mm.yyyy     & Team 10            & xyz                 \\
 	\hline
 	\caption{Versionsverlauf der Dokumentation}
 \end{longtable}
@@ -92,25 +89,33 @@
 %==============================================================================%
 %                                   Main Doc                                   %
 %==============================================================================%
-\tableofcontents
-\newpage
-
-% Sprint 1
-\subfile{./subfiles/sprint1.tex}
-\newpage
-
-% Sprint 2
-% ...
 
 \thispagestyle{nofooter}
 \newpage
 
+\tableofcontents
 \thispagestyle{nofooter}
 \newpage
 
 \setcounter{page}{1}
 
-% subfiles 
+\subfile{./subfiles/Abstract.tex}
+\newpage
+
+\subfile{./subfiles/Aufgabenstellung.tex}
+\newpage
+
+\subfile{./subfiles/Funktionsbeschreibung.tex}
+\newpage
+
+\subfile{./subfiles/Nachhaltigkeit.tex}
+\newpage
+
+\subfile{./subfiles/Schlussdiskussion.tex}
+\newpage
+
+\subfile{./subfiles/Anhang.tex}
+\newpage
 
 \end{document}
 

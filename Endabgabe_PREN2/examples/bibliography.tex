@@ -1,0 +1,121 @@
+% bibliography using biblatex
+
+% --------------- in main.tex
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{references.bib} % Name of your .bib file
+
+\begin{document}
+
+\section{Introduction}
+This is an example citation~\cite{einstein1905}.
+
+\printbibliography[]
+
+\end{document}
+
+% --------------- in references.bib
+% Book Entry
+@book{knuth1997,
+    author    = {Donald E. Knuth},
+    title     = {The Art of Computer Programming},
+    edition   = {3rd},
+    publisher  = {Addison-Wesley},
+    year      = {1997},
+    volume    = {1},
+    address   = {Reading, MA}
+}
+
+% Article in Journal
+@article{einstein1905,
+    author  = {Albert Einstein},
+    title   = {On the Electrodynamics of Moving Bodies},
+    journal = {Annalen der Physik},
+    volume  = {322},
+    number  = {10},
+    pages   = {891--921},
+    year    = {1905}
+}
+
+% Conference Paper
+@inproceedings{smith2020,
+    author    = {John Smith and Jane Doe},
+    title     = {A New Approach to Quantum Computing},
+    booktitle = {Proceedings of the 2020 International Conference on Quantum Computing},
+    pages     = {101--110},
+    year      = {2020},
+    publisher = {IEEE},
+    address   = {New York, NY}
+}
+
+% Thesis or Dissertation
+@phdthesis{miller2018,
+    author    = {Alice Miller},
+    title     = {Machine Learning for Natural Language Processing},
+    school    = {University of Example},
+    year      = {2018},
+    address   = {Example City, Country}
+}
+
+% Report
+@techreport{johnson2019,
+    author      = {Emily Johnson},
+    title       = {Analysis of Recent Trends in Artificial Intelligence},
+    institution = {Example Institute},
+    year        = {2019},
+    number      = {TR-123},
+    address     = {Example City, Country}
+}
+
+% Website
+@online{wikipedia2024,
+    author    = {{Wikipedia Contributors}},
+    title     = {OpenAI},
+    year      = {2024},
+    url       = {https://en.wikipedia.org/wiki/OpenAI},
+    note      = {Accessed: 2024-09-16}
+}
+
+% Book Chapter
+@incollection{doe2021,
+    author    = {Jane Doe},
+    title     = {Advanced Topics in Machine Learning},
+    booktitle = {Handbook of Machine Learning},
+    editor    = {John Smith and Alice Miller},
+    publisher = {Academic Press},
+    year      = {2021},
+    pages     = {45--67},
+    address   = {San Diego, CA}
+}
+
+% Miscellaneous Entry
+@misc{green2022,
+    author    = {Robert Green},
+    title     = {Understanding the Basics of Quantum Mechanics},
+    year      = {2022},
+    howpublished = {Lecture Notes},
+    note      = {Available at Example University}
+}
+
+Book Entry (@book): Für Bücher. Enthält Autor, Titel, Herausgeber, Jahr,
+Auflage, Band und Adresse.
+
+Article in Journal (@article): Für Zeitschriftenartikel. Enthält Autor, Titel,
+Zeitschrift, Jahr, Band, Nummer und Seiten.
+
+Conference Paper (@inproceedings): Für Konferenzbeiträge. Enthält Autor, Titel,
+Konferenzname, Jahr, Seiten, Verlag und Adresse.
+
+Thesis or Dissertation (@phdthesis): Für Dissertationen oder Masterarbeiten.
+Enthält Autor, Titel, Universität, Jahr und Adresse.
+
+Report (@techreport): Für technische Berichte. Enthält Autor, Titel,
+Institution, Jahr, Berichtnummer und Adresse.
+
+Website (@online): Für Online-Quellen. Enthält Autor (meistens keine), Titel,
+Jahr, URL und Zugriffdatum.
+
+Book Chapter (@incollection): Für Buchkapitel. Enthält Autor, Kapitel Titel,
+Buch Titel, Herausgeber, Verlag, Jahr, Seiten und Adresse.
+
+Miscellaneous Entry (@misc): Für alle anderen Quellen. Kann für verschiedene
+Zwecke verwendet werden, wie z.B. Vorlesungsnotizen.

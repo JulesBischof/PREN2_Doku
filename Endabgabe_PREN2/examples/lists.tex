@@ -1,0 +1,58 @@
+% lists.tex
+
+% unordered List (Bullet Points)
+\begin{itemize}
+    \item First item
+    \item Second item
+    \item Third item
+\end{itemize}
+
+% ordered List (Number prefix)
+\begin{enumerate}
+    \item First item
+    \item Second item
+    \item Third item
+\end{enumerate}
+
+% describing lists 
+\begin{description}
+    \item[First] The first item
+    \item[Second] The second item
+    \item[Third] The third item
+\end{description}
+
+% additional Packages needed
+
+% --------------------------------------- enumitem package
+
+% enumitem - user defined lists containing both ordered and unordered parts
+\usepackage{enumitem}
+
+\begin{itemize}[label=\textbullet, itemsep=1em]
+    \item First item
+    \item Second item
+    \item Third item
+\end{itemize}
+
+\begin{enumerate}[label=\arabic*., itemsep=1em]
+    \item First item
+    \item Second item
+    \item Third item
+\end{enumerate}
+
+% --------------------------------------- compactenum package
+% need less vertical space
+
+\usepackage{paralist}
+
+\begin{compactitem}
+    \item First item
+    \item Second item
+    \item Third item
+\end{compactitem}
+
+\begin{compactenum}
+    \item First item
+    \item Second item
+    \item Third item
+\end{compactenum}
