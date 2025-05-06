@@ -10,6 +10,55 @@
 
 \subsubsection{Änderungen zu Konzpet PREN 1}
 
-z.B. weggefallene Sensorik \& co
+\subsubsection*{Sensorik}
+
+\subsubsection*{Powermanagement}
+
+Der Leistungsbedarf des Routers lag weit unter den Erwartungen, die aus
+Worst-Case-Betrachtungen abgeleitet wurden. Das Konzept an sich hat sich nicht
+geändert: Das PowerBoard regelt nach wie vor 12V für das Boardnetz ein,
+allerdings hat sich die Akkulaufzeit massiv erhöht.
+
+Die Schaltung auf dem PowerBoard-PCB hat einen Layoutfehler, weshalb der
+Schaltungsteil mit der Batterie-Zellenüberwachung nicht in Betrieb genommen
+werden konnte. Da der $12V$-Schaltregler auf dem PowerBoard jedoch bereits ab
+$12.5V$ Schwierigkeiten hat, die Spannung aufrechtzuerhalten und das System
+deshalb abgeschaltet wird, ist die weggefallene Schutzbeschaltung nicht allzu
+kritisch. $12.5V$ bei einem 4S-LiPo, wie wir ihn einsetzen, ergibt eine
+Zellspannung von $3.125V$, vorausgesetzt, die Zellen sind alle gleichmäßig
+entladen. Das liegt noch über den Spezifikationen zur Tiefentladung des Akkus.
+
+\subsubsection*{Kommunikation}
+
+Die RS422-Schnittstelle hat sich während der Entwicklung als hinderlich
+erwiesen. Ein einfacher UART-zu-USB-Wandler kann mit einem solchen IC nicht
+eingesetzt werden, da der UART-Rx-Pin durch den RS422-Receiver permanent auf
+High getrieben wird.
+
+Zu Entwicklungszwecken wurde dieser IC deshalb zunächst wieder ausgelötet. Da
+sich während der Entwicklung und Erprobung des Systems jedoch keine
+Schwierigkeiten oder fehlerhaft übertragenen Datenpakete ergaben, wurde auch im
+finalen System auf diese Schnittstelle verzichtet. Mit einer 8-bit-CRC ist eine
+Form der Übertragungssicherheit und Fehlererkennung auch im
+\textit{prain_uart-Protokoll} implementiert. Sollte ein Datenpaket falsch
+ankommen, wird der Absender darüber informiert und sendet das Paket erneut.
+% Verweis auf Prain-UART-Anhang
+
+\subsubsection*{PCB}
+
+Da beim MotionController einige Sensoren eingespart werden konnten, verfügt
+dieser nun über genügend freie Ein- und Ausgänge, um die Firmware des
+GripControllers parallel zur MotionController-Firmware auf dem MotionController
+auszuführen. Die neue Steuer-Topologie besteht nun nicht mehr aus drei Platinen
+(\textit{RaspberryHat, MotionController und GripController}), sondern nur noch
+aus den ersten beiden.
+
+Nichtsdestotrotz war der GripController während der Entwicklungsphase eine
+große Hilfe, da die beiden Teammitglieder aus dem Elektronikbereich so
+eigenständiger arbeiten und testen konnten.
+
+\subsubsection*{Akku-Ladestandsanzeige}
+
+Die Ladestandsanzeige auf dem PowerBoard wurde nie Inbetrieb genommen.
 
 \end{document}

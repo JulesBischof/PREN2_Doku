@@ -1,6 +1,5 @@
 \documentclass[main.tex]{subfiles} % Subfile-Class
 
-
 %==============================================================================%
 %                                   Subfile                                    %
 %==============================================================================%
@@ -11,9 +10,91 @@
 
 \subsubsection{Sensorik}
 
-- Erfassung der gefahrenen Strecke
-- Erfassung der rotation
-- Erfassung von Hindernissen
-- ... ? 
+\subsubsection*{Liniensensor}
+
+Der Liniensensor aus dem Konzept aus PREN1 hat sich als sehr zuverlässig
+erwiesen. Er arbeitet mit UV-Licht, das das weisse Klebeband auf den Fugen
+fluoreszieren lässt, während die Fugen zwischen den Fliesen nicht
+fluoreszieren. Die Beleuchtungsstärke wird im sichtbaren Spektrum ausgewertet,
+sodass ausschliesslich das fluoreszierende Klebeband erfasst wird. Dies
+ermöglicht einen starken Kontrast zur Umgebung.
+
+% TODO Abbildung aus Pren 1 Schema
+
+Seine Dimensionierung basiert auf der Sättigung eines Phototransistors. Solange
+sich der Sensor über einer Fliese befindet, bleibt der Phototransistor wenig
+leitend. Dadurch wird der Spannungspegel hauptsächlich durch den Widerstand auf
+HIGH gezogen. Der Widerstand wurde so gewählt, dass der Transistor in Sättigung
+gerät, sobald sich ein Klebeband unterhalb des Sensors befindet. In diesem Fall
+wird der Spannungspegel stark gegen GND gezogen, sodass eine Linie eindeutig
+detektiert werden kann.
+
+Das Gehäuse dieses Sensors schirmt jede Messzelle einzeln stark von der
+Umgebung ab. Dadurch beeinflussen sich die Messzellen weder gegenseitig, noch
+werden sie durch Sonnenlicht oder andere Umwelteinflüsse gestört.
+
+Aus Sicherheitsgründen ist die Elektronik, die diesen Sensor ansteuert, in der
+Lage, die UV-LEDs ein- und auszuschalten. Diese werden nur aktiviert, wenn eine
+Messung erfolgt. Falls nach zehn Messungen keine Linie gefunden wird, wird der
+Messprozess abgebrochen und die UV-LEDs bleiben deaktiviert. Befindet sich der
+Roboter nicht in Bewegung, werden also maximal zehn UV-Impulse ausgesendet, was
+einer Zeitdauer von $\approx 100$ ms entspricht.
+
+Die Sensordaten werden über einen Analog-Digital-Wandler ausgewertet. Nachdem
+alle Zellen ausgelesen wurden, werden die Messwerte zunächst auf einen Bereich
+von $0 \dots 1000$ normiert, um Bauteiltoleranzen zwischen den Zellen zu
+kompensieren. Anschliessend werden die Werte \textit{gewichtet aufsummiert}.
+Wie die Ermittlung der Linienposition funktioniert und wie dieser Wert in der
+Regelung eingesetzt wird, ist im Anhang~\ref{apdx:LineFollowerRegler} im Detail
+beschrieben.
+
+% BILD Liniensensor
+
+% Verweis Anhang Liniensensor
+
+\subsubsection*{Streckenrückverfolgung – Distanz und Rotation}
+
+Die gefahrene Strecke kann vollständig über die registrierten Schritte der
+Schrittmotoren bestimmt werden. Dazu wurde die Motorbeschleunigung auf ein Mass
+reduziert, das einen Schlupf der Räder verhindert. Wie die zurückgelegte
+Distanz der Räder von der Firmware erfasst wird, ist im
+Anhang~\ref{apdx:Distanz_Tracking} detailliert beschrieben. Die erfasste
+Strecke erlaubt zudem Rückschlüsse auf die durchgeführte Rotation des
+Fahrzeugs.
+
+\subsubsection*{Erkennung von Hindernissen}
+
+Im ursprünglichen Konzept aus PREN1 wurde die Hinderniserkennung redundant
+ausgeführt: Ein Ultraschallsensor sollte die Annäherung an ein Hindernis
+erkennen, während eine Laserlichtschranke den endgültigen
+\textit{Greifzeitpunkt} bestimmen sollte. Aus Kostengründen wurde zunächst eine
+Lösung realisiert, die ausschliesslich auf dem Ultraschallsensor basiert. Mit
+verschiedenen statistischen und systemtheoretischen Methoden, die im
+Anhang~\ref{apdx:FilterDimensionierungHcSr04} näher erläutert werden, lässt
+sich die Position eines Hindernisses allein mit dem Ultraschallsensor sehr
+genau vorhersagen.
+
+Ein wesentliches Problem des eingesetzten Sensors ist die niedrige Abfragerate
+für Distanzwerte. Der implementierte Filter ermöglicht jedoch eine Vorhersage
+der Hindernisposition basierend auf der aktuellen Fahrzeuggeschwindigkeit.
+Dadurch können auch rechnerisch ermittelte Hindernispositionen zwischen zwei
+Messpunkten bestimmt werden. Nach jeder Messung wird das Zustandsmodell
+korrigiert, abhängig von der Genauigkeit der vorherigen Schätzung. Dieses
+Filter wird im Anhang~\ref{apdx:Adaptiver_Tiefpass} hergeleitet und
+parametriert.
+
+% TODO\ Bild Fahrzeug vor Hindernis
+
+\subsubsection*{Pylonen LIDAR}
+
+GABRIEL/SANDRO .. ?
+
+\subsubsection*{Kamera}
+
+GABRIEL
+
+\subsubsection*{Greiferposition}
+
+MANUEL
 
 \end{document}

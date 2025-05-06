@@ -10,12 +10,71 @@
 
 \subsubsection{Power Management}
 
-- Wie wird Batterie geschützt?
-- Wie werden die Prints gespiesen
-- Am Motor wird Strom reduziert beim Anfahren
-- Wie lange hält der Akku
-- ...
+\subsubsection*{Akku}
 
-Abbildungen könnten ähnlich sein wie in PREN 1
+Der eingesetzte Akku ist ein 4S-1300mAh LiPo - Akku. Die Kapazität wurde nach
+Worst-Case Bedingungen ausgelegt. So wurde überlegt, dass der Raspberry Pi
+permanent unter vollast läuft und die Motoren permanent ihren Nennstrom
+beziehen. Das ist in der Praxis natürlich nie gegeben. Entsprechend ist der
+Akku ein wenig überdimensionert - das Gewichtsbudget lässt diesen Akku
+allerdings zu, deshalb ist nicht auf die grosse Kapazität verzichtet.
+
+% ABBILDUNG AKKU
+
+Die Akkulaufzeit beträgt nun mehrere Stunden bei normalem Versuchbetrieb. Die Anforderungen, 
+dass der Akku für $15min$ Betrieb ausreichen soll, wird also bei weitem erreicht. 
+
+\subsubsection*{Akku - Entladeschutz}
+
+Das PowerBoard beinhaltet eine Batterieschutz. Aufgrund eines Layout-Fehlers
+wurde diese allerdings nie in Betrieb genommen. Der Schaltregler für die
+12V-Spannung hat bereits bei einer Akkuspannung von ca. 12.5V Probleme damit,
+die Boardnetzspannung aufrecht zu halten. Da dies noch oberhalb der kritischen
+Entladespannung des Akkus liegt, ist vorerst auf eine entsprechende separate
+Schutzbeschaltung verzichtet.
+
+Das Implementieren einer Ladestandskontrolle des Akkus über den RaspberryPi
+stellte lediglich eine Wunschanforderung dar. Da die Zeit für andere, höher
+Priorisierte Themen benötigt wurde, ist auf diese Funktionalität verzichtet
+worden.
+
+\subsubsection*{Boardnetz}
+
+Das Fahrzeug wird mit einem 12V-Boardnetz betrieben. Dazu wird auf dem eigens
+dafür erstellten \textit{PowerBoard}-PCB die Spannung aus dem LiPo Akku auf 12V
+eingeregelt.
+
+Jeder PCB hat seine eigene Spanungsregelung von 12V auf zunächst 5V5 und
+anschliessend noch auf 3V3.
+
+% TODO ABBILDUNG PREN1 SPEISUNG GESAMTSYSTEM
+
+Dadurch ist sichergestellt, dass auch obwohl grosse Verbraucher wie z.B. die
+Motoren anlaufen, keine starken Spannungseinbrüche am Raspberry Pi oder an
+einer der Microcontroller merkbar sind. Die Spannungsversorgung hat also viel
+\textit{Reserve}, um solche sporadischen Schwankungen auszugleichen.
+
+Die Batterielaufzeit wurde mal auf $15 - 20 min$ ausgelegt, wobei vom
+Worst-Case ausgegangen wurde. In der Praxis hat sich nun gezeigt, dass dies zu
+kritische Betrachtung ist und der Akku nun auch für mehrere Stunden ausreichend
+Leistung liefert.
+
+\subsubsection*{Power Management der Motoren}
+
+Die eingesetzten Motorentreiber, die \textit{Tmc5240} von \textit{ADI-Trinamic}
+bieten eine Parametrierung des Motorenstroms. So ist es problemlos möglich, im
+laufe des Betriebs den Maximalstrom für die jeweiligen Motoren einzustellen.
+Für diese Steuerung sind die Ströme nun so ausgelegt, dass sie bei Dreh oder
+Positionierungsbewegungen, bei welchen Schrittverluste sehr kritisch sind, den
+vollumfänglichen Strom zur verfügung gestellt bekommen, wohingegen sie bei
+\textit{Segelfahrten}, also beim Folgen der Linie auf nur in etwa $30\%$ des
+Maximalstroms reduziert werden können.
+
+Befindet sich das Fahrzeug dafür im Stillstand, zum Beispiel wenn ein
+Knotenpunkt erkannt wurde, oder gerade ein Hindernis aufgenommen wird, so wird
+der Motorenstrom sogar ganz abgestellt.
+
+Durch diese Einsparungen liess sich der Leistungsbedarf des Roboters nochmals
+enorm reduzieren.
 
 \end{document}
