@@ -12,9 +12,25 @@
 
 \subsubsection*{Sensorik}
 
+Auf eine redundante Abfrage der Hindernisposition in Form einer zusätzlichen
+Lichtschranke neben dem Ultraschallsensor ist verzichtet worden. Mittels
+Systemtheoretischer betrachtungen und ein wenig Statistik ist die
+Messungenauigkeit auf ein Mass reduziert, mit welchem der Roboter auch alleine
+auf Basis dieser Messungen funktionsfähig ist.
+
+Weiter ist das \textit{Rückverfolgen} der Fahrzeugposition über separate
+Encoder überflüssig geworden. Mit der Massnahme, die tendenziell eher
+überdimensionierten Motoren bei Positionierungsaufgaben voll zu bestromen, sind
+eventuelle Schrittverluste kein Problem mehr. Deshalb ist es zum bestimmen der
+zurückgelegten Strecke absolut ausreichend die getätigten Schritte der
+Schrittmotoren seit dem letzten Messpunkt auszuwerten. Die Fahrzeugrotation
+lässt sich über die Achsgeometrie und die gefahrene Strecke pro Rad ebenfalls
+problemlos zurückrechnen. Das Gyroskop ist deshalb auch nicht zum Einsatz
+gekommen, obwohl es doch auch mal in Betrieb genommen wurde.
+
 \subsubsection*{Powermanagement}
 
-Der Leistungsbedarf des Routers lag weit unter den Erwartungen, die aus
+Der Leistungsbedarf des Roboters lag weit unter den Erwartungen, die aus
 Worst-Case-Betrachtungen abgeleitet wurden. Das Konzept an sich hat sich nicht
 geändert: Das PowerBoard regelt nach wie vor 12V für das Boardnetz ein,
 allerdings hat sich die Akkulaufzeit massiv erhöht.
@@ -25,7 +41,7 @@ werden konnte. Da der $12V$-Schaltregler auf dem PowerBoard jedoch bereits ab
 $12.5V$ Schwierigkeiten hat, die Spannung aufrechtzuerhalten und das System
 deshalb abgeschaltet wird, ist die weggefallene Schutzbeschaltung nicht allzu
 kritisch. $12.5V$ bei einem 4S-LiPo, wie wir ihn einsetzen, ergibt eine
-Zellspannung von $3.125V$, vorausgesetzt, die Zellen sind alle gleichmäßig
+Zellspannung von $3.125V$, vorausgesetzt, die Zellen sind alle gleichmässig
 entladen. Das liegt noch über den Spezifikationen zur Tiefentladung des Akkus.
 
 \subsubsection*{Kommunikation}
@@ -44,7 +60,7 @@ Form der Übertragungssicherheit und Fehlererkennung auch im
 ankommen, wird der Absender darüber informiert und sendet das Paket erneut.
 % Verweis auf Prain-UART-Anhang
 
-\subsubsection*{PCB}
+\subsubsection*{PCBs}
 
 Da beim MotionController einige Sensoren eingespart werden konnten, verfügt
 dieser nun über genügend freie Ein- und Ausgänge, um die Firmware des
@@ -54,11 +70,34 @@ auszuführen. Die neue Steuer-Topologie besteht nun nicht mehr aus drei Platinen
 aus den ersten beiden.
 
 Nichtsdestotrotz war der GripController während der Entwicklungsphase eine
-große Hilfe, da die beiden Teammitglieder aus dem Elektronikbereich so
+grosse Hilfe, da die beiden Teammitglieder aus dem Elektronikbereich so
 eigenständiger arbeiten und testen konnten.
 
 \subsubsection*{Akku-Ladestandsanzeige}
 
-Die Ladestandsanzeige auf dem PowerBoard wurde nie Inbetrieb genommen.
+Die Ladestandsanzeige auf dem PowerBoard wurde nie in Betrieb genommen. Die
+Akkulaufzeit hat sich als völlig unkritisch erwiesen. Eine permanente
+Kontroller der Akkuspannung und damit des Ladezustands ist darum überflüssig
+geworden währrend der Entwicklungsarbeit.
+
+\subsubsection*{Notstopp - Konzept}
+
+Während im Pren-1-Konzept noch vorgesehen war, die Batterie vom System zu
+trennen, wenn der Notstopp betätigt wird, ist dies nun in der Software des
+Motion Controllers umgesetzt.
+
+Bei der Inbetriebnahme hat sich gezeigt, dass der Systemzustand, wenn während
+der Fahrt der die Batterie getrennt wird, nicht mehr genau vorhergesagt werden
+kann. Wenn das Boardnetz wieder eingeschaltet wird, kann es passieren, dass der
+Roboter direkt wieder losfährt. Dies und das unsanfte Herunterfahren des
+Raspberry Pis sind der Grund dafür, dass der Notstopp nun in Software
+implementiert ist. Die Struktur der Firmware des Motion Controllers erlaubt
+Broadcasts an alle Tasks. Wird der Notstopp betätigt, werden alle Tasks
+angewiesen, alle Bewegungen einzustellen. Danach wird der Motion-Controller
+intern über ein Event-Flag daran gehindert, Bewegungen auszuführen, bis der
+Notstopp wieder losgelassen wird. Der RaspberryHat wird über das
+prain-uart-Protokoll über dieses Ereignis informiert. Dies stellt sicher, dass
+sich der gesamte Roboter in einem sicheren Zustand befindet, bis der Notstopp
+wieder deaktiviert wird.
 
 \end{document}

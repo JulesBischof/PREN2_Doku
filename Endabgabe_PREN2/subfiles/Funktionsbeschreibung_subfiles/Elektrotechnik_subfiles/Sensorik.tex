@@ -10,7 +10,7 @@
 
 \subsubsection{Sensorik}
 
-\subsubsection*{Liniensensor}
+\subsubsection*{Liniensensor}~\label{sec:Sensorik_Liniensensor}
 
 Der Liniensensor aus dem Konzept aus PREN1 hat sich als sehr zuverlässig
 erwiesen. Er arbeitet mit UV-Licht, das das weisse Klebeband auf den Fugen
@@ -19,19 +19,33 @@ fluoreszieren. Die Beleuchtungsstärke wird im sichtbaren Spektrum ausgewertet,
 sodass ausschliesslich das fluoreszierende Klebeband erfasst wird. Dies
 ermöglicht einen starken Kontrast zur Umgebung.
 
-% TODO Abbildung aus Pren 1 Schema
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Schema_Messzelle_Liniensensor.pdf}
+    \caption{Schema einer einzelnen Messzelle des Liniensensors}~\label{fig:Schema_Messtelle_Liniensensor}
+\end{figure}
 
-Seine Dimensionierung basiert auf der Sättigung eines Phototransistors. Solange
-sich der Sensor über einer Fliese befindet, bleibt der Phototransistor wenig
-leitend. Dadurch wird der Spannungspegel hauptsächlich durch den Widerstand auf
-HIGH gezogen. Der Widerstand wurde so gewählt, dass der Transistor in Sättigung
-gerät, sobald sich ein Klebeband unterhalb des Sensors befindet. In diesem Fall
-wird der Spannungspegel stark gegen GND gezogen, sodass eine Linie eindeutig
-detektiert werden kann.
+Die Dimensionierung des Sensors, welcher in
+Abbildung~\ref{fig:Schema_Messtelle_Liniensensor} schematisch gezeigt ist,
+basiert auf der Sättigung eines Phototransistors. Solange sich der Sensor über
+einer Fliese befindet, bleibt der Phototransistor wenig leitend. Dadurch wird
+der Spannungspegel hauptsächlich durch den Widerstand auf HIGH gezogen. Der
+Widerstand wurde so gewählt, dass der Transistor in Sättigung gerät, sobald
+sich ein Klebeband unterhalb des Sensors befindet. In diesem Fall wird der
+Spannungspegel stark gegen GND gezogen, sodass eine Linie eindeutig detektiert
+werden kann.
 
-Das Gehäuse dieses Sensors schirmt jede Messzelle einzeln stark von der
-Umgebung ab. Dadurch beeinflussen sich die Messzellen weder gegenseitig, noch
-werden sie durch Sonnenlicht oder andere Umwelteinflüsse gestört.
+Das Gehäuse dieses Sensors, gezeigt in
+Abbildung~\ref{fig:Gehaeuse_Liniensensor}, schirmt jede Messzelle einzeln stark
+von der Umgebung ab. Dadurch beeinflussen sich die Messzellen weder
+gegenseitig, noch werden sie durch Sonnenlicht oder andere Umwelteinflüsse
+gestört.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Gehaeuse_Isometrisch.pdf}
+    \caption{Schema einer einzelnen Messzelle des Liniensensors}~\label{fig:Gehaeuse_Liniensensor}
+\end{figure}
 
 Aus Sicherheitsgründen ist die Elektronik, die diesen Sensor ansteuert, in der
 Lage, die UV-LEDs ein- und auszuschalten. Diese werden nur aktiviert, wenn eine
@@ -48,11 +62,24 @@ Wie die Ermittlung der Linienposition funktioniert und wie dieser Wert in der
 Regelung eingesetzt wird, ist im Anhang~\ref{apdx:LineFollowerRegler} im Detail
 beschrieben.
 
-% BILD Liniensensor
+Der Liniensensor hat zwar eine Standardkalibration, vor der Fahrt wird er
+jedoch noch einmal genau kalibriert. Dazu sendet der Raspberry Hat einen
+Kalibrierungsbefehl. Der MotionController führt dann 50 Messungen jeder Zelle
+durch und speichert den Median dieser Messreihe separat in den
+Kalibrierungswerten für jede Zelle ab. Mithilfe dieser Kalibrierungswerte wird
+anschliessend die Normierung auf den Vektor von $0 \dots 1000$ berechnet.
+Dieser Messvorgang muss einmal auf dem Klebeband und einmal auf dem
+Fliesenboden durchgeführt werden und dauert weniger als $1 s$.
 
-% Verweis Anhang Liniensensor
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Liniensensor_Bottom.pdf}
+    \caption{Ansicht des Liniensensors}~\label{fig:LinienSensor_bottom}
+\end{figure}
 
-\subsubsection*{Streckenrückverfolgung – Distanz und Rotation}
+% Verweis Anhang Liniensensor ? 
+
+\subsubsection*{Streckenrückverfolgung – Distanz und Rotation}~\label{sec:Sensorik_Streckenrueckverfolgung}
 
 Die gefahrene Strecke kann vollständig über die registrierten Schritte der
 Schrittmotoren bestimmt werden. Dazu wurde die Motorbeschleunigung auf ein Mass
@@ -62,7 +89,7 @@ Anhang~\ref{apdx:Distanz_Tracking} detailliert beschrieben. Die erfasste
 Strecke erlaubt zudem Rückschlüsse auf die durchgeführte Rotation des
 Fahrzeugs.
 
-\subsubsection*{Erkennung von Hindernissen}
+\subsubsection*{Erkennung von Hindernissen}~\label{sec:Sensorik_Ultraschall}
 
 Im ursprünglichen Konzept aus PREN1 wurde die Hinderniserkennung redundant
 ausgeführt: Ein Ultraschallsensor sollte die Annäherung an ein Hindernis
@@ -74,14 +101,25 @@ Anhang~\ref{apdx:FilterDimensionierungHcSr04} näher erläutert werden, lässt
 sich die Position eines Hindernisses allein mit dem Ultraschallsensor sehr
 genau vorhersagen.
 
-Ein wesentliches Problem des eingesetzten Sensors ist die niedrige Abfragerate
-für Distanzwerte. Der implementierte Filter ermöglicht jedoch eine Vorhersage
-der Hindernisposition basierend auf der aktuellen Fahrzeuggeschwindigkeit.
-Dadurch können auch rechnerisch ermittelte Hindernispositionen zwischen zwei
-Messpunkten bestimmt werden. Nach jeder Messung wird das Zustandsmodell
-korrigiert, abhängig von der Genauigkeit der vorherigen Schätzung. Dieses
-Filter wird im Anhang~\ref{apdx:Adaptiver_Tiefpass} hergeleitet und
-parametriert.
+Er erfasst gurndsätzlich nur Hindernisse, die sich näher als $500mm$ befinden.
+Der Sensor hat einen Messkegel von $15°$, wodurch die gemessene Fläche nach
+einer gewissen Distanz einfach zu gross wird. Dieser Sachverhalt ist in
+Abbildung~\ref{fig:HcSr04_Messkegel} gezeigt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Auslesegenauigkeit_Ultraschall.pdf}
+    \caption{Messkegel des Ultraschallsensors}~\label{fig:HcSr04_Messkegel}
+\end{figure}
+
+Ein wesentliches Problem des eingesetzten Sensors ist ebenfalls niedrige
+Abfragerate für Distanzwerte. Der implementierte Filter ermöglicht jedoch eine
+Vorhersage der Hindernisposition basierend auf der aktuellen
+Fahrzeuggeschwindigkeit. Dadurch können auch rechnerisch ermittelte
+Hindernispositionen zwischen zwei Messpunkten bestimmt werden. Nach jeder
+Messung wird das Zustandsmodell korrigiert, abhängig von der Genauigkeit der
+vorherigen Schätzung. Dieses Filter wird im
+Anhang~\ref{apdx:Adaptiver_Tiefpass} hergeleitet und parametriert.
 
 % TODO\ Bild Fahrzeug vor Hindernis
 

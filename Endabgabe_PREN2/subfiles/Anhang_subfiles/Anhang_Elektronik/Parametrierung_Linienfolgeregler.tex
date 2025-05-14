@@ -50,7 +50,7 @@ werden die normierten Sensorwerte herangezogen, und gewichtet zusammengezählt.
     LinePos = \frac{0 \cdot Val_{norm}[0] + 1 \cdot Val_{norm}[1] + \cdots + 7 \cdot Val_{norm}[7]}{\sum_{k=0}^{7}(Val_{norm}[i])}
 \]
 
-Ergibt die Berechnung $0$ oder $8000$, so befindet sich die Linie am äusseren
+Ergibt die Berechnung $0$ oder $7000$, so befindet sich die Linie am äusseren
 Anschlag. Befindet sich die Linie in der Mitte, ergibt die Berechnung $3500$,
 was auch der Sollwert des Linienfolgers ist.
 
@@ -66,7 +66,7 @@ Die Abbildung~\ref{fig:Linienfolger_RegelProzess} zeigt schematisch, wie der
 Regelprozess funktioniert. Eingangsgrösse ist die Bezugsgrösse $x$, die im
 vorhergehenden Abschnitt auf konstante $3500$ festgelegt ist. Diese Grösse gibt
 die auf den Messzellenabstand aufgelöste Linienposition auf einer Skala von $0
-    \dots 8000$ an und hat die Einheit $25\mu m$.
+    \dots 7000$ an und hat die Einheit $25\mu m$.
 
 Der zeitdiskrete Regler $C(z)$ implementiert einen zeitdiskreten PD-Regler,
 dessen Parametrierung im folgenden Abschnitt \textit{Reglerparametrierung}

@@ -58,62 +58,6 @@ um ein Datenpaket, das den Absender, den Empfänger, ein Kommando sowie eine
 64-Bit-Payload für Daten enthält. Eine detaillierte Beschreibung findet sich im
 Anhang~\ref{apdx:DispatcherMessage}.
 
-\subsubsection*{Linienfolger Regelung}
-
-Zur Regelung der Linienposition wird ein klassischer PD-Regler eingesetzt.
-Fahrten, bei denen die Regelabweichung zwingend Null sein muss, sind nicht zu
-erwarten, da z.B. keine Kurven exakt abgefahren werden müssen. Ein
-Integralanteil ist daher nicht erforderlich.
-
-Die Herleitung der benötigten Parameter ist im Anhang detailliert
-beschrieben~\ref{apdx:Regler_Parametrierung}. Der Regler wurde zunächst mit
-einem kleinen P-Anteil implementiert. In einem Experiment wurde die
-Sprungantwort des Systems aufgenommen und anschliessend mit
-regelungstechnischen Methoden zu einem PT2-Modell modelliert. Dieses bildet die
-Ausgangssituation für die Parameteridentifikation des implementierten Reglers.
-
-Als Eingangsgrösse für den Regler dient die Linienposition, die direkt vom
-Liniensensor geliefert wird. Die genaue Ermittlung dieser Grösse, nämlich wie
-der Liniensensor ausgewertet wird, ist im Anhang
-beschrieben~\ref{apdx:Liniensensor_auswertung}. Vereinfacht dargestellt werden
-die einzelnen Messzellen des Sensors über einen ADC-Wandler ausgelesen, auf
-einen Vektor der Grösse $0 \dots 1000$ normiert und anschliessend gewichtet
-aufsummiert. Daraus ergibt sich die Position der Linie als ganzzahliger Wert
-auf einer Skala von $0 \dots 8000$, wobei $3500$ die Mittenposition und damit
-die Referenzposition $x[k]$ für den Regler darstellt.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\linewidth]{../../Anhang_subfiles/Anhang_Elektronik/fig_Parametrierung_Linienfolgeregler/RegelProzess_Linienfolger.pdf}
-    \caption{Reglerprozess des Linienfolgers}~\label{fig:Linienfolger_RegelProzess_ht}
-\end{figure}
-
-Der vereinfachte Regelkreis ist in
-Abbildung~\ref{fig:Linienfolger_RegelProzess_ht} dargestellt. Die Grösse $x[k]$
-bezeichnet, wie bereits erwähnt, die Referenzposition. Zusammen mit der
-aktuellen Linienposition $y[k]$ wird die Regelabweichung $e[k]$ bestimmt. Die
-Grössen in der Einheit der Linienposition ($x[k]$, $y[k]$ und $e[k]$) haben
-aufgrund der Messauflösung der Zellen alle die Einheit $25 \mu m$. Der
-dargestellte Block $C(z)$ repräsentiert den im MotionController implementierten
-zeitdiskreten Regler. Seine Ausgangsgrösse $u[k]$ hat die Einheit $\frac{\mu
-        \text{steps}}{t}$ und beschreibt die Motordrehzahl, die an den Prozess $P(s)$
-weitergegeben wird. Die Ausgangsgrösse des Prozesses $P(s)$ wird wiederum vom
-Linearsensor erfasst und durch die Grösse $y[k]$ dargestellt.
-
-Jeder Motor wird bei Geradeausfahrt mit einer vorgegebenen Maximaldrehzahl
-\texttt{V\_MAX\_USTEPS\_PER\_T} angesteuert. Zu dieser Geschwindigkeit wird bei
-einem Motor die Regelgrösse $u[k]$ addiert, bei dem anderen subtrahiert.
-Dadurch dreht sich das Fahrzeug bei einer Regelabweichung um den
-Achsmittelpunkt.
-
-In der Firmware des MotionControllers ist der ermittelte PD-Regler mittels
-\textit{Tustin - Approximation} in den Zeitdiskreten bereich übertragen worden
-und ist wie nachfolgend dargestellt als differenzengleichung implementiert:
-
-\[
-    u[k] = \beta \cdot e[k] - \beta \cdot e[k - 1] + \alpha \cdot u[k - 1]
-\]
-
 \subsubsection*{Steuerungsablauf bei Hindernissen}
 
 Der Bewegungsablauf wird von einer Zustandsmaschine gesteuert, die im
@@ -157,7 +101,7 @@ eine eigene Zustandsmaschine implementiert, die die Kommandos \texttt{Stop},
 \texttt{Move} und \texttt{Turn} ausführen kann. Weitere Details zu diesem
 Zustandsautomaten sind im Anhang~\ref{apdx:MovePositionModeStm} beschrieben.
 
-\subsubsection*{Schrittmotoren und deren Ansteuerung}
+\subsubsection*{Ansteuerung der Schrittmotoren}
 
 Es werden die aus PREN1 evaluierten Schrittmotoren zusammen mit den
 Motorentreibern \textit{ADI-Trinamic TMC5240} eingesetzt. Diese Motorentreiber

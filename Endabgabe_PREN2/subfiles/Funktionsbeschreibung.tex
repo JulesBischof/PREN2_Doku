@@ -11,7 +11,68 @@
 \section{Funktionsbeschreibung}
 
 \subsection{Allgemeine Hardfacts}
+
 -- wie in Pren 1 - allgemeine Übersicht
+
+\subsection{Orientierung des Roboters im Wegenetz - kurz und knapp}
+
+Das Fahrzeug bewegt sich grundsätzlich entlang der aufgeklebten Linie von Punkt
+zu Punkt. Diese wird mithilfe des eigens entwickelten Liniensensors, der mit
+UV-Licht arbeitet, abgetastet. Über diesen Liniensensor werden auch
+Knotenpunkte erkannt. Auf den Liniensensor wird im
+Abschnitt~\ref{sec:Sensorik_Liniensensor} näher eingegangen.
+
+Tritt ein solches Ereignis ein, wird das Fahrzeug angehalten und so
+ausgerichtet, dass seine Achse mittig auf dem Knotenpunkt steht. Anschliessend
+wird die nächste anzufahrende Linie ermittelt. Zu diesem Zweck ist am vorderen
+Ende des Roboters eine Kamera montiert, die die Umgebung kontinuierlich
+erfasst. Hat der Raspberry Pi eine Entscheidung für die nächste Linie
+getroffen, wird der Roboter entsprechend gedreht und die Fahrt fortgesetzt.
+
+Der Roboter folgt bei der Entscheidung, welcher Linie gefolgt werden soll,
+grundsätzlich einem „best guess”. Das bedeutet, wenn das Ziel auf dem rechten
+Rand des Spielfelds erwartet wird, wird versucht, möglichst immer in dessen
+Richtung zu fahren. Erkennt der LIDAR am Fahrzeug allerdings eine Pylone, wird
+diese Richtung ignoriert und die nächstbeste gewählt. Der so verlassene
+Best-Guess-Pfad wird so bald wie möglich wieder angefahren. Ein Ziel wird als
+solches erkannt, sobald die Kamera den Buchstaben auf dem Knotenpunkt lesen
+kann. In diesem Fall wird ein Piepton ausgegeben.
+
+Seine Orientierung und seine Position im Wegenetz erhält der Roboter über die
+bisher angesteuerten Winkel und die zurückgelegten Strecken. Wie diese
+ermittelt werden, ist im Abschnitt~\ref{sec:Sensorik_Streckenrueckverfolgung}
+erläutert.
+
+% referenz Algorhitmus Abschnitt
+
+\subsection{Hindernishandling - kurz und knapp}
+
+Der Roboter ist über den Ultraschallsensor am vorderen Ende des Fahrzeugs in
+der Lage, Hindernisse zu erkennen. Wird ein Hindernis in einem Abstand von
+maximal $200 mm$ erkannt, wird zunächst die Geschwindigkeit reduziert, um die
+Reaktionszeit und die Abtastrate des Sensors zu erhöhen. Befindet sich das
+Hindernis nun in der Bremsreichweite, wird das Fahrzeug gestoppt, die Position
+nochmals final korrigiert und das Hindernis vom Greifer aufgenommen.
+
+Auf die Sensorik und Ansteuerung des Ultraschallsensors wird im
+Abschnitt~\ref{sec:Sensorik_Ultraschall} detaillierter ausgeführt.
+
+Anschliessend wird das Fahrzeug nach vorne bewegt, um 180° gedreht und das
+Hindernis wieder abgesetzt. Eine erneute 180°-Drehung bringt das Fahrzeug
+wieder auf Kurs und es kann mit dem Folgen der Linie fortfahren.
+
+Es wurde sich bewusst für die Fahrtrichtung nach vorne entschieden, da durch
+den Heckantrieb des Fahrzeugs eine grössere Traktion und damit eine grössere
+Geschwindigkeit möglich ist.
+
+% - - - - - - subfiles - - - - - -
+
+Die nun folgenden Abschnitte erläutern Teilfunktionen des Roboters im Detail
+aufgeteilt in den verschiedenen Fachdisziplinen. Währrend es im Mechanikteil
+vor allem um das Chassis und die Konstruktion des Greifers geht, wird im
+Elektronikteil vorallem die Ansteuerung dieser Komponenten beleuchtet. Der
+Informatikteil schliesslich behandelt im Detail, wie der Wegfindealgorithmus
+arbeitet um den Roboter autonom durch das Wegenetz zu navigieren.
 
 \subfile{./Funktionsbeschreibung_subfiles/Mechanik.tex}
 \newpage

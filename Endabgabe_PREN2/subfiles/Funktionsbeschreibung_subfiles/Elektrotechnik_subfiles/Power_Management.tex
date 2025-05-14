@@ -8,7 +8,7 @@
 
 % Template
 
-\subsubsection{Power Management}
+\subsubsection{Power Management}~\label{sec:PowerManagement}
 
 \subsubsection*{Akku}
 
@@ -21,8 +21,9 @@ allerdings zu, deshalb ist nicht auf die grosse Kapazität verzichtet.
 
 % ABBILDUNG AKKU
 
-Die Akkulaufzeit beträgt nun mehrere Stunden bei normalem Versuchbetrieb. Die Anforderungen, 
-dass der Akku für $15min$ Betrieb ausreichen soll, wird also bei weitem erreicht. 
+Die Akkulaufzeit beträgt nun mehrere Stunden bei normalem Versuchbetrieb. Die
+Anforderungen, dass der Akku für $15min$ Betrieb ausreichen soll, wird also bei
+weitem erreicht.
 
 \subsubsection*{Akku - Entladeschutz}
 
@@ -76,5 +77,22 @@ der Motorenstrom sogar ganz abgestellt.
 
 Durch diese Einsparungen liess sich der Leistungsbedarf des Roboters nochmals
 enorm reduzieren.
+
+\subsubsection*{das PowerBoard}
+Das PowerBoard-PCB hat die Hauptaufgabe, die Batteriespannung von $12.5V bis
+    16.8V$ auf eine Boardnetzspannung von $12V$ einzuregeln. Daneben bietet es
+einen Labornetzteilanschluss mit automatischer Quellenumschaltung. Wird ein
+solches angeschlossen, wird die Speisung über das Netzteil bevorzugt. Neben
+dieser Funktion bietet dieses PCB eine gewisse Einschalt-Stromdrosselung, um den
+Strom, welcher beim Einschalten des Roboters in die Kondensatoren schiesst, zu
+begrenzen.
+
+Dieses PCB hat acht 12V-Steckplätze, an dem alle grösseren Verbraucher des
+Systems angeschlossen werden können.
+
+Die integrierte Batteriezellenüberwachung hat einen Layoutfehler und konnte
+deshalb nicht inbetriebgenommen werden. Wie bereits vorgängig beschrieben ist
+das kein allzu kritisches Problem, da die Sicherheit des Akkus nach wie vor
+gewährleitet ist. % Referenz auf Abschnitt
 
 \end{document}
