@@ -80,13 +80,15 @@ im Anhang~\ref{apdx:HandlerBarrierStm} dokumentiert.
     \item Sobald sich der Greifer korrekt über dem Hindernis befindet, wird der
           GripController angewiesen, das Hindernis aufzunehmen.
 
-    \item Ist das Hindernis gegriffen, dreht sich das Fahrzeug um $180^\circ$ und bewegt
-          sich eine Fahrzeuglänge rückwärts.
+    \item Ist das Hindernis gegriffen, bewegt sich das Fahrzeug eine Fahrzeuglänge
+          vorwärts.
+
+    \item Das Fahrzeug wird um $180^\circ$ gedreht.
 
     \item Der GripController wird angewiesen, das Hindernis abzusetzen.
 
     \item Nach Erhalt der Bestätigung des GripControllers bewegt sich das Fahrzeug ein
-          kleines Stück zurück und dreht sich erneut um $180^\circ$.
+          kleines Stück zurück (Sicherheitsabstand) und dreht sich erneut um $180^\circ$.
 
     \item Das Hindernishandling ist abgeschlossen, und die Fahrt kann fortgesetzt werden.
           Der LineFollowerTask wird angewiesen, die Linienverfolgung fortzusetzen.

@@ -20,7 +20,7 @@ schematisch,wie diese Treiber angesteuert werden.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 1\linewidth]{fig_Antriebe_und_Dimensionierung/Konzept_Motoransteuerung.pdf}
+    \includegraphics[width = 1\linewidth]{./fig_Antriebe/Konzept_Motoransteuerung.pdf}
     \caption{Ansteuerungstopologie Schrittmotoren}~\label{Ansteuerungstopologie_Schrittmotorentreiber}
 \end{figure}
 
@@ -28,58 +28,56 @@ schematisch,wie diese Treiber angesteuert werden.
 
 \subsubsection*{Motoren und Motorentreiber}
 
-Die Ansteuerung dieser Motoren erfolgt über einen vollintegrierten
-Schrittmotortreiber der Firma ADI-Trinamic. Um den Entwicklungsaufwand gering
-zu halten, wird auf 2 Evaluation-Boards des Treiber-IC's \textit{TMC-5240}
-zurückgegriffen, wie in Abbildung~\ref{Schrittmotorentreiber_EVAL}
-gezeigt.Eines der Teammitglieder hat bereits Erfahrung mit diesem speziellen
-Treiber und kann auf entsprechende Treiber-Evaluation-Boards aus seinem
-beruflichen Umfeld zurückgreifen.
+Die Ansteuerung dieser Motoren erfolgt über zwei vollintegrierte
+Schrittmotortreiber der Firma ADI-Trinamic. Die Ansteuerung dieser Treiber
+erfolgt auf Basis der Linienposition, die über den Liniensensor ermittelt wird.
+Das ist die Hauptaufgabe des Motion Controllers, wie sie im PREN1 vorgestellt
+wurde.
 
-\subsubsection{Hardware zum Ansteuern der Antriebe}
+Diese Steuerung wurde allerdings von vornherein so ausgelegt, dass sie über
+mehr Ein- und Ausgänge verfügt, als benötigt werden. Durch diese
+Designentscheidung kann nun auch die Aufgabe der Greifersteuerung durch den
+Motion Controller übernommen werden. Für mehr Flexibilität können die Ein- und
+Ausgänge auf verschiedene Spannungspegel umgeschaltet werden. Damit können
+sowohl einfache 3V3 oder 5V-Sensoren als auch industrietaugliche Sensoren und
+Aktoren mit 12 V Spannung betrieben werden. Auch die Arbeitsspannung der
+I2C-Kommunikationsschnittstellen lässt sich konfigurieren, sodass zwischen
+3,3-V- und 5-V-Logikpegeln unterschieden werden kann. Das gesamte System ist
+somit sehr flexibel für etwaige Änderungen oder alternative Sensoren.
 
-Der MotionController wurde von vornherein darauf ausgelegt, über mehr Ein- und
-Ausgänge zu verfügen als er ursprünglich gebraucht hätte. Durch diese
-Designentscheidung konnte später die Aufgabe der Greifersteuerung ebenfalls
-durch den MotionController übernommen werden. Für mehr Flexibilität können die
-Ein- und Ausgänge auf verschiedene Spannungspegel umgeschaltet werden. Damit
-können sowohl simple $3V3$ oder $5V$ Sensoren, aber auch Industrietaugliche
-Sensoren und Aktoren auf 12V Spannung betrieben werden. Die Arbeitsspannung der
-I2C Kommunikationsschnittstellen lässt sich ebenfalls konfigurieren sodass
-zwischen $3V3$ und $5V$ Logikpegeln unterschieden werden kann. Das Gesamte
-System ist damit sehr flexibel für etwaige Änderungen oder alternative
-Sensoren.
-
-Der MotionController liesst ausserdem den Liniensensor aus und regelt auf Basis
-dessen die beiden Schrittmotoren. Am vorderen Ende des Fahrzeugs ist ein
-Ultraschallsensor verbaut, über welchen Hindernisse auf naher Distanz (max $500
-    mm$) erkannt werden. Das Umplatzieren der Hindernisse ist alleinige Aufgabe des
-MotionControllers. Alle benötigte Sensorik und Aktorik ist dazu auf diesem
-verbaut.
+Der MotionController ist daneben allein dafür zuständig, mit Hindernissen
+umzugehen. Dazu wertet er den Ultraschallsensor aus, stoppt frühzeitig und
+platziert die Barriere, wie eingangs erwähnt. Alle dazu benötigten Sensoren und
+Aktoren sind am Motion Controller angeschlossen.
 
 \subsubsection{Linienfolger Regelung}
 
 Zur Regelung der Linienposition wird ein klassischer PD-Regler eingesetzt.
 Fahrten, bei denen die Regelabweichung zwingend Null sein muss, sind nicht zu
 erwarten, da z.B. keine Kurven exakt abgefahren werden müssen. Ein
-Integralanteil ist daher nicht erforderlich.
+Integralanteil ist daher nicht erforderlich. Ausserdem zeigt der Prozess
+bereits ein integrierendes Verhalten, weshalb ein I-Anteil das Regelverhalten
+nachteilig beeinflussen würde.
 
-Die Herleitung der benötigten Parameter ist im Anhang detailliert
-beschrieben~\ref{apdx:Regler_Parametrierung}. Der Regler wurde zunächst mit
-einem kleinen P-Anteil implementiert. In einem Experiment ist die Sprungantwort
-des Systems aufgenommen und anschliessend mit regelungstechnischen Methoden zu
-einem PT2-Modell modelliert. Dieses bildet die Ausgangssituation für die
-Parameteridentifikation des implementierten Reglers.
+??
+%% REFERENZ AUF ABSCHNITT
+
+Die Herleitung der benötigten Parameter ist im
+Anhang~\ref{apdx:Regler_Parametrierung} detailliert beschrieben. Der Regler
+wurde zunächst mit einem kleinen P-Anteil implementiert. In einem Experiment
+ist die Sprungantwort des Systems aufgenommen und anschliessend mit
+regelungstechnischen Methoden zu einem PT2-Modell modelliert. Dieses bildet die
+Ausgangssituation für die Parameteridentifikation des implementierten Reglers.
 
 Als Eingangsgrösse für den Regler dient die Linienposition, die direkt vom
 Liniensensor geliefert wird. Die genaue Ermittlung dieser Grösse, wie genau der
-Liniensensor ausgewertet wird, ist im Anhang
-beschrieben~\ref{apdx:Liniensensor_auswertung}. Vereinfacht dargestellt werden
-die einzelnen Messzellen des Sensors über einen ADC-Wandler ausgelesen, auf
-einen Vektor der Grösse $0 \dots 1000$ normiert und anschliessend gewichtet
-aufsummiert. Daraus ergibt sich die Position der Linie als ganzzahliger Wert
-auf einer Skala von $0 \dots 7000$, wobei $3500$ die Mittenposition und damit
-die Referenzposition $x[k]$ für den Regler darstellt.
+Liniensensor ausgewertet wird, ist im Anhang~\ref{apdx:Liniensensor_auswertung}
+beschrieben. Vereinfacht dargestellt werden die einzelnen Messzellen des
+Sensors über einen ADC-Wandler ausgelesen, auf einen Vektor der Grösse $0 \dots
+    1000$ normiert und anschliessend gewichtet aufsummiert. Daraus ergibt sich die
+Position der Linie als ganzzahliger Wert auf einer Skala von $0 \dots 7000$,
+wobei $3500$ die Mittenposition und damit die Referenzposition $x[k]$ für den
+Regler darstellt.
 
 \begin{figure}[H]
     \centering
@@ -89,25 +87,26 @@ die Referenzposition $x[k]$ für den Regler darstellt.
 
 Der vereinfachte Regelkreis ist in
 Abbildung~\ref{fig:Linienfolger_RegelProzess_ht} dargestellt. Die Grösse $x[k]$
-bezeichnet, wie bereits erwähnt, die Referenzposition. Zusammen mit der
-aktuellen Linienposition $y[k]$ wird die Regelabweichung $e[k]$ bestimmt. Die
-Grössen in der Einheit der Linienposition ($x[k]$, $y[k]$ und $e[k]$) haben
-aufgrund der Messauflösung der Zellen alle die Einheit $25 \mu m$. Der
-dargestellte Block $C(z)$ repräsentiert den im MotionController implementierten
+gibt die Referenzposition an. Zusammen mit der aktuellen Linienposition $y[k]$
+wird die Regelabweichung $e[k]$ berechnet. Aufgrund der Messauflösung der
+Zellen haben die Werte $x[k]$, $y[k]$ und $e[k]$ alle die Einheit $25 \,\mu m$. 
+
+Der Block $C(z)$ repräsentiert den im MotionController implementierten
 zeitdiskreten Regler. Seine Ausgangsgrösse $u[k]$ hat die Einheit $\frac{\mu
-        \text{steps}}{t}$ und beschreibt die Motordrehzahl, die an den Prozess $P(s)$
-weitergegeben wird. Die Ausgangsgrösse des Prozesses $P(s)$ wird wiederum vom
-Linearsensor erfasst und durch die Grösse $y[k]$ dargestellt.
+        \text{steps}}{t}$
 
-Jeder Motor wird bei Geradeausfahrt mit einer vorgegebenen Maximaldrehzahl
-\texttt{V\_MAX\_USTEPS\_PER\_T} angesteuert. Zu dieser Geschwindigkeit wird bei
-einem Motor die Regelgrösse $u[k]$ addiert, bei dem anderen subtrahiert.
-Dadurch dreht sich das Fahrzeug bei einer Regelabweichung um den
-Achsmittelpunkt.
+und bestimmt die Motordrehzahl, die an den Prozess $P(s)$ weitergegeben wird.
+Die Ausgangsgrösse des Prozesses $P(s)$ wird dann vom Linearsensor erfasst und
+durch $y[k]$ dargestellt.
 
-In der Firmware des MotionControllers ist der ermittelte PD-Regler mittels
-\textit{Tustin - Approximation} in den Zeitdiskreten bereich übertragen worden
-und ist wie nachfolgend dargestellt als differenzengleichung implementiert:
+Bei Geradeausfahrt wird jeder Motor mit der vorkonfigurierten maximalen
+Geschwindigkeit angesteuert. Die Regelgrösse $u[k]$ wird zu einem Motor
+hinzugefügt und vom anderen subtrahiert. Dadurch führt eine Regelabweichung zu
+einer Drehung des Fahrzeugs um den Achsmittelpunkt.
+
+In der Firmware des MotionControllers wurde der berechnete PD-Regler mittels
+Tustin-Approximation in den zeitdiskreten Bereich übertragen. Die
+Implementierung als Differenzengleichung lautet:
 
 \[
     u[k] = \beta \cdot e[k] - \beta \cdot e[k - 1] + \alpha \cdot u[k - 1]
