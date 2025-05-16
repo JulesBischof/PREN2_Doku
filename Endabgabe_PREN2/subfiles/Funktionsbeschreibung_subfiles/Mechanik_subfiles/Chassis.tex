@@ -10,6 +10,73 @@
 
 \subsubsection{Chassis}
 
-Gewichtisoptimierung? Was ist neu, wo konnte gespart werden, Radadapter, ...?
+Dieser Abschnitt beschreibt die Evaluierung des Fahrwerks sowie die
+Konstruktion des Chassis. Dabei werden die Anforderungen an Gewicht, Kosten und
+Funktionalität sowie die konstruktiven Entscheidungen im Detail erläutert.
+
+\subsubsection*{Anforderungen}
+
+\textbf{Gewicht:} \newline
+Das Gewicht stellt bei allen Baugruppen einen kritischen Faktor dar. Da
+leistungsstarke Schrittmotoren und der Akku bereits einen Grossteil des
+Gewichtsbudgets beanspruchen, verbleibt für das Chassis lediglich ein Budget von
+200 Gramm. Dies erfordert eine leichte, aber dennoch stabile Konstruktion. Die
+Gewichtsoptimierung wurde bereits in der frühen Planungsphase berücksichtigt, um
+sicherzustellen, dass das Fahrzeug die Anforderungen hinsichtlich Stabilität und
+Belastbarkeit erfüllt.
+
+\textbf{Kosten:} \newline
+Um die Kosten niedrig zu halten, soll auf die frei verfügbaren Ressourcen der
+Hochschule Luzern zurückgegriffen werden. Das Team kann 25 Stunden Druckzeit am
+HSLU-T\&A-Drucker sowie 1 Stunde Maschinenlaufzeit des Lasersystems kostenfrei
+nutzen. Diese Ressourcen werden optimal ausgeschöpft, um den Einsatz von
+Einkaufsteilen zu minimieren. Ziel ist es, das verfügbare Budget vor allem für
+funktionskritische Baugruppen wie den Greifmechanismus und die Antriebssteuerung
+einzusetzen.
+
+\subsubsection*{Chassiskonstruktion}
+
+Das Chassis basiert auf einer Grundplatte aus PLA, die im 3D-Druckverfahren hergestellt wurde. 
+Im Gegensatz zur vorherigen MDF-Variante ist PLA zwar etwas schwerer, bietet jedoch den Vorteil, 
+dass komplexe Strukturen und geometrische Formen direkt im Druckprozess integriert werden können. 
+Dadurch konnten sämtliche Aussparungen und Montagelöcher bereits beim Drucken berücksichtigt werden, 
+um gezielt Gewicht einzusparen und die Stabilität dennoch zu gewährleisten. 
+Die Fertigung der Grundplatte erfolgte dabei im Heimdruck mit einem handelsüblichen 3D-Drucker. 
+Abbildung~\ref{fig:Grundplatte} zeigt das Design der Grundplatte des finalen Fahrzeugs.
+
+----Bild
+
+Abbildung~\ref{fig:Chassis_komplett} zeigt das Chassis mit allen Anbauteilen, die im 
+3D-Druckverfahren gefertigt wurden. Im Vergleich zu früheren Versionen ist das Design nun deutlich 
+kompakter ausgelegt, da bestimmte Komponenten in dieser Phase nicht benötigt werden. Anstelle einer 
+Etagenbauweise wird vermehrt mit Distanzbolzen gearbeitet, um Bauteile auf einfache Weise zu 
+befestigen und dennoch eine klare Struktur zu behalten.
+
+---Gewichtoptimierungs text
+
+
+\subsubsection*{Fahrwerk}
+
+Das Fahrwerk basiert auf einem Design mit zwei angetriebenen Rädern und einer
+Laufkugel als dritten Auflagepunkt, um Stabilität zu gewährleisten. Diese
+Lösung minimiert die Anzahl der Einkaufsteile und damit die Kosten. Zudem
+bietet sie eine hohe Wendigkeit des Fahrzeugs. Abbildung~\ref{fig:Fahrwerk}
+zeigt die Umsetzung mit den beiden Hinterrädern und der vorderen Laufkugel. Die
+Platzierung der angetriebenen Räder an der Hinterachse ermöglicht präzise
+Kurskorrekturen, da das Fahrzeug durch kleine Bewegungen der Hinterräder seine
+Ausrichtung leicht ändern kann. Dies erlaubt es dem Fahrzeug, auf Knotenpunkten
+effizient zu drehen und verschiedene Wegabzweigungen zu überprüfen.
+
+
+Die Radgrösse wurde auf 80 mm festgelegt, wodurch eine maximale Geschwindigkeit
+von 1,676~m/s erreicht wird. Die Berechnung erfolgt nach folgender Formel:
+
+\[ v_{max} = n_{Motor} \cdot d_{Rad} \cdot \pi = 1.676 \, \frac{\text{m}}{\text{s}} \]
+
+Die Räder vom Typ FIT0500 von DFRobot wurden im Rahmen einer Sammelbestellung der 
+Hochschule Luzern beschafft, um die Umweltbelastung durch Einzelversendungen 
+zu reduzieren. Die Felgen hingegen wurden im 3D-Druckverfahren gefertigt, um 
+sie direkt an der Motorenwelle befestigen zu können. Dadurch konnte auf einen 
+zusätzlichen Radadapter verzichtet werden, was den Aufbau vereinfacht.
 
 \end{document}
