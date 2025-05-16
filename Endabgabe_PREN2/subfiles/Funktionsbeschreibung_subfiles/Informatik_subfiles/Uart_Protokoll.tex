@@ -6,10 +6,137 @@
 
 \begin{document}
 
-% Template
+\subsubsection{UART-Protokoll - Kommunikation zwischen den Teilsystemen}
 
-\subsubsection{UART Protokoll - Kommunikation zwischen den Teilsystemen}
+%-------------------------------------------------------------
+\paragraph{Einleitung}
+Für den deterministischen Datenaustausch zwischen \emph{Raspberry-Hat},
+\emph{Motion-Controller} und \emph{Grip-Controller} wurde ein kompaktes,
+fest 64 Bit breites UART-Rahmenformat entwickelt. Das Protokoll erfüllt
+die Projektanforderungen nach geringem Overhead, fester Zykluszeit
+(zwei 32bit Reads pro Frame) und angemessener Fehlererkennung mittels
+CRC-8.
 
-Wie kommunikzieren die Prints miteinenader, welche Befehle gibt es \& Co.
+\bigskip
+%-------------------------------------------------------------
+\paragraph{Rahmenformat (64 Bit)}
+\[
+  \underbrace{\texttt{Addr}}_{2}
+  \;\|\;
+  \underbrace{\texttt{Cmd}}_{4}
+  \;\|\;
+  \underbrace{\texttt{Param/Res}}_{50}
+  \;\|\;
+  \underbrace{\texttt{CRC-8}}_{8}
+\]
+
+\begin{itemize}\setlength\itemsep{0.25em}
+  \item \textbf{Addr} (2 Bit) - Systemadresse
+    \texttt{00}: Hat,\; \texttt{01}: Motion,\;
+    \texttt{11}: Grip
+  \item \textbf{Cmd} (4 Bit) - Befehlscode
+  \item \textbf{Param/Res} (50 Bit) - befehlsspezifische Nutzdaten
+    oder reserviert
+  \item \textbf{CRC-8} (8 Bit) - Fehlererkennung über die oberen
+    56 Bit (Polynom \texttt{0x07})
+\end{itemize}
+
+%-------------------------------------------------------------
+\paragraph{Befehlsreferenz}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{>{\ttfamily}c >{\ttfamily}c l}
+    \toprule
+    \textnormal{Hex} & \textnormal{Bin} & \textnormal{Befehl / Parameter} \\
+    \midrule
+    0x0 & 0b0000 & Move (\texttt{uint16} Strecke [cm], 0=unendlich) \\
+    0x1 & 0b0001 & Reverse (\texttt{int16} Strecke [cm]) \\
+    0x2 & 0b0010 & Turn (\texttt{int16} Winkel [°], +links/-rechts) \\
+    0x3 & 0b0100 & Stop (keine Parameter) \\
+    0x4 & 0b0110 & Info (\texttt{uint8} Flags) \\
+    0x5 & 0b0111 & Ping (\texttt{uint8} ID) \\
+    0x6 & 0b1000 & Pong (\texttt{uint8} ID) \\
+    0x7 & 0b1001 & Error (\texttt{uint16} Code) \\
+    0x8 & 0b1010 & Poll (\texttt{uint8} Abfrage) \\
+    0x9 & 0b1011 & Response (\texttt{uint8} Typ, \texttt{uint16} Daten) \\
+    0xA & 0b1100 & Grip (keine Parameter) \\
+    0xB & 0b1101 & Release (keine Parameter) \\
+    \bottomrule
+  \end{tabular}
+  \caption{UART-Befehle und Parameter}
+  \label{tab:uart_cmds}
+\end{table}
+
+%-------------------------------------------------------------
+\paragraph{Datentypen}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{l l}
+    \toprule
+    \textbf{Typ} & \textbf{Wertebereich / Beschreibung} \\
+    \midrule
+    \texttt{int16} & -32 768 … 32 767 \\
+    \texttt{int8}  & -128 … 127 \\
+    \texttt{uint16} & 0 … 65 535 \\
+    \texttt{uint8} & 0 … 255 \\
+    \texttt{fp16} & IEEE-754 Half Precision \\
+    \texttt{fp8}  & Minifloat, 8-Bit \\
+    \bottomrule
+  \end{tabular}
+  \caption{Mögliche Nutzdatentypen}
+  \label{tab:uart_types}
+\end{table}
+
+%-------------------------------------------------------------
+\paragraph{CRC-8 (Polynom \texttt{0x07})}
+Das primitive Polynom
+\(x^{8}\!+\!x^{2}\!+\!x\!+\!1\)
+detektiert alle Einzelbitfehler, Burstfehler ≤ 8 Bit sowie mit
+maximaler Undetektion von \(2^{-8}\).
+Berechnung (Bit-weise):
+
+\begin{enumerate}\setlength\itemsep{0.25em}
+  \item \texttt{crc} ← \texttt{0x00}
+  \item Für jedes der 7 Datenbytes:
+    \texttt{crc} ← \texttt{crc} ⊕ \textit{byte};
+    für 8 Bit:
+    \texttt{crc} ← (\texttt{crc}≪1) ⊕ (\texttt{0x07}, wenn Bit7 gesetzt)
+\end{enumerate}
+
+%-------------------------------------------------------------
+\paragraph{Sendeablauf}
+\begin{enumerate}\setlength\itemsep{0.25em}
+  \item 56bit Datenteil bilden
+    \(\texttt{raw}=(Addr\ll62)\,|\, (Cmd\ll58)\,|\, (Param\ll8)\)
+  \item CRC-8 über \texttt{raw} berechnen
+  \item CRC als niederwertigste 8 Bit anhängen
+  \item 64bit Frame mit UART (8-N-1) ausgeben
+\end{enumerate}
+
+%-------------------------------------------------------------
+\paragraph{Empfangsablauf}
+\begin{enumerate}\setlength\itemsep{0.25em}
+  \item 64 Bit lesen → \texttt{raw}‖\texttt{crc\_rx}
+  \item CRC-8 über \texttt{raw} berechnen (\texttt{crc\_calc})
+  \item \texttt{crc\_calc} ≠ \texttt{crc\_rx} → Frame verwerfen, optional
+    Fehlerbefehl (\texttt{Cmd 0x7}) senden
+\end{enumerate}
+
+%-------------------------------------------------------------
+\paragraph{Beispiel-C-Struktur}
+\begin{verbatim}
+typedef struct __attribute__((packed)) {
+    uint64_t raw; /* 64-Bit Frame */
+} uart_frame_t;
+
+static inline uint8_t crc8(uint64_t raw);
+\end{verbatim}
+
+%-------------------------------------------------------------
+\paragraph{Abschlussbemerkung}
+Durch den festen 64bit Aufbau entfällt eine separate
+Rahmensynchronisation; Latenz und Implementierungsaufwand bleiben
+minimal, während die CRC-8-Absicherung eine hohe
+Übertragungssicherheit auf physikalisch einfachen UART-Links bietet.
 
 \end{document}
