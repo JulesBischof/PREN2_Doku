@@ -53,8 +53,9 @@ Hindernis in $\approx 100mm$ Entfernung gemessen.
 Die Auswertung zeigt, dass die Verteilung der Messwerte grundsätzlich einer
 Normalverteilung folgt. Die vom Hersteller angegebene Abweichung von +-3 mm
 beschreibt jedoch keine Standardabweichung aus einer Gaussverteilung, sondern
-vielmehr sprunghafte Veränderungen, die sich im Histogramm in der zweiten,
-kleineren Gaussglocke bei einer Distanz von $\approx 105mm$ zeigen.
+vielmehr sprunghafte Veränderungen, die sich im Histogramm aus
+Abbildung~\ref{fig:HistogrammHcSr04} in der zweiten, kleineren Gaussglocke bei
+einer Distanz von $\approx 105mm$ zeigen.
 
 Etwa $20 \%$ aller Messungen liegen in dieser zweiten Glocke, was als eher
 kritisch anzusehen ist. Um das Fahrzeug abzubremsen, wird die Annäherung eines
@@ -64,7 +65,7 @@ Messzyklus um $30 mm$. Tritt nun einer der $20\%$-Ausreisser genau in dem
 Moment auf, in dem das Fahrzeug eigentlich bremsen sollte, oder wird ein Wert
 auch nur $1mm$ weiter weg gemessen, als das Fahrezg beginnen würde zu bremsen,
 so wird das \textit{Bremsmoment} erst einen Messzyklus später erkannt, was zu
-einem Verfehlen des Hindernisses um $\approx. 30 mm$ führt. Da diese Messfehler
+einem Verfehlen des Hindernisses um $\approx 30 mm$ führt. Da diese Messfehler
 mit einer Wahrscheinlichkeit von $1:5$ auftreten, besteht hier dringender
 Handlungsbedarf.
 
@@ -187,18 +188,24 @@ Die \textit{Vorhersage} wird nun wie folgt beschrieben:
 \]
 Wohingegen die Korrekturphase unverändert bleibt.
 
+Wohingegen die Korrekturphase unverändert bleibt.
+
 Durch diese Massnahme kann die Filterausgabe nochmals verbessert werden, da die
 Positionsschätzung nun entsprechend der Messabweichung korrigiert wird. Damit
 diese Korrektur funktioniert, ist eine Messabweichung erforderlich. Dadurch
-pendelt die Schätzung $y_{pred}[k]$ immer um den aktuellen Messwert $x[k]$. Um
-die Geschwindigkeitskorrektur auch bei nachfolgenden Schätzungen in den Griff
-zu bekommen und die Schätzung korrekt an den nächsten Messwert anzunähern, wird
-zusätzlich ein minimaler Integrator hinzugefügt, der die letzten
-Messabweichungen aufintegriert und bei der nächsten Schätzung berücksichtigt.
-Dadurch wird das System träger, was aber für ein Tiefpassverhalten erwünscht
-ist. Dieser Integrator soll während der Messung ebenfalls Korrekturen erfahren
-können. Deshalb wird noch der Korrekturfaktor $c_i$ eingeführt, der wie $c_v$
-nur mit dem Parameter $\gamma$ bestimmt wird:
+pendelt die Schätzung $y_{\text{pred}}[k]$ immer um den aktuellen Messwert
+$x[k]$.
+
+Um die Geschwindigkeitskorrektur auch bei nachfolgenden Schätzungen in den
+Griff zu bekommen und die Schätzung korrekt an den nächsten Messwert
+anzunähern, wird zusätzlich ein minimaler Integrator hinzugefügt, der die
+letzten Messabweichungen aufintegriert und bei der nächsten Schätzung
+berücksichtigt. Dadurch wird das System zwar träger, was aber für ein
+Tiefpassverhalten nicht von Nachteil ist. Dieser Integrator soll während der
+Messung ebenfalls Korrekturen erfahren können.
+
+Deshalb wird noch der Korrekturfaktor $c_i$ eingeführt, der wie $c_v$ nur mit
+dem Parameter $\gamma$ bestimmt wird.
 
 \[
     c_i[k] = \frac{\Delta x[k]}{\Delta x[k] + \gamma}
@@ -208,6 +215,10 @@ Final wird die Vorhersage nun also wie folgt beschrieben:
 \[
     y_{pred}[k] = y[k - 1] + (c_v[k] \cdot v[k]) \cdot dt + (c_i[k] \cdot k_i) \cdot \int \Delta x[k]\,dk
 \]
+
+Um den Integrator zu \textit{entladen} wird dieser am Ende einer jeden
+\textit{Annäherungsfahrt} des Hindernishandlings auf 0 gesetzt. Anders würde
+dies nachfolgende Messungen beeinflussen.
 
 \begin{figure}[H]
     \centering

@@ -33,10 +33,16 @@ Spannung über der Messzelle deutlich sichtbar.
 Der Sensor wird analog über einen A/D-Wandler ausgelesen. Die acht Messwerte
 werden in einem Array gespeichert.
 
-Anschliessend werden alle Messwerte auf einen Bereich zwischen $0 \ddots 1000$
+Anschliessend werden alle Messwerte auf einen Bereich zwischen $0 \dots 1000$
 normiert. Dazu sind Kalibrationswerte für die Maximal- und Minimalspannungen
 ($Calib_{\max}$ und $Calib_{\min}$) erforderlich, welche für jede Zelle
-individuell durch Messungen auf dem Wettkampfboden ermittelt wurden.
+individuell durch Messungen auf dem Wettkampfboden ermittelt sind.
+
+Die Firmware des MotionControllers implementiert ausserdem eine
+Kalibrierungsroutine, bei welcher passende Werte möglichst aktuell ermittelt
+werden können. Dazu wird jede Sensorzelle auf den verschiedenen Untergründen
+Fliese und Klebeband automatisch 50 mal hintereinander ausgelesen und im
+Anschluss der entsprechende Median als Kalibrierungswert gespeichert.
 
 \[
     Val_{norm} = (Val_{raw} - Calib_{\min}) \cdot \frac{1000}{Calib_{\max} - Calib_{\min}}
@@ -137,6 +143,13 @@ Fährt das Fahrzeug mit 0,5\,m/s, so überquert es die Fugenbreite von 50\,mm in
 noch immer als Linie interpretiert wird, ist derart gering, dass dieses
 Restrisiko in Kauf genommen wird.
 
+Die Problematik, dass eine Fuge fälschlicherweise als Linie erkannt wird, zeigt
+sich nur in Situationen in denen über eine Quer verlaufende Fuge gefahren wird
+und damit ein Knotenpunkt erkannt werden könnte. Verläuft eine Fuge nahe und
+paralell zu einer Linie, bezweckt das gewichtete Aufsummieren, dass die
+Linienposition sich sehr stark nach der \textit{hellsten} Sensorzelle richtet.
+Das ist, auch wenn eine Fuge paralell verläuft, immer das Klebeband.
+
 % ---------- REGLER -------------------
 
 \subsection*{Regler Aufbau}
@@ -149,9 +162,10 @@ Restrisiko in Kauf genommen wird.
 
 Die Abbildung~\ref{fig:Linienfolger_RegelProzess} zeigt schematisch, wie der
 Regelprozess funktioniert. Eingangsgrösse ist die Bezugsgrösse $x$, die im
-vorhergehenden Abschnitt auf konstante $3500$ festgelegt ist. Diese Grösse gibt
-die auf den Messzellenabstand aufgelöste Linienposition auf einer Skala von $0
-    \dots 7000$ an und hat die Einheit $25\mu m$.
+vorhergehenden Abschnitt auf die konstante Linien-Mittenposition $3500$
+festgelegt ist. Diese Grösse gibt die auf den Messzellenabstand aufgelöste
+Linienposition auf einer Skala von $0 \dots 7000$ an und hat die Einheit $25\mu
+    m$.
 
 Der zeitdiskrete Regler $C(z)$ implementiert einen zeitdiskreten PD-Regler,
 dessen Parametrierung im folgenden Abschnitt \textit{Reglerparametrierung}
@@ -213,7 +227,8 @@ Linie das zugehörige PT2-Modell.
 
 Die Sprungantwort zeigt, dass das System sehr direkt reagiert und praktisch
 keine erkennbare Totzeit aufweist. Um die Modellierung zu vereinfachen, wird
-davon ausgegagen, dass sich das System wie ein PT2-System ohne Totzeit verhält.
+davon ausgegagen, dass sich das System tatsächlich wie ein PT2-System ohne
+Totzeit verhält.
 
 Das gezeigte Modell besitzt die folgenden Parameter:
 
@@ -234,7 +249,7 @@ $P(s)$ algebraisch ermitteln.
 Mit $G_{PT2}$, der Closed-Loop Systemantwort, dargestellt durch das PT2-Modell.
 Die Übertragungsfunktion des Prozesses $P(s)$ ergibt sich somit zu
 \[
-    P(s) \approx \frac{1.8}{s^2 + 0.9s}
+    P(s) \approx \frac{1.8}{s \cdot (s + 0.9)}
 \]
 
 \subsubsection*{Auswertung des Prozesses und Anforderung an den Regler}
@@ -287,7 +302,6 @@ Der PD-Regler hat die Zeitkontinuierliche Form:
 \[
     C(s) = k_p \cdot (1 + \frac{T_d \cdot s}{1 + \frac{T_d}{\alpha} \cdot s})
 \]
-Er stellt also ein Lead-Glied dar.
 
 Der Parameter $kp = 8$ wurde so gewählt, dass sich eine Phasenreserve von
 $\approx 13^\circ$ ergibt. Um der sich daraus ergebenden Schwingung
