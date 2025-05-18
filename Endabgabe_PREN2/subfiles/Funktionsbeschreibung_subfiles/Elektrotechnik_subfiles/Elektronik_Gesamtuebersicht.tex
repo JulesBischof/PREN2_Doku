@@ -24,6 +24,9 @@ lassen sich die Steueraufgaben nun trennen in \textit{Hardwareansteuerung} und
     \caption{Vereinfachte Gesamtübersicht Elektronikkonzept}~\label{fig:Gesamtuebersicht_vereinfacht}
 \end{figure}
 
+In Anhang~\ref{apdx:Blockschaltbild_Elektrokonzept} ist dieses Blockschaltbild
+nochmals mit einem höheren Detaillierungsgrad aufgeführt.
+
 \subsubsection*{Die verschiedenen Funktionsgruppen und ihre PCBs}
 Es werden total die 3 folgenden Funktionsgruppen unterschieden:
 
@@ -46,7 +49,14 @@ Es werden total die 3 folgenden Funktionsgruppen unterschieden:
 \end{description}
 
 \subsubsection{Prain\_UART - Protokoll}
-- Verweise auf Anhang , kurzer knapper Beschrieb hier
+
+Zur Kommunikation zwischen den einzelnen Steuerungen ist ein eigenes
+Kommunikationsprotokoll entwickelt und implementiert. Als Übertragungskanal
+dient der UART-Kanal des Raspberry Pi \& Raspberry Pico. Wie dieses Protokoll
+genau funktioniert, ist im Abschnitt~\ref{sec:prain_uart} detailliert
+ausgeführt. Es war geplant die Kommunikation über einen RS422 Bus zu
+übertragen, eine einfache Single-Ended Übertragung hat sich bei Versuchen
+allerdings als vollkommen ausreichend gezeigt.  
 
 \subsubsection*{Bordnetz}
 
