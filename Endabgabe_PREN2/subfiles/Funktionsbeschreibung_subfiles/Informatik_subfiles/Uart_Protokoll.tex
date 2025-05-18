@@ -6,10 +6,177 @@
 
 \begin{document}
 
-% Template
+%-------------------------------------------------------------
+\subsubsection{UART-Protokoll - Kommunikation zwischen den Teilsystemen}
+%-------------------------------------------------------------
 
-\subsubsection{UART Protokoll - Kommunikation zwischen den Teilsystemen}
+\subsubsection*{Einleitung}
+Dieses Kapitel beschreibt ein festes 64-Bit-UART-Protokoll, das für
+das autonome Fahrzeug von Team 10 (PREN2) entwickelt wurde. Die
+wichtigsten Anforderungen sind
+\begin{itemize}
+  \item geringer Overhead,
+  \item hohe Robustheit durch CRC-Fehlererkennung,
+  \item konstante Rahmenlänge (zwei 32-Bit-Lesezyklen pro Frame),
+  \item Übertragung von bis zu 50 Bit Nutz- bzw.\ Reservedaten.
+\end{itemize}
 
-Wie kommunikzieren die Prints miteinenader, welche Befehle gibt es \& Co.
+\bigskip
+Jeder 64-Bit-Frame ist folgendermassen aufgebaut:
+\[
+  \underbrace{\text{Addr}}_{2\;\text{Bit}}
+  \;\|\;
+  \underbrace{\text{Cmd}}_{4\;\text{Bit}}
+  \;\|\;
+  \underbrace{\text{Param/Res}}_{50\;\text{Bit}}
+  \;\|\;
+  \underbrace{\text{CRC-8}}_{8\;\text{Bit}}
+\]
+
+%-------------------------------------------------------------
+\subsubsection*{Rahmendefinition}
+Ein UART-Frame umfasst exakt 64 Bit. Die Felder lauten:
+
+\begin{itemize}
+  \item \textbf{Adresse (2 Bit)}:
+    \[
+      \text{Addr} \in \{0b00,\,0b01,\,0b11\}
+    \]
+    Beispielzuordnung:
+    \begin{align*}
+      0b00 &\;\rightarrow\; \text{Raspberry Hat},\\
+      0b01 &\;\rightarrow\; \text{Motion-Controller},\\
+      0b11 &\;\rightarrow\; \text{Grip-Controller}.
+    \end{align*}
+
+  \item \textbf{Befehl (4 Bit)}:
+    \[
+      \text{Cmd} \in \{0x0,\dots,0xF\}
+    \]
+    Die aktuell verwendeten Codes sind in Tab.~\ref{tab:cmds} aufgeführt.
+
+  \item \textbf{Parameter/Reserve (50 Bit)}:
+    \[
+      \underbrace{p_{49}\,p_{48}\,\dots\,p_{1}\,p_{0}}_{50\;\text{Bit}}
+    \]
+    Dieses Feld kodiert je nach Befehl unterschiedliche Datentypen
+    (vgl.\ Tab.~\ref{tab:types}); ungenutzte Bits werden reserviert
+    oder mit 0 gefüllt.
+
+  \item \textbf{CRC-8 (8 Bit)}:
+    \[
+      \underbrace{c_{7}\,c_{6}\,\dots\,c_{1}\,c_{0}}_{8\;\text{Bit}}
+    \]
+    Standard-CRC-8 über die oberen 56 Bit.
+\end{itemize}
+
+%-------------------------------------------------------------
+\newpage
+\subsubsection*{Befehlsreferenz}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{>{\ttfamily}c >{\ttfamily}c l}
+    \toprule
+    \textnormal{Hex} & \textnormal{Binär} & \textnormal{Befehl / Parameter} \\
+    \midrule
+    0x0 & 0b0000 & Move (\texttt{uint16}: Strecke [cm], 0 = unendlich) \\
+    0x1 & 0b0001 & Reverse (\texttt{int16}: Strecke [cm], 0 = unendlich) \\
+    0x2 & 0b0010 & Turn (\texttt{int16}: Winkel [°], +links / -rechts) \\
+    0x3 & 0b0100 & Stop (keine Parameter) \\
+    0x4 & 0b0110 & Info (\texttt{uint8} Flags) \\
+    0x5 & 0b0111 & Ping (\texttt{uint8} ID) \\
+    0x6 & 0b1000 & Pong (\texttt{uint8} ID) \\
+    0x7 & 0b1001 & Error (\texttt{uint16} Code) \\
+    0x8 & 0b1010 & Poll (\texttt{uint8} Abfrage) \\
+    0x9 & 0b1011 & Response (\texttt{uint8} Typ, \texttt{uint16} Daten) \\
+    0xA & 0b1100 & Grip (keine Parameter) \\
+    0xB & 0b1101 & Release (keine Parameter) \\
+    \bottomrule
+  \end{tabular}
+  \caption{Befehlscodes in Hex und Binär}
+  \label{tab:cmds}
+\end{table}
+
+%-------------------------------------------------------------
+\subsection*{Datentypreferenz}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{l l}
+    \toprule
+    \textbf{Typ} & \textbf{Wertebereich / Beschreibung} \\
+    \midrule
+    \texttt{int16} & -32 768 … 32 767 \\
+    \texttt{int8}  & -128 … 127 \\
+    \texttt{uint16} & 0 … 65 535 \\
+    \texttt{uint8}  & 0 … 255 \\
+    \texttt{fp16}   & IEEE-754 Half Precision \\
+    \texttt{fp8}    & 8-Bit-Minifloat \\
+    \bottomrule
+  \end{tabular}
+  \caption{Mögliche Datentypen für das Parameterfeld}
+  \label{tab:types}
+\end{table}
+
+%-------------------------------------------------------------
+\newpage
+\subsubsection*{CRC-8-Berechnung}
+
+\subsubsection*{Polynom}
+Verwendet wird das primitive Polynom
+\[
+  x^{8} + x^{2} + x + 1 \;(\texttt{0x07}).
+\]
+
+\subsection*{Motivation}
+Das Polynom ist primitiv über \(\mathrm{GF}(2)\) und bietet dadurch:
+\begin{itemize}
+  \item \textbf{Erkennung beliebiger Einzelbitfehler}.
+  \item \textbf{Hohe Erkennungsrate für Doppelbitfehler}.
+  \item \textbf{Sichere Erkennung aller Burstfehler bis 8 Bit Länge}.
+\end{itemize}
+Bei einem nur 64 Bit langen Frame liegt die theoretische
+Restfehlerwahrscheinlichkeit bei maximal \(1/2^{8}=0{,}39\,\%\).
+
+\subsection*{Bitweise Berechnung}
+\begin{enumerate}
+  \item \(\text{crc} \gets 0x00\)
+  \item 7 Bytes (56 Bit) des Frames sequentiell verarbeiten.
+  \item Für jedes Byte \texttt{b}:
+    \[
+      \text{crc} \gets \text{crc} \oplus b
+    \]
+    Danach für 8 Bit:
+    \[
+      \text{crc} \gets
+      \begin{cases}
+        (\text{crc}\ll1) \oplus 0x07, & \text{falls Bit7 gesetzt} \\
+        (\text{crc}\ll1),            & \text{sonst}
+      \end{cases}
+    \]
+  \item Ergebnis (\texttt{crc}) als letzte 8 Bit anfügen.
+\end{enumerate}
+
+%-------------------------------------------------------------
+\subsection*{Sende- und Empfangsablauf}
+
+\subsection*{Sendesequenz}
+\begin{enumerate}
+  \item 56-Bit-Nutzteil bilden:
+    \(\text{raw} = (Addr\ll62) | (Cmd\ll58) | (Param\ll8)\)
+  \item CRC-8 über \text{raw} berechnen.
+  \item CRC als niederwertigste 8 Bit anhängen.
+  \item 64-Bit-Frame via UART senden.
+\end{enumerate}
+
+\subsection*{Empfangssequenz}
+\begin{enumerate}
+  \item 64 Bit einlesen.
+  \item Obere 56 Bit (\texttt{Addr + Cmd + Param}) und CRC trennen.
+  \item CRC-8 neu berechnen.
+  \item Vergleich:
+    \(\text{crc}_{\text{calc}} \stackrel{?}{=} \text{crc}_{\text{rx}}\)
+    Ungleich → Frame verwerfen.
+  \item Gleich → Frame akzeptieren und gemäss Protokoll auswerten.
+\end{enumerate}
 
 \end{document}
