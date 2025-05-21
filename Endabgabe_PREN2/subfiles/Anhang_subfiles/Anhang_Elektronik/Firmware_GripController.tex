@@ -49,11 +49,12 @@ Die aktuelle Position des Greifers sowie der Status, ob ein Hindernis gegriffen 
 über Status-Flags wie OBSTACLE\_GRIPPED oder SERVO\_OPEN verwaltet. Das gesamte Hindernishandling wird durch
 eine State Machine gesteuert, welche die beiden Servos nacheinander entsprechend dem Ablauf ansteuert.
 
-\subsection{Notstopp Prinzip des Greifers}
-Wird der Notstopp betätigt, so wird die PWM-Ansteuerung beider Servomotoren deaktiviert. Ein gegebenenfalls laufenden Greifvorgang
-wird dadurch unmittelbar unterbrochen. Dadurch wird ein unbeabsichtigtes Einklemmen durch den Greifer verhindert.
-Nach der Deaktivierung des Notstopps erfolgt eine Rücksetzung des Greifers. Das PWM wird eingeschalten und der Greifer begiebt sich
-unabhängig von seiner vorherigen Position zurück in die Startpositon. Dabei ist der Greifer geöffnet und in der oberen Endlage.
+\subsection{Not-Aus-Verhalten}
+Die Firmware überwacht kontinuierlich den Status des Not-Aus-Schalters. Im Falle einer Betätigung
+wird die PWM-Ansteuerung beider Servomotoren deaktiviert. Ein gegebenenfalls laufender Greifvorgang wird dadurch unterbrochen.
+Auf diese Weise kann ein unbeabsichtigtes Einklemmen durch den Greifer unterbrochen werden. Nach Freigabe des Notstopps kehrt das System automatisch
+in die definierte Startposition zurück, wobei sich der Greifer geöffnet und in der oberen Endlage befindet. Die Position des Greifers, die
+vor der Betätigung des Notstopps eingenommen wurde, ist in diesem Zusammenhang nicht mehr relevant.
 
 \subsection{ServoDriveStm}
 Die in Abbildung~\ref{fig:ServoDriveStm} dargestellte State Machine übernimmt die Steuerung des Ergreifens und Absetzens eines Hindernisses auf der Strecke.

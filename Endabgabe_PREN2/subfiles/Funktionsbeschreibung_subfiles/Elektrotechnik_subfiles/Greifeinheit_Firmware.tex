@@ -10,34 +10,47 @@
 
 \subsubsection{Grip Controller Firmware}
 
-Die Firmware des Grip Controllers basiert wie die des Motion Controllers auf dem Echtzeitbetriebssystem FreeRTOS.\\
-Das ursprüngliche Konzept sah vor, den Grip Controller getrennt vom Motion Controller auf einem
+Die Firmware des GripControllers basiert wie die des MotionControllers auf dem Echtzeitbetriebssystem FreeRTOS.\\
+Das ursprüngliche Konzept sah vor, den GripController getrennt vom MotionController auf einem
 eigenen Print zu betreiben. Diese modulare Trennung sollte eine klare funktionale Trennung
 sowie eine parallele Entwicklung und Verifikation beider Teilsysteme ermöglichen. Bereits in der Planungsphase
-wurden dennoch Anschlüsse auf dem Motion Controller Print vorgesehen, um allenfalls die Funktion des
-Grip Controllers zu übernehmen. Um Gewicht einzusparen und um die Systemarchitektur zu vereinfachen,
-wurde entschieden, die Firmware des Grip Controllers in die Motion Controller Firmware
+wurden dennoch Anschlüsse auf dem MotionController Print vorgesehen, um allenfalls die Funktion des
+GripControllers zu übernehmen. Um Gewicht einzusparen und um die Systemarchitektur zu vereinfachen,
+wurde entschieden, die Firmware des GripControllers als externe Datein in die MotionController Firmware
 zu integrieren. Durch den Wegfall der UART-Kommunikationsschnittstelle zwischen den Controllern
-konnte die Komplexität der Signalübertragung deutlich reduziert werden und die Grip Controller Firmware fällt dadurch
+konnte die Komplexität der Signalübertragung deutlich reduziert werden und die GripController Firmware fällt dadurch
 deutlich kleiner aus.\\
 
-Die Tasks für die serielle Kommunikation und für den Testbetrieb in der Grip Controller Firmware sind im Endprodukt aufgrund
-der zusammenschliessung von Motion Controller und Grip Controller nicht mehr notwendig. Sie bleiben aber 
-in der Firmware-Struktur erhalten. Dies hat den Grund, dass allfällige Überarbeitungen der Grip Controller
-Firmware unabhängig von dem Motion Controller implementiert und getestet werden können.\\
+Die Tasks für die serielle Kommunikation und für den Testbetrieb in der Firmware sind im Endprodukt aufgrund
+der Zusammenschliessung nicht mehr notwendig. Sie bleiben aber 
+in der Firmware-Struktur erhalten. Dies hat den Grund, dass allfällige Überarbeitungen der GripController
+Firmware unabhängig implementiert und getestet werden können.\\
 
 \subsubsection*{Tasks}
 Im folgendem Abschnitt wird nur auf den Task der Firmware eingegangen, welcher im Endprodukt enthalten ist.
 Die vollständige Firmware mit allen Tasks ist im Anhang~\ref{apdx:FirmwareGripController} genauer beschrieben.
 
 \begin{description}
-
-    \item[ServoDriveTask] Dieser Task übernimmt das komplette Hindernishandling. Er wartet auf die Befehle "CraneGrip"
-    und "CraneRelease" vom Motion Controller und sendet seinerseits ein "GcAck" zurück, falls das Hindernis gegriffen oder
-    abgestellt wurde.
+    \item[ServoDriveTask] Dieser Task ist für die Steuerung des Greifmechanismus verantwortlich. Er wartet auf
+    die Kommandos vom MotionController und sendet seinerseits ein Kommanda wenn ein Hindernis gegriffen oder abgesetzt
+    wurde.
 \end{description}
 
-Die Kommunikation zwischen dem Motion Controller und dem Grip Controller erfolgt über Queues von FreeRTOS. Im Anhang~\ref{XYZ} wird genauer auf den
-Informationsaustausch der beiden Firmwares eingegangen.
+
+\subsubsection{Steuerung des Greifers}
+Die Steuerung des Greifvorgangs erfolgt über eine interne State Machine, welche die verschiedenen Phasen des
+Ablaufs in klar definierte Zustände unterteilt. Die Zustandsübergänge werden durch eingehende Befehle gesteuert.
+Durch interne Statusflags ist dem Greifer immer bekannt in welcher Endlage er sich befindet und ob er ein Hindernis
+gegriffen hat oder nicht. Dadurch ist eine sequentielle Abarbeitung der Bewegungssequenzen gewährleistet. Eine
+ausführliche Beschreibung der Zustandsmaschine befindet sich im Anhang~\ref{apdx:FirmwareGripController}
+
+
+
+\subsubsection{Kommunikation mit MotionController}
+Die Kommunikation zwischen MotionController und GripController erfolgt über FreeRTOS-Queues. Der ServoDriveTask empfängt
+dabei die Kommandos „CraneGrip“ und „CraneRelease“ über die interne Schnittstelle und sendet nach erfolgreichem Ablauf ein
+„GcAck“ als Rückmeldung an die MotionController-Firmware. Eine gesonderte UART-Verbindung ist durch die Integration der
+beiden Firmwares nicht mehr erforderlich. Im Anhang~\ref{XYZ} wird genauer auf den Informationsaustausch der beiden Firmwares
+eingegangen.
 
 \end{document}
