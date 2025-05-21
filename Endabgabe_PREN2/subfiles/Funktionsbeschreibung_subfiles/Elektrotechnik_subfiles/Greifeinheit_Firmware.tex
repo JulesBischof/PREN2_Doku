@@ -10,7 +10,34 @@
 
 \subsubsection{Grip Controller Firmware}
 
-Wie ist Firmware aufgebaut, welche Threads und wie kommunizieren miteinander?
-wie wird auf events reagiert? Verweise auf Anhang.
+Die Firmware des Grip Controllers basiert wie die des Motion Controllers auf dem Echtzeitbetriebssystem FreeRTOS.\\
+Das ursprüngliche Konzept sah vor, den Grip Controller getrennt vom Motion Controller auf einem
+eigenen Print zu betreiben. Diese modulare Trennung sollte eine klare funktionale Trennung
+sowie eine parallele Entwicklung und Verifikation beider Teilsysteme ermöglichen. Bereits in der Planungsphase
+wurden dennoch Anschlüsse auf dem Motion Controller Print vorgesehen, um allenfalls die Funktion des
+Grip Controllers zu übernehmen. Um Gewicht einzusparen und um die Systemarchitektur zu vereinfachen,
+wurde entschieden, die Firmware des Grip Controllers in die Motion Controller Firmware
+zu integrieren. Durch den Wegfall der UART-Kommunikationsschnittstelle zwischen den Controllern
+konnte die Komplexität der Signalübertragung deutlich reduziert werden und die Grip Controller Firmware fällt dadurch
+deutlich kleiner aus.\\
+
+Die Tasks für die serielle Kommunikation und für den Testbetrieb in der Grip Controller Firmware sind im Endprodukt aufgrund
+der zusammenschliessung von Motion Controller und Grip Controller nicht mehr notwendig. Sie bleiben aber 
+in der Firmware-Struktur erhalten. Dies hat den Grund, dass allfällige Überarbeitungen der Grip Controller
+Firmware unabhängig von dem Motion Controller implementiert und getestet werden können.\\
+
+\subsubsection*{Tasks}
+Im folgendem Abschnitt wird nur auf den Task der Firmware eingegangen, welcher im Endprodukt enthalten ist.
+Die vollständige Firmware mit allen Tasks ist im Anhang~\ref{apdx:FirmwareGripController} genauer beschrieben.
+
+\begin{description}
+
+    \item[ServoDriveTask] Dieser Task übernimmt das komplette Hindernishandling. Er wartet auf die Befehle "CraneGrip"
+    und "CraneRelease" vom Motion Controller und sendet seinerseits ein "GcAck" zurück, falls das Hindernis gegriffen oder
+    abgestellt wurde.
+\end{description}
+
+Die Kommunikation zwischen dem Motion Controller und dem Grip Controller erfolgt über Queues von FreeRTOS. Im Anhang~\ref{XYZ} wird genauer auf den
+Informationsaustausch der beiden Firmwares eingegangen.
 
 \end{document}

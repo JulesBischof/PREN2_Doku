@@ -10,6 +10,68 @@
 
 \subsection{Budgetplanung}
 
-Text here
+Dieses Kapitel befasst sich mit den finanziellen Ausgaben für das gesamte Projekt, das sich aus den Modulen PREN 1 und PREN 2 zusammensetzt.
+Entsprechend der Aufgabenstellung ist das verfügbare Budget 
+für das Gesamtprojekt auf 500 CHF begrenzt. Für PREN 1 konnten damals maximal 200 CHF
+beansprucht werden, die restlichen 300 CHF wurden für PREN 2 reserviert. Bei den Ausgaben für PREN 2 wurde bewusst an dem in PREN 1 entwickelten Budgeplan festgehalten.
+Die Ausgaben von PREN 1 sowie die Budgetplanung von PREN 2 ist in der Dokumentation von PREN 1 einsehbar.
+Die Komponenten, welche aus dem privaten Umfeld stammen, 
+können gemäss der Vorgabe zum halben Preis abgerechnet werden.\\
+Der folgende Abschnitt zeigt die gesamten Ausgaben, welche in PREN 1 sowie in PREN 2 getätigt wurden.
+
+\subsubsection{Gesamtausgaben PREN 1 und PREN 2}
+Im Rahmen des Moduls PREN 1 und PREN 2 wurden die in
+Tabelle~\ref{tab:Ausgaben_PREN} aufgeführten Ausgaben getätigt. Die Komponenten, welche mit 
+Eigenbesitz markiert sind, stammen direkt aus dem privaten Umfeld der Entwickler.
+Bei diesen Komponenten ist bereits der halbe Marktpreis in der Tabelle eingetragen.
+
+\begin{table}[h]
+    \centering
+    \makebox[\textwidth][c]{ % Erzwingt horizontale Zentrierung
+        \scriptsize % Schriftgrösse verkleinern
+        \begin{tabular}{|p{3cm}|p{2.5cm}|p{2.5cm}|p{3cm}|p{1cm}|p{1.5cm}|p{1cm}|}
+            \hline
+            \textbf{Komponente}                     & \textbf{Lieferant} & \textbf{Hersteller}          & \textbf{Hersteller Nr.} & \textbf{Anzahl} & \textbf{Kosten [CHF/stk]} & \textbf{Kosten total [CHF]} \\ \hline
+            \rowcolor{lightgray} Antrieb            &                    &                              &                         &                 &                           &                             \\ \hline
+            Schrittmotoren                          & Digikey            & DFRobot                      & FIT0278                 & 2               & 12.65                     & 25.3                        \\ \hline
+            Schrittmotorentreiber                   & Eigenbesitz        & ADI-Trinamic                 & TMC5240 Eval Board      & 2               & 31.5                      & 63                          \\ \hline
+            Laufkugel                               &                    &                              &                         & 2               &                           &                             \\ \hline
+            Antriebsräder                           & Mouser             & DFRobot                      & FIT0500                 & 2               & 1.37                      & 2.74                        \\ \hline
+            \rowcolor{lightgray} PCB                &                    &                              &                         &                 &                           &                             \\ \hline
+            Motion Controller                       & PCB-Way            & PCBWay                       & -                       & 5               & -                         & 25.97                       \\ \hline
+            RaspberryHat                            & PCB-Way            & PCBWay                       & -                       & 5               & -                         & 5                           \\ \hline
+            Grip Controller                         & PCB-Way            & PCBWay                       & -                       & 5               & -                         & 5                           \\ \hline
+            Powerboard                              & PCB-Way            & PCBWay                       & -                       & 5               & -                         & 5                           \\ \hline
+            Liniensensor                            & PCB-Way            & PCBWay                       & -                       & 5               & -                         & 21.03                       \\ \hline
+            \rowcolor{lightgray} Greifeinheit       &                    &                              &                         &                 &                           &                             \\ \hline
+            Servomotoren                            & Mouser             & DFRobot                      & SER0063                 & 2               & 13.67                     & 27.34                       \\ \hline
+            Ultraschallsensor                       & Eigenbesitz        & OSEPP Electronics            & HC-SR04                 & 1               & 2.89                      & 2.89                        \\ \hline
+            \rowcolor{lightgray} Chassis            &                    &                              &                         &                 &                           &                             \\ \hline
+            LIDAR Distanzsensor                     & Mouser             & Benewake                     & TF Luna I2C             & 1               & 22.6                      & 22.6                        \\ \hline
+            Antriebsräder                           & Mouser             & DFRobot                      & FIT0500                 & 2               & 1.37                      & 2.74                        \\ \hline
+            \rowcolor{lightgray} Controller         &                    &                              &                         &                 &                           &                             \\ \hline
+            Raspberry Pi 4 ??????????               & Eigenbesitz        &                              & ?                       & 1               & 17.5?                     & 17.5?                       \\ \hline
+            Raspberry Pi Kamera 12MP ???????        & ?                  &                              & ?                       & 1               & 25.35                     & 25.35                       \\ \hline
+            Raspberry Pico                          & Eigenbesitz        &                              & SC0915?????             & 2????????       & 3.63                      & 3.63                        \\ \hline
+            \rowcolor{lightgray} Energieversorgung  &                    &                              &                         &                 &                           &                                 \\ \hline
+            Akkupack                                &                    & Swaytronic                   & 7640182625221 ?????     & 1               & 20                        & 20                        \\ \hline
+            Ladegerät                               &                    & Voltcraft                    & 1597950-UP              & 1               & 39.95                     & 39.95                           \\ \hline
+            \rowcolor{lightgray} Liniensensor       &                    &                              &                         &                 &                           &                             \\ \hline
+            Trimmerpotentiometer 200Ohm SMD         & Mouser             & Vishay                       & TS3YJ201MR15            & 10              & 1.85                      & 18.5                        \\ \hline
+            UV-Emitter 395nm                        & Digikey            & Bivar Inc.                   & UV3TZ-395-15            & 10              & 1.573                     & 15.73                       \\ \hline
+            UV-Fototransistor 630nm                 & Digikey            & Everlight Electronics Co Ltd & ALS-PT204-6C/L177       & 10              & 0.496                     & 4.96                        \\ \hline
+            %IR-Emitter 940nm                        & Digikey            & würth Elektronik             & 15400394F3590           & 2               & 0.351                     & 0.702                       \\ \hline
+            %IR-Fototransistor 940nm                 & Digikey            & würth Elektronik             & 1540031NC6090           & 2               & 0.329                     & 0.658                       \\ \hline
+            \rowcolor{lightgray} 3D Druck           &                    &                              &                         &                 &                           &                            \\ \hline
+            3D-Druck PLA                            & Pauschale          & -                            & -                       & 0.2 Kg          & 23 CHF/Kg                 & 4.6                         \\ \hline
+            3D-Druck PETG                           & Pauschale          & -                            & -                       & 0.2 Kg          & 23 CHF/Kg                 & 4.6                         \\ \hline
+            \rowcolor{lightgray} Kleinmaterial      & Pauschale          & -                            & -                       & -               & -                         & 100                          \\ \hline
+
+            \textbf{Total}                          &                    &                              &                         &                 &                           & \textbf{~460}                \\ \hline
+        \end{tabular}
+    }
+    \caption{Ausgaben PREN1 und PREN2}
+    \label{tab:Ausgaben_PREN}
+\end{table}
 
 \end{document}
