@@ -1,0 +1,59 @@
+\documentclass[main.tex]{subfiles} % Subfile-Class
+
+%==============================================================================%
+%                                   Subfile                                    %
+%==============================================================================%
+
+\begin{document}
+
+% Template
+
+\subsection{Ökobilanz und Materialanalyse}
+
+Das finale Fahrzeug hat ein Gesamtgewicht von \SI{1.84}{\kilo\gram}. Die folgende 
+Tabelle zeigt die drei schwersten Materialkomponenten, deren jeweilige Masse und 
+prozentualen Anteil am Gesamtgewicht:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Materialkomponente} & \textbf{Masse (kg)} & \textbf{Anteil (\%)} \\
+\hline
+Elektronik (PCBAs, Sensorik, Motoren, Raspberry Pi) & 0.90 & 49 \\
+PLA-Strukturteile & 0.55 & 30 \\
+LiPo-Akku & 0.22 & 12 \\
+\hline
+\end{tabular}
+\caption{Hauptmaterialien und ihre Masseanteile}
+\end{table}
+
+\subsubsection*{Rezyklierbarkeit und Abfallbehandlung}
+
+\begin{itemize}
+    \item \textbf{Elektronische Komponenten:} 
+    Hochwertige Bauteile wie Motorentreiber, Schrittmotoren, Servomotoren, 
+    Raspberry~Pi, Kamera und Lidar werden nach Projektende von Teammitgliedern in 
+    privaten oder akademischen Projekten weiterverwendet. Die entwickelten PCBAs 
+    (RaspberryHat, MotionController etc.) bieten viele Standard-I/Os und werden 
+    zukünftigen PREN-Jahrgängen zur Verfügung gestellt. Sollte keine weitere Nutzung 
+    erfolgen, erfolgt die Entsorgung fachgerecht über die Hochschule Luzern.
+    
+    \item \textbf{PLA:} 
+    PLA wird häufig als biologisch abbaubar oder kompostierbar beworben. In der 
+    Praxis ist jedoch eine industrielle Kompostierung erforderlich, die im normalen 
+    Hausabfall nicht gewährleistet ist. Unser Ziel ist es daher, die PLA-Teile 
+    industriell kompostieren zu lassen. Sollte dies nicht möglich sein, erfolgt 
+    eine Entsorgung über den Restabfall.
+    
+    \item \textbf{LiPo-Akku:} 
+    Lithium-Polymer-Akkus enthalten nicht nur Lithium, sondern auch chemisch 
+    instabile Bestandteile, die bei falscher Handhabung gefährlich sein können 
+    (Brandgefahr, Umweltbelastung). Eine Wiederverwendung ist aus Sicherheitsgründen 
+    ausgeschlossen. Der Akku wird daher nach Projektabschluss sicher und normgerecht 
+    über eine spezialisierte Rücknahmestelle wie den Ökihof entsorgt. Dabei wird 
+    insbesondere auf die schadstoffarme Behandlung und das Recycling der Zellchemie 
+    geachtet.
+\end{itemize}
+
+\end{document}
