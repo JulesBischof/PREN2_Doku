@@ -16,9 +16,9 @@ eigenen Print zu betreiben. Diese modulare Trennung sollte eine klare funktional
 sowie eine parallele Entwicklung und Verifikation beider Teilsysteme ermöglichen. Bereits in der Planungsphase
 wurden dennoch Anschlüsse auf dem MotionController Print vorgesehen, um allenfalls die Funktion des
 GripControllers zu übernehmen. Um Gewicht einzusparen und um die Systemarchitektur zu vereinfachen,
-wurde entschieden, die Firmware des GripControllers als externe Datein in die MotionController Firmware
+wurde entschieden, die Firmware des GripControllers als externe Datei in die MotionController Firmware
 zu integrieren. Durch den Wegfall der UART-Kommunikationsschnittstelle zwischen den Controllern
-konnte die Komplexität der Signalübertragung deutlich reduziert werden und die GripController Firmware fällt dadurch
+konnte die Komplexität der Signalübertragung reduziert werden und die GripController Firmware fällt dadurch
 deutlich kleiner aus.\\
 
 Die Tasks für die serielle Kommunikation und für den Testbetrieb in der Firmware sind im Endprodukt aufgrund
@@ -32,7 +32,7 @@ Die vollständige Firmware mit allen Tasks ist im Anhang~\ref{apdx:FirmwareGripC
 
 \begin{description}
     \item[ServoDriveTask] Dieser Task ist für die Steuerung des Greifmechanismus verantwortlich. Er wartet auf
-    die Kommandos vom MotionController und sendet seinerseits ein Kommanda wenn ein Hindernis gegriffen oder abgesetzt
+    Kommandos vom MotionController und sendet seinerseits ein Kommanda wenn ein Hindernis gegriffen oder abgesetzt
     wurde.
 \end{description}
 
@@ -50,7 +50,7 @@ ausführliche Beschreibung der Zustandsmaschine befindet sich im Anhang~\ref{apd
 Die Kommunikation zwischen MotionController und GripController erfolgt über FreeRTOS-Queues. Der ServoDriveTask empfängt
 dabei die Kommandos „CraneGrip“ und „CraneRelease“ über die interne Schnittstelle und sendet nach erfolgreichem Ablauf ein
 „GcAck“ als Rückmeldung an die MotionController-Firmware. Eine gesonderte UART-Verbindung ist durch die Integration der
-beiden Firmwares nicht mehr erforderlich. Im Anhang~\ref{XYZ} wird genauer auf den Informationsaustausch der beiden Firmwares
+beiden Firmwares nicht mehr erforderlich. Im Anhang~\ref{apdx:ComGripControllerMotionController} wird genauer auf den Informationsaustausch der beiden Firmwares
 eingegangen.
 
 \end{document}

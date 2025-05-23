@@ -44,9 +44,9 @@ gewünschten Winkel entsprechend anfährt. Der Servo, der für das Ergreifen des
 arbeitet dabei mit zwei fest definierten Winkelwerten. Der Servo für die Höhenverstellung wird hingegen in
 mehreren kleinen Schritten angesteuert. Je nachdem, ob der Greifer nach oben oder nach unten fahren soll,
 erfolgt die Winkelverstellung in positiven oder negativen Schritten. Die Schritte dienen als Verzögerung,
-damit der Servo beim erreichen der Endschalter nicht überschiesst.\\
+damit der Servo beim erreichen des Endschalters nicht überschiesst.\\
 Die aktuelle Position des Greifers sowie der Status, ob ein Hindernis gegriffen wurde oder nicht, wird intern
-über Status-Flags wie OBSTACLE\_GRIPPED oder SERVO\_OPEN verwaltet. Das gesamte Hindernishandling wird durch
+über Statusflags wie OBSTACLE\_GRIPPED oder SERVO\_OPEN verwaltet. Das gesamte Hindernishandling wird durch
 eine State Machine gesteuert, welche die beiden Servos nacheinander entsprechend dem Ablauf ansteuert.
 
 \subsection{Not-Aus-Verhalten}
@@ -57,7 +57,7 @@ in die definierte Startposition zurück, wobei sich der Greifer geöffnet und in
 vor der Betätigung des Notstopps eingenommen wurde, ist in diesem Zusammenhang nicht mehr relevant.
 
 \subsection{ServoDriveStm}
-Die in Abbildung~\ref{fig:ServoDriveStm} dargestellte State Machine übernimmt die Steuerung des Ergreifens und Absetzens eines Hindernisses auf der Strecke.
+Die in Abbildung~\ref{fig:ServoDriveStm} dargestellte State Machine übernimmt die Steuerung des Greif- und Absetzvorgang eines Hindernisses auf der Strecke.
 Im folgenden Abschnitt wird der Ablauf der ServoDrive-Zustandsmaschine detaillierter erläutert.\\
 Zu Beginn befindet sich die State Machine im \textit{IDLE} Zustand und erwartet dort einen gültigen Befehl von dem MotionController.
 In Abhängigkeit des empfangengen Kommandos erfolgt eine Verzweigung in einen der beiden folgenden Zustände:
