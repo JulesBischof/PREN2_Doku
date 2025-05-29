@@ -6,11 +6,79 @@
 
 \begin{document}
 
-% Template
+\subsubsection{Bilderkennung mit Kamera}
 
-\subsubsection{Bilderkennnung mit Kamera}
+\paragraph{Aufbau des Vision-Stacks}
+Die Kamera liefert gleichzeitig einen \emph{Hauptstream}
+($1024\times1024$~px) und einen \emph{Low-Res-Stream}
+($320\times320$~px).
+Der \texttt{VisionNavigator} bedient beide Streams in drei Threads:
+\begin{itemize}
+  \item \textbf{Capture-Thread}\\
+    liest die YUV-Frames direkt aus \texttt{Picamera2},
+    konvertiert sie in BGR und legt
+    jeweils ein Tupel \mbox{(LowRes, Main)} in eine
+    Capture-Queue (max.~20 Einträge), um Speicher zu begrenzen.
+  \item \textbf{Process-Thread}\\
+    zieht Frames aus der Queue und führt alle Bildverarbeitungs-
+    Schritte ausschliesslich auf dem Low-Res-Bild aus
+    (\emph{ROI per Node genügt}), um CPU-Last zu minimieren.
+    Er liefert schliesslich eine Liste
+    erkannter Kantenwinkel an den Planner.
+  \item \textbf{Writer-Thread} (Debug-Modus)\\
+    speichert annotierte Frames aus einer zweiten Queue in
+    \texttt{output.mp4} und re-encodiert das Video am Ende mit
+    \texttt{ffmpeg}.
+\end{itemize}
 
-Was wie wo, wo waren Knackpunkte, wie haben wir (also Gabriel) das in den Griff
-bekommen?
+\paragraph{Knotenpunkt-Erkennung}
+Ein Node wird als weisser Kreis im V-Kanal des HSV-Bildes gesucht:
+\begin{enumerate}
+  \item Gaussblur $\rightarrow$ \texttt{HoughCircles}
+    (adaptive Radiusgrenzen proportional zur Bildhöhe).
+  \item Mehrere Kreise $\Rightarrow$ Mittelwert
+    $(\overline x, \overline y, \overline r)$.
+  \item Akzeptiert wird nur, wenn
+    $|\overline x-x_{\text{img-center}}|<0.1\cdot\text{Bildhöhe}$;
+    so werden seitliche Fehldetektionen unterdrückt.
+  \item Ein Debounce-Zähler
+    (\texttt{frame\_count\_since\_last\_node})
+    verhindert Mehrfachmeldungen desselben Knotens.
+\end{enumerate}
+
+\paragraph{Kantenextraktion}
+Nur falls \emph{in genau diesem Frame} ein Node erkannt wurde, wird
+die Canny-Kante berechnet und mit \texttt{HoughLinesP} nach Geraden
+gesucht.
+Zur Rauschreduktion:
+\begin{itemize}
+  \item Linien innerhalb von $75$~px zum Bildrand werden verworfen
+    (fehlende Spurteile).
+  \item Ähnliche Linien werden mithilfe
+    eines Richtungs- und Abstandskriteriums in Clustern gemittelt.
+  \item Jede Linie wird in einen \texttt{EdgeCandidate} umgewandelt
+    und via \texttt{DBSCAN} ($\varepsilon=15^{\circ}$) zu
+    finalen \texttt{Edge}s zusammengefasst.
+\end{itemize}
+Pro Kante berechnet \texttt{Edge.get\_angle()} den Winkel relativ zur
+Einheitskreis-Notation des Planners.
+
+\paragraph{Zielknoten-OCR}
+Sobald das Fahrzeug unmittelbar vor einem Node steht, wird das
+Full-Res-Frame an \texttt{detect\_letter} übergeben:
+\begin{enumerate}
+  \item Binärsegmentierung mit Otsu und Opening gegen Rauschen.
+  \item Entfernen aller Komponenten, die Bildränder berühren oder
+    zu klein sind ($<500$~px).
+  \item Tesseract-OCR (\texttt{psm 10}, Whitelist \texttt{A|B|C}).
+  \item Falls kein Buchstabe erkannt wird, Rotation in
+    $15^{\circ}$-Schritten bis $360^{\circ}$.
+\end{enumerate}
+Erst wenn der erkannte Buchstabe dem
+Schalterziel entspricht, setzt der Navigator das Flag
+\texttt{goal\_node\_detected}.
+
+\paragraph{Knackpunkte und Lösungen (Gabriel?)}
+jadadi dadada
 
 \end{document}
