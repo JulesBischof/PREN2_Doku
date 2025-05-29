@@ -17,9 +17,9 @@ GripController Firmware erforderlich. Im folgenden Abschnitt werden dennoch alle
 
 \subsection{ServoDriveTask}
 Der ServoDriveTask steuert die State Machine für das Hindernishandling. Dabei prüft der Task in
-regelmäßigen Abständen, ob ein neuer Befehl in der Queue eingetroffen ist oder ob der Notstopp
+regelmässigen Abständen, ob ein neuer Befehl in der Queue eingetroffen ist oder ob der Notstopp
 aktiviert wurde. Geht ein Befehl über die Queue ein, startet dieser die State Machine und leitet
-den entsprechenden Ablauf ein. Ist hingegen der Notstopp aktiviert, wird der aktuelle Ablauf unterbrochen und 
+den entsprechenden Ablauf ein. Ist hingegen der Notstopp aktiviert, wird der aktuelle Ablauf unterbrochen und
 bei erneuter aktivierung zurückgesetzt.\\
 Nachdem der Befehl vollständig ausgeführt wurde, sendet der ServoDriveTask ein Acknowledge an die
 MotionController Firmware und wartet anschliessend auf den nächsten Befehl.
@@ -70,7 +70,7 @@ Unabhängig davon, welcher Crane-Down-Zustand aktiv war, führt das Erreichen de
 zum \textit{HANDLE\_OBSTACLE} Zustand. In diesem Zustand entscheidet das interne Statusflag, ob der Greifer geöffnet
 oder geschlossen werden soll. Nach dem Abschluss des Greifvorgangs erfolgt der Übergang in den Zustand \textit{CRANE\_UP}.
 In diesem Zustand ist es irrelevant, ob ein Hindernis gegriffen wurde oder nicht. Der Greifer fährt lediglich in die obere Endlage.
-Beim Erreichen dieser Endlage wird ein GcAck-Befehl an die Firmware des MotionControllers übermittelt und in 
+Beim Erreichen dieser Endlage wird ein GcAck-Befehl an die Firmware des MotionControllers übermittelt und in
 den Zustand \textit{IDLE} gewechselt. In diesem Zustand wartet die State Machine auf einen neuen Befehl.\\
 Aus jedem Zustand kann durch die Betätigung des Not-Aus-Schalters unmittelbar in den Zustand \textit{STOP} gewechselt
 werden. Sobald der Notstopp wieder freigegeben wird, kehrt die State Machine in den \textit{IDLE} Zustand zurück.

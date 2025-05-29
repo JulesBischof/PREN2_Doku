@@ -6,10 +6,55 @@
 
 \begin{document}
 
-% Template
+\subsubsection{Änderungen zum Konzept \mbox{PREN 1}}
 
-\subsubsection{Änderungen zu Konzpet PREN 1}
+\paragraph{Überblick}
+Das ursprüngliche Konzept aus PREN 1 sah einen DFS-basierten
+Graphsuchalgorithmus mit sektionsabhängigen Heuristiken und umfangreicher
+Sensorik (Gyroskop, Motor-Encoder, Lidar) vor.
+Während der praktischen Umsetzung zeigte sich jedoch, dass mehrere Annahmen
+dieses Konzepts nicht mit den realen Einschränkungen von Hardware, Zeit und
+Feldbedingungen vereinbar waren.
+Die wichtigsten Anpassungen sind unten zusammengefasst.
 
-Was auch immer sich hier geändert hat?
+\paragraph{Algorithmische Änderungen}
+\begin{itemize}
+  \item \textbf{State-Machine statt rekursivem DFS}:
+    Der gesamte Navigationsprozess wurde als endliche Zustandsmaschine
+    implementiert.  Dadurch lassen sich Sensorereignisse deterministisch
+    abhandeln, ohne tiefe Rekursion oder dynamische Speicherallokation.
+  \item \textbf{Greedy-Zielannäherung}:
+    Anstelle der sektionsabhängigen Gewichtung
+    wählt der Planner jetzt jeweils den Kamerawinkel, der einen virtuellen
+    Schritt mit minimaler Distanz zum Ziel ergibt.
+    Die früheren Heuristikkonstanten
+    (\emph{Section Boost}, \emph{Wrong Direction Penalty} usw.)
+    wurden gestrichen.
+  \item \textbf{Runtime-Graph nur für Logging}:
+    \texttt{networkx} wird ausschliesslich verwendet, um befahrene
+    Knotenpunkte und Kanten für Debug-Zwecke zu protokollieren.
+    Globales Re-Planning ist entfallen.
+  \item \textbf{Vereinfachter Umgang mit Schranken}:
+    Schranken werden wie reguläre Kanten behandelt;
+    eine dynamische Neubewertung entfällt.
+\end{itemize}
+
+\paragraph{Softwarearchitektur}
+\begin{itemize}
+  \item \textbf{High-Level-Controller-Thread}:
+    Sensorfusion, Planner und UART-Kommunikation laufen nun in einem
+    separaten Entscheidungsthread.  Dadurch bleibt der Hauptthread frei
+    für Start/Stop-Logik und Ausnahmebehandlung.
+  \item \textbf{Schiebeschalter statt Software-Konfiguration}:
+    Das Ziel (\texttt{A}/\texttt{B}/\texttt{C}) wird hardwareseitig vor
+    dem Start gewählt; eine Laufzeitkonfiguration entfällt.
+\end{itemize}
+
+\paragraph{Auswirkungen}
+Die genannten Anpassungen verkleinern den Rechen- und
+Implementierungsaufwand deutlich und erhöhen die Robustheit in der
+Turnierumgebung.  Gleichzeitig verzichtet das System bewusst auf global
+optimale Pfade und nimmt längere Strecken in Kauf, falls kurzfristig eine
+Kante entfernt oder gesperrt wird.
 
 \end{document}

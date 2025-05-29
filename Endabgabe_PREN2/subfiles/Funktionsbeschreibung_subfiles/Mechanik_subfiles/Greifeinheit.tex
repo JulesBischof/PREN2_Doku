@@ -12,24 +12,24 @@
 
 \subsubsection*{Anforderungen}
 
-Die Greifkraft muss so ausgelegt sein, dass das Hindernis zuverlässig und sicher gegriffen werden kann. 
-Dabei sind insbesondere die Haftreibung zwischen Greiffläche und Objekt sowie die notwendige Anpresskraft 
+Die Greifkraft muss so ausgelegt sein, dass das Hindernis zuverlässig und sicher gegriffen werden kann.
+Dabei sind insbesondere die Haftreibung zwischen Greiffläche und Objekt sowie die notwendige Anpresskraft
 zu berücksichtigen, um ein Abrutschen während des Transports zu vermeiden.
-Die Höhenverstellung des Greifers muss auf das Gesamtgewicht der zu bewegenden Last abgestimmt sein. 
-Dazu zählen das Gewicht des Hindernisses, des Greifers selbst sowie der mitgeführten Elektronik. 
-Für den gesamten Bewegungsablauf des Greifers ist eine hohe Wiederholgenauigkeit erforderlich. 
-Diese stellt sicher, dass das Hindernis stets innerhalb des geforderten Toleranzbereichs platziert 
+Die Höhenverstellung des Greifers muss auf das Gesamtgewicht der zu bewegenden Last abgestimmt sein.
+Dazu zählen das Gewicht des Hindernisses, des Greifers selbst sowie der mitgeführten Elektronik.
+Für den gesamten Bewegungsablauf des Greifers ist eine hohe Wiederholgenauigkeit erforderlich.
+Diese stellt sicher, dass das Hindernis stets innerhalb des geforderten Toleranzbereichs platziert
 wird und die Funktionalität des Gesamtsystems nicht beeinträchtigt wird.
-Das Gewicht der Greifereinheit ist möglichst gering zu halten, um das Gesamtgewicht des Fahrzeugs zu minimieren. 
-Eine reduzierte Masse ist insbesondere bei den bewegten Teilen des Greifers von Bedeutung, 
-da sie direkten Einfluss auf die Auswahl der Antriebskomponenten, die erreichbare Geschwindigkeit 
+Das Gewicht der Greifereinheit ist möglichst gering zu halten, um das Gesamtgewicht des Fahrzeugs zu minimieren.
+Eine reduzierte Masse ist insbesondere bei den bewegten Teilen des Greifers von Bedeutung,
+da sie direkten Einfluss auf die Auswahl der Antriebskomponenten, die erreichbare Geschwindigkeit
 sowie die Energieeffizienz des Systems hat.
 
 \subsubsection*{Konstruktive Umsetzung}
 
 Die Abbildung~\ref{fig:Greifereinheit} zeigt das realisierte Greiferkonzept des Roboters.
 Dieses wurde auf Basis der Erkenntnisse aus PREN1 weiterentwickelt und in PREN2 gezielt optimiert.
-Das Greiferkonzept wurde überwiegend aus PLA im 3D-Druckverfahren gefertigt, 
+Das Greiferkonzept wurde überwiegend aus PLA im 3D-Druckverfahren gefertigt,
 was eine schnelle und flexible Umsetzung sowie einfache Anpassungen in mehreren Iterationen ermöglichte.
 Im folgenden Abschnitt wird die Funktionsweise des Greifers im Detail erläutert.
 
@@ -37,18 +37,18 @@ Im folgenden Abschnitt wird die Funktionsweise des Greifers im Detail erläutert
 
 \newpage
 
-Der Greifer besitzt zwei gegenüberliegende Backen, die sich parallel zueinander bewegen, 
-um das Hindernis sicher zu greifen. Die Bewegung wird durch einen Servomotor gesteuert. 
-Ein Hebel, angetrieben vom Servomotor, verschiebt eine der beiden Backen horizontal. 
-Diese Backe ist mit einer Zahnstange versehen, die ein innenliegendes Zahnrad antreibt. 
-Das Zahnrad überträgt die Bewegung auf die gegenüberliegende Backe, wodurch sich beide 
-synchron, jedoch in entgegengesetzten Richtungen bewegen. 
+Der Greifer besitzt zwei gegenüberliegende Backen, die sich parallel zueinander bewegen,
+um das Hindernis sicher zu greifen. Die Bewegung wird durch einen Servomotor gesteuert.
+Ein Hebel, angetrieben vom Servomotor, verschiebt eine der beiden Backen horizontal.
+Diese Backe ist mit einer Zahnstange versehen, die ein innenliegendes Zahnrad antreibt.
+Das Zahnrad überträgt die Bewegung auf die gegenüberliegende Backe, wodurch sich beide
+synchron, jedoch in entgegengesetzten Richtungen bewegen.
 
 --------------------Bild innenliegendes Zahnrad
 
-Auch die Höhenverstellung erfolgt 
-über einen Servomotor, der den gesamten Greifer entlang einer Gleitführung von IGUS vertikal bewegt. 
-Das für das Greifen erforderliche Drehmoment beträgt 0.235 $ \text{Nm}$, 
+Auch die Höhenverstellung erfolgt
+über einen Servomotor, der den gesamten Greifer entlang einer Gleitführung von IGUS vertikal bewegt.
+Das für das Greifen erforderliche Drehmoment beträgt 0.235 $ \text{Nm}$,
 für die Höhenverstellung 0.2 $\text{Nm}$. Diese Werte wurden mit den folgenden Formeln berechnet:
 
 \[
@@ -61,23 +61,23 @@ für die Höhenverstellung 0.2 $\text{Nm}$. Diese Werte wurden mit den folgenden
 
 \newpage
 
-Die Abbildung~\ref{fig:Greiferablauf} zeigt den Ablauf des Greifvorgangs in mehreren Bildern. 
+Die Abbildung~\ref{fig:Greiferablauf} zeigt den Ablauf des Greifvorgangs in mehreren Bildern.
 Die Bewegung des Motors werden mit einem gelben Pfeil dargestellt:
 
 --------------------Bild
 
-\paragraph{Positionierung der Greifeinheit} 
-Von Position 1 zu 2 dreht der linke Servomotor die Greifeinheit entlang einer Gleitführung 
+\paragraph{Positionierung der Greifeinheit}
+Von Position 1 zu 2 dreht der linke Servomotor die Greifeinheit entlang einer Gleitführung
 nach unten, nachdem ein Hindernis erkannt wurde.
 
-\paragraph{Greifen des Hindernisses} 
+\paragraph{Greifen des Hindernisses}
 
-Von Position 2 zu 3 bewegt der rechte Servomotor die Backen horizontal, wodurch sich 
+Von Position 2 zu 3 bewegt der rechte Servomotor die Backen horizontal, wodurch sich
 beide Backen parallel schliessen und das Hindernis greifen.
 
-\paragraph{Anheben des Hindernisses} 
+\paragraph{Anheben des Hindernisses}
 
-Von Position 3 zu 4 dreht der linke Servomotor die Greifeinheit leicht nach oben, sodass 
+Von Position 3 zu 4 dreht der linke Servomotor die Greifeinheit leicht nach oben, sodass
 das Hindernis vom Boden angehoben wird. Dadurch wird ein sicherer Transport des Hindernisses gewährleistet.
 
 
@@ -92,30 +92,30 @@ In diesem Abschnitt wird die Positionierung der Sensoren erläutert.
 
 \paragraph{Raspberry Pi Kamera – Knotenpunkt}
 
-Die Raspberry Pi Kamera ist in einer Höhe von \textbf{XXXXX mm} und in einem Winkel von \textbf{XXXXX°} montiert. 
-In dieser Position ist sie in der Lage, Objekte mit einem Durchmesser von etwa \textbf{XXXXX mm} auf 
-dem Boden zuverlässig zu erfassen. Dadurch wird sichergestellt, dass sowohl die \textbf{XXXXX mm} großen 
+Die Raspberry Pi Kamera ist in einer Höhe von \textbf{XXXXX mm} und in einem Winkel von \textbf{XXXXX°} montiert.
+In dieser Position ist sie in der Lage, Objekte mit einem Durchmesser von etwa \textbf{XXXXX mm} auf
+dem Boden zuverlässig zu erfassen. Dadurch wird sichergestellt, dass sowohl die \textbf{XXXXX mm} grossen
 Knotenpunkte als auch deren Abgänge erkannt werden.
 
 \paragraph{Ultraschallsensor und Lichtschranke – Hinderniserkennung}
 
-Der Ultraschallsensor ist in einer Höhe von \textbf{XXXXX mm} angebracht und dient der frühzeitigen 
-Erkennung von Hindernissen, um Kollisionen mit dem Roboter zu vermeiden. Zusätzlich gewährleistet er, 
-dass der Roboter präzise an der vorgesehenen Position stoppt, um das Hindernis anzuheben. Die genaue 
+Der Ultraschallsensor ist in einer Höhe von \textbf{XXXXX mm} angebracht und dient der frühzeitigen
+Erkennung von Hindernissen, um Kollisionen mit dem Roboter zu vermeiden. Zusätzlich gewährleistet er,
+dass der Roboter präzise an der vorgesehenen Position stoppt, um das Hindernis anzuheben. Die genaue
 Funktionsweise wird im Kapitel~\ref{appendix:Abstandssensoren_Kapitel} detaillierter beschrieben.
 
 \paragraph{LiDAR – Pylonerkennung}
 
-Der LiDAR-Sensor ist in einer Höhe von \textbf{XXXXX mm} montiert und ermöglicht die Detektion von 
-Pylonen in einer Entfernung von bis zu \textbf{XXXXX Metern}. Die gewählte Montagehöhe stellt sicher, 
-dass innerhalb dieser Reichweite keine unerwünschten Streuungen auftreten, die zu Fehlmessungen führen 
-könnten. Eine ausführliche Beschreibung der Funktionsweise findet sich ebenfalls im 
+Der LiDAR-Sensor ist in einer Höhe von \textbf{XXXXX mm} montiert und ermöglicht die Detektion von
+Pylonen in einer Entfernung von bis zu \textbf{XXXXX Metern}. Die gewählte Montagehöhe stellt sicher,
+dass innerhalb dieser Reichweite keine unerwünschten Streuungen auftreten, die zu Fehlmessungen führen
+könnten. Eine ausführliche Beschreibung der Funktionsweise findet sich ebenfalls im
 Kapitel~\ref{appendix:Abstandssensoren_Kapitel}.
 
 \paragraph{Endschalter – Höhenverstellung des Greifers}
 
-Die Endschalter sind an den Endpositionen der Höhenverstellung des Greifers angebracht. 
-Sie dienen der Positionsrückmeldung und verhindern ein Überdrehen des Servomotors. Dadurch wird 
+Die Endschalter sind an den Endpositionen der Höhenverstellung des Greifers angebracht.
+Sie dienen der Positionsrückmeldung und verhindern ein Überdrehen des Servomotors. Dadurch wird
 sichergestellt, dass der Greifer stets die korrekte Höhe erreicht und mechanische Beschädigungen vermieden werden.
 
 
