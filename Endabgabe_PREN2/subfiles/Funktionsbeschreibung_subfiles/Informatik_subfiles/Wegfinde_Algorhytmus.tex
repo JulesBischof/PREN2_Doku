@@ -6,11 +6,105 @@
 
 \begin{document}
 
-% Template
+\subsubsection{Wegfind-Algorithmus}
 
-\subsubsection{Wegfinde-Algorhitmus}
+\paragraph{Grundidee}
+Der \texttt{PathPlanner} läuft als endliche Zustandsmaschine auf dem
+Raspberry Pi.
+Er verarbeitet kontinuierlich Kamera-, Lidar- und Odometriedaten und erzeugt
+daraus UART-Kommandos für den Motion-Controller.
+Das Fahrzeug folgt weissem Klebeband:
+\emph{Knotenpunkte} sind die weissen Kreise,
+\emph{Kanten} die Bandstücke dazwischen.
+Ein Knotenpunkt kann durch einen Pylon blockiert sein,
+Kanten können durch Barrieren unpassierbar oder von den Organisatoren entfernt
+werden.
+Das Ziel ist einer der drei markierten Knotenpunkte \texttt{A}, \texttt{B} oder
+\texttt{C} und wird vor dem Start per Hardware-Schiebeschalter gewählt.
 
-Wie werden nun Entscheide getroffen, wann der Roboter wieo in welche Richtung
-fährt.
+\paragraph{Laufzeit-Graph (\texttt{nxgraph})}
+\vspace{-0.3\baselineskip}
+\begin{itemize}
+  \item Implementiert als \texttt{networkx.Graph}.
+  \item Beim Einfahren in einen Knotenpunkt wird dessen Koordinate (Odometrie)
+    mit allen bekannten Knotenpunkten verglichen
+    (Toleranz $\approx200\,\mathrm{mm}$).
+    Passt keiner, erhält der neue Punkt die ID \texttt{n1}, \texttt{n2}, ….
+  \item Kanten zum Vorgängerknotenpunkt werden mit der real gefahrenen Distanz
+    $d$ als Kantengewicht eingetragen.
+  \item Attribute \texttt{traversable=false} markieren blockierte Knoten-
+    oder Kantenpunkte; diese werden bei der Richtungswahl ignoriert.
+  \item Der Graph dient primär als Laufzeitlog und für Debugging;
+    er wird noch nicht für globales Re-Planning verwendet.
+\end{itemize}
+
+\paragraph{Zustandsmaschine}
+\vspace{-0.3\baselineskip}
+\begin{description}
+  \item[\textbf{BEGIN}]
+    Initialisierung, sofort \texttt{MOVE(0)} $\rightarrow$
+    \textbf{TRAVELING\_EDGE}.
+
+  \item[\textbf{TRAVELING\_EDGE}]
+    Geradeausfahrt auf aktueller Kante.
+    Erste Kamerawinkel $\alpha_i$ empfangen $\rightarrow$ Stopp,
+    \textbf{ARRIVED\_AT\_NODE}.
+
+  \item[\textbf{ARRIVED\_AT\_NODE}]
+  \begin{itemize}\itemsep0pt
+      \item Positionsupdate; Einfügen oder Matching im \texttt{nxgraph}.
+      \item Kante zum Vorgänger mit Gewicht $d$ eintragen.
+      \item Zielknoten erkannt ($<$\,200 mm oder Kameraflag)
+        $\rightarrow$ \textbf{GOAL\_REACHED}.
+      \item Sonst Push auf Stack $\rightarrow$ \textbf{DECIDING\_NEXT\_ANGLE}.
+    \end{itemize}
+
+  \item[\textbf{DECIDING\_NEXT\_ANGLE}]
+  \begin{itemize}\itemsep0pt
+      \item Greedy-Evaluation aller Kamerawinkel~$\alpha_i$:
+        simulierter Schritt $0.5\,\mathrm{m}$, Distanz zum Ziel minimal.
+      \item Keine Winkel $\rightarrow$ \textbf{BLOCKED}.
+      \item Befehl: \texttt{TURN}$(\pm180-\alpha_{\text{best}})\cdot10$
+        $\rightarrow$ \textbf{CHECK\_NEXT\_ANGLE}.
+    \end{itemize}
+
+  \item[\textbf{CHECK\_NEXT\_ANGLE}]
+    \texttt{MOVE(0)} starten, zurück zu \textbf{TRAVELING\_EDGE}.
+
+  \item[\textbf{GOAL\_REACHED}]
+    Endzustand, \texttt{STOP}.
+
+  \item[\textbf{BLOCKED}]
+    Notstopp, \texttt{STOP}.
+\end{description}
+
+\paragraph{Greedy-Winkelauswahl}
+Für jeden Kamerawinkel $\alpha_i$ wird ein Schrittpunkt bestimmt:
+\[
+  p_i = p_{\text{aktuell}} +
+  \mathrm{Rot}_{\alpha_i+\varphi}\!\bigl(0,\;0.5\,\mathrm{m}\bigr),
+  \qquad
+  d_i = \lVert p_i - p_{\text{ziel}}\rVert_2.
+\]
+Der Winkel mit minimalem $d_i$ wird gewählt,
+danach Orientierung
+$\varphi \leftarrow (\varphi + \alpha_{\text{best}}) \bmod 360^{\circ}$.
+
+\paragraph{Positionsupdate}
+Nach jeder gemeldeten Strecke $d$:
+\[
+  p \leftarrow p + d\,
+  \bigl(\cos\varphi,\;\sin\varphi\bigr).
+\]
+
+\paragraph{Stärken und Limiten}
+\vspace{-0.3\baselineskip}
+\begin{itemize}
+  \item Sehr geringe CPU-Last, ideal für Echtzeit auf dem RPi.
+  \item Laufzeit-Graph visualisiert tatsächlich befahrene Knoten- und
+    Kantenpunkte.
+  \item Kein globales Re-Planning: Fällt eine Kante erst spät weg,
+    kann das Fahrzeug in einer Sackgasse landen.
+\end{itemize}
 
 \end{document}
