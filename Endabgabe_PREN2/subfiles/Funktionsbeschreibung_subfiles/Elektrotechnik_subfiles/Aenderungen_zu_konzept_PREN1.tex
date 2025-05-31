@@ -100,4 +100,13 @@ prain-uart-Protokoll über dieses Ereignis informiert. Dies stellt sicher, dass
 sich der gesamte Roboter in einem sicheren Zustand befindet, bis der Notstopp
 wieder deaktiviert wird.
 
+
+\subsection*{Spannungsversorgung Servomotoren}
+In der Konzeptphase wurden 5.5 V-Anschlüsse zur Versorgung der Servomotoren sowohl auf dem
+GripController als auch auf dem MotionController vorgesehen. Während der Inbetriebnahme stellte sich
+jedoch heraus, dass die eingesetzte Spannungsquelle nicht ausreichend Strom liefern konnte, wodurch
+eine zuverlässige Ansteuerung der Servos nicht möglich war. Zur Behebung dieses Problems wurde ein
+zusätzlicher Spannungswandler integriert, der die Spannung direkt nach dem Akku auf 5 V regelt und
+einen maximalen Ausgangsstrom von 5 A bereitstellt. Dadurch ist nun eine zuverlässige Ansteuerung der
+Servos wie vorgesehen möglich.
 \end{document}

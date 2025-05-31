@@ -13,16 +13,31 @@
 \subsubsection{Mechanik}
 
 \subsubsection{Elektronik}
-%Im Rahmen der Entwicklung ergaben sich insbesondere im Bereich der Hardwareumsetzung mehrere
-%relevante Erkenntnisse, die für zukünftige Projekte berücksichtigt werden sollen.\\
-%Obwohl QFN-Gehäuse aufgrund ihrer kompakten Bauweise für platzsparende Designs grundsätzlich
-%vorteilhaft erscheinen, hat sich im praktischen Einsatz gezeigt, dass sie für die manuelle Bestückung
-%und Nachbearbeitung nur bedingt geeignet sind. Bereits wenn nur ein wenig zu viel Lötzinn auf der
-%Lötstelle ist, kann es zu Kurzschlüssen führen. Die Lötstellen befinden sich auf der Unterseite des
-%Bauteils, wodurch keine optische Prüfung auf Kurzschlüsse möglich wird. Aus diesem Grund wird in
-%zukünftigen Entwicklungsprojekten verstärkt auf SOIC-Gehäuse zurückgegriffen. Diese verfügen über seitlich herausgeführte Anschlussbeine, die eine optische Inspektion, das manuelle Löten sowie notwendige Nacharbeiten erheblich erleichtern. Dadurch wird eine höhere Prozesssicherheit und Zuverlässigkeit während der Prototypenfertigung erzielt.
+Im Rahmen der Entwicklung ergaben sich im Bereich der Hardware- und Firmware-Umsetzung verschiedene relevante
+Erkenntnisse. So wurde für das Projekt FreeRTOS in Verbindung mit der Programmiersprache C++ eingesetzt. Durch
+die praktische Anwendung konnten die Kenntnisse im Umgang mit dem Echtzeitbetriebssystem sowie der objektorientierten
+Programmierung gefestigt und erweitert werden. Auch das Bestücken der Leiterplatten, das Prüfen von Signalen
+und Spannungen sowie die Fehlersuche an den gefertigten PCBs erwiesen sich als besonders lehrreich.
+Neben diesen eher allgemeinen Erkenntnissen traten im Projektverlauf jedoch auch spezifische Herausforderungen auf,
+aus denen besonders prägende Lessons Learned hervorgingen, die nachfolgend dargestellt werden:
 
-%Zudem wurde die Stromaufnahme der verwendeten Servomotoren in der Entwurfsphase deutlich unterschätzt. Die ursprünglich vorgesehene Spannungsversorgung mit einer maximalen Stromabgabe von 3 A erwies sich unter realen Betriebsbedingungen als unzureichend, insbesondere bei gleichzeitiger Ansteuerung mehrerer Servos. Zur Sicherstellung eines stabilen Systembetriebs wurde eine zusätzliche Spannungswandlung implementiert, die eine deutlich höhere Strombelastbarkeit aufweist und so eine zuverlässige Versorgung der Aktoren gewährleistet.
+Obwohl QFN-Gehäuse aufgrund ihrer kompakten Bauweise für platzsparende Designs
+vorteilhaft erscheinen, hat sich im praktischen Einsatz gezeigt, dass sie für die manuelle Bestückung
+und Nachbearbeitung nur bedingt geeignet sind. Bereits wenn nur ein wenig zu viel Lötzinn auf der
+Lötstelle aufliegt, kann es zu Kurzschlüssen führen. Weil die Lötstellen sich auf der Unterseite des
+Bauteils befinden, ist keine optische Prüfung auf Kurzschlüsse möglich. Aus diesem Grund sollte in
+zukünftigen Projekten auf SOIC-Gehäuse zurückgegriffen werden. Diese verfügen über
+seitlich herausgeführte Anschlussbeine, die das manuelle Löten sowie
+notwendige Nacharbeiten erheblich erleichtern.
+
+Die Stromaufnahme der Servomotoren wurde in der Entwurfsphase unterschätzt.
+Während der Entwicklungsphase zeigten die Servomotoren ein ungewöhnliches Verhalten, das zunächst auf eine
+fehlerhafte PWM-Ansteuerung hindeutete. Erst deutlich später stellte sich heraus, dass die Stromversorgung von
+maximal 3 A Ausgangsstrom unterdimensioniert war und somit die eigentliche Ursache des Problems dartstellte.
+Zukünftig soll die Stromversorgung bei ähnlichen Fehlersymptomen frühzeitig als mögliche Fehlerquelle in Betracht
+gezogen werden.
+
+
 
 \subsubsection{Informatik}
 

@@ -21,10 +21,11 @@ zu integrieren. Durch den Wegfall der UART-Kommunikationsschnittstelle zwischen 
 konnte die Komplexität der Signalübertragung reduziert werden und die GripController Firmware fällt dadurch
 deutlich kleiner aus.\\
 
-Die Tasks für die serielle Kommunikation und für den Testbetrieb in der Firmware sind im Endprodukt aufgrund
-der Zusammenschliessung nicht mehr notwendig. Sie bleiben aber 
-in der Firmware-Struktur erhalten. Dies hat den Grund, dass allfällige Überarbeitungen der GripController
-Firmware unabhängig implementiert und getestet werden können.\\
+Während der Entwicklungsphase zeigten die Servomotoren ein ungewöhnliches Verhalten, das zunächst auf eine
+fehlerhafte PWM-Ansteuerung hindeutete. Erst deutlich später stellte sich heraus, dass die Stromversorgung von
+maximal 3 A Ausgangsstrom unterdimensioniert war und somit die eigentliche Ursache des Problems dartstellte.
+Zukünftig soll die Stromversorgung bei ähnlichen Fehlersymptomen frühzeitig als mögliche Fehlerquelle in Betracht
+gezogen werden.\\
 
 \subsubsection*{Tasks}
 Im folgendem Abschnitt wird nur auf den Task der Firmware eingegangen, welcher im Endprodukt enthalten ist.
