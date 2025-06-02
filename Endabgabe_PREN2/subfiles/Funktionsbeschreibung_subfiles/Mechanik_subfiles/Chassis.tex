@@ -66,27 +66,32 @@ Diese Lösung zeichnet sich durch eine hohe Wendigkeit aus und ermöglicht präz
 Kurskorrekturen sowie effiziente Drehmanöver auf den Knotenpunkten des Parcours. 
 Die Positionierung der angetriebenen Räder an der Hinterachse sorgt nicht nur für eine 
 verbesserte Traktion, sondern erlaubt auch schnelle und exakte Änderungen der 
-Fahrzeugausrichtung. Als Antriebsräder wurden Räder vom Typ FIT0500 von DFRobot mit 
-einem Durchmesser von 80 mm ausgewählt, welche über eine Sammelbestellung der Hochschule 
-Luzern beschafft wurden, um die Umweltbelastung durch Einzelversendungen zu reduzieren. 
-Mit diesen Rädern erreicht das Fahrzeug rechnerisch eine maximale Geschwindigkeit von 
-etwa 1,676 m/s, welche nach folgender Formel bestimmt wird:
+Fahrzeugausrichtung.
+
+Als Antriebsräder wurden Räder vom Typ FIT0500 von DFRobot mit einem Durchmesser von 
+80 mm ausgewählt. Um die Umweltbelastung durch Einzelversand zu reduzieren, erfolgte 
+der Bezug der Räder über eine Sammelbestellung der Hochschule Luzern. Mit diesen Rädern 
+erreicht das Fahrzeug eine rechnerische Maximalgeschwindigkeit von etwa 1.676 m/s, 
+welche sich nach folgender Formel berechnet:
 
 \[ v_{max} = n_{Motor} \cdot d_{Rad} \cdot \pi = 1.676 \, \frac{\text{m}}{\text{s}} \]
 
-Von den eingekauften Rädern wurden letztendlich nur die Reifen genutzt, da die 
-originalen Felgen nicht den mechanischen Anforderungen entsprachen. Diese wurden durch 
-eigenkonstruierte Felgen ersetzt, welche im 3D-Druckverfahren gefertigt und direkt mit 
-den Motorwellen verbunden wurden. Dadurch konnte auf zusätzliche Adapterteile verzichtet 
-werden, welche sich in ersten Tests als unzuverlässig erwiesen hatten. Dieses integrierte 
-Design reduziert sowohl das Gesamtgewicht als auch die Kosten des Fahrwerks und 
-erleichtert zusätzlich die Montage. Der Aufbau der Antriebsräder und der Laufkugel im 
-finalen Design ist in Abbildung~\ref{Fahrwerkskonzept-CAD} dargestellt.
+Aus den eingekauften Rädern wurden schlussendlich nur die Reifen genutzt. Die 
+Originalfelgen wurden durch speziell entwickelte Felgen ersetzt, welche im 
+3D-Druckverfahren gefertigt wurden. Ein Detail der Eigenkonstruktion der Felgen zeigt 
+Abbildung~\ref{Detailzeichnung-Felge}. Um eine optimale Auflagefläche des Reifens zu 
+gewährleisten, wurde auf der Felgenaussenseite eine leichte Erhöhung integriert. Diese 
+sorgt dafür, dass der Reifen über die gesamte Breite vollständig auf dem Boden aufliegt, 
+wodurch der Grip erhöht wird. Die zentrale Aufnahme der Felge wurde präzise auf den 
+Flansch der Motorenwelle abgestimmt und mittels einer Presspassung montiert, was eine 
+besonders zuverlässige und spielfreie Verbindung ermöglicht. Das Felgendesign ist bewusst 
+einfach gehalten und weist eine sternförmige Struktur mit zehn dünnen Speichen auf. Diese 
+Konstruktion sorgt für eine ausgezeichnete Stabilität bei gleichzeitig minimalem Gewicht.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 0.8\linewidth]{./fig_Mechanik/Fahrwerkskonzept_CAD.pdf}
-    \caption{Fahrwerksdesign dargestellt in Siemens NX}~\label{Fahrwerkskonzept-CAD}
+    \includegraphics[width = 1\linewidth]{./fig_Mechanik/Detailzeichnung_Felge.pdf}
+    \caption{Detailzeichnung der Felge in Siemens NX}~\label{Detailzeichnung-Felge}
 \end{figure}
 
 \end{document}
