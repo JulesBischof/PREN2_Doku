@@ -20,9 +20,11 @@ sodass ausschliesslich das fluoreszierende Klebeband erfasst wird. Dies
 ermöglicht einen starken Kontrast zur Umgebung.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Schema_Messzelle_Liniensensor.pdf}
-    \caption{Schema einer einzelnen Messzelle des Liniensensors}~\label{fig:Schema_Messtelle_Liniensensor}
+  \centering
+  \includegraphics[width =
+  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Schema_Messzelle_Liniensensor.pdf}
+  \caption{Schema einer einzelnen Messzelle des
+  Liniensensors}~\label{fig:Schema_Messtelle_Liniensensor}
 \end{figure}
 
 Die Dimensionierung des Sensors, welcher in
@@ -46,9 +48,11 @@ Abbildung~\ref{fig:LinienSensor_bottom} mit einem Q, die Empfänger mit einem D
 beschriftet.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Gehaeuse_Isometrisch.pdf}
-    \caption{Schema einer einzelnen Messzelle des Liniensensors}~\label{fig:Gehaeuse_Liniensensor}
+  \centering
+  \includegraphics[width =
+  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Gehaeuse_Isometrisch.pdf}
+  \caption{Schema einer einzelnen Messzelle des
+  Liniensensors}~\label{fig:Gehaeuse_Liniensensor}
 \end{figure}
 
 Aus Sicherheitsgründen ist die Elektronik, die diesen Sensor ansteuert, in der
@@ -76,16 +80,18 @@ Dieser Messvorgang muss einmal auf dem Klebeband und einmal auf dem
 Fliesenboden durchgeführt werden und dauert weniger als $1 s$.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Liniensensor_Bottom.pdf}
-    \caption{Ansicht des Liniensensors}~\label{fig:LinienSensor_bottom}
+  \centering
+  \includegraphics[width =
+  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Liniensensor_Bottom.pdf}
+  \caption{Ansicht des Liniensensors}~\label{fig:LinienSensor_bottom}
 \end{figure}
 
 Der Liniensensor ist mit einem gewissen Sensorrauschen behaftet, welches im
 Anhang~\ref{apdx:Liniensensor_auswertung} nebst seiner eigentlichen Funktion
 nochmals beleuchtet wird.
 
-\subsubsection*{Streckenrückverfolgung – Distanz und Rotation}~\label{sec:Sensorik_Streckenrueckverfolgung}
+\subsubsection*{Streckenrückverfolgung – Distanz und
+Rotation}~\label{sec:Sensorik_Streckenrueckverfolgung}
 
 Die gefahrene Strecke kann vollständig über die registrierten Schritte der
 Schrittmotoren bestimmt werden. Dazu wurde die Motorbeschleunigung auf ein Mass
@@ -113,9 +119,10 @@ einer gewissen Distanz einfach zu gross wird. Dieser Sachverhalt ist in
 Abbildung~\ref{fig:HcSr04_Messkegel} gezeigt.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.5\linewidth]{./fig_Antriebsregelung_Firmware/Auslesegenauigkeit_Ultraschall.pdf}
-    \caption{Messkegel des Ultraschallsensors}~\label{fig:HcSr04_Messkegel}
+  \centering
+  \includegraphics[width =
+  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Auslesegenauigkeit_Ultraschall.pdf}
+  \caption{Messkegel des Ultraschallsensors}~\label{fig:HcSr04_Messkegel}
 \end{figure}
 
 Ein wesentliches Problem des eingesetzten Sensors ist ebenfalls niedrige
@@ -131,7 +138,40 @@ Anhang~\ref{apdx:Adaptiver_Tiefpass} hergeleitet und parametriert.
 
 \subsubsection*{Pylonen LIDAR}~\label{sec:Sensorik_Lidar}
 
-GABRIEL/SANDRO .. ?
+Das in PREN1 erarbeitete Konzept wurde umgesetzt. Wir messen den
+Abstand zu potentiellen Pylonen
+mittels LIDAR (spezifisch. mittels Richtungs-LIDAR \textit{TFLuna}).
+Die Montage des LIDAR ermöglicht es uns über die beförderbaren
+Hindernisse hinweg zu sehen.
+Sind diese näher als 2 Meter ist die betrachtete Strecke
+wahrscheinlich nicht befahrbar.
+Anderst als andere Sensoren, steuern wir den LIDAR direkt im RaspberryHat an.
+
+\paragraph{Implementierungsdetails}
+Das im PREN2 erarbeitete Modul \texttt{LidarSensor} bindet den TF-Luna über den
+I\textsuperscript{2}C-Bus
+1 (\texttt{/dev/i2c-1}) unter der 7-Bit-Adresse \texttt{0x10} an.
+Ein dedizierter Hintergrundthread liest alle \SI{50}{ms}
+(\texttt{poll\_interval}) sechs aufeinanderfolgende Register und legt
+die Werte in drei Variablen ab:
+
+\begin{center}
+  \begin{tabular}{@{}ll@{}}
+    \texttt{\_dist} & gemessene Distanz in~\si{mm} (0 - 8000)\\
+    \texttt{\_flux} & Signalstärke des reflektierten Pulses\\
+    \texttt{\_temp} & interne Sensortemperatur in~\si{\celsius}
+  \end{tabular}
+\end{center}
+
+Das entspricht einer effektiven Abtastrate von \SI{20}{Hz}, was bei der
+maximalen Fahrgeschwindigkeit genügt, um Pylonen rechtzeitig zu erkennen.
+Fehlerbehandlung erfolgt pro Lesezyklus; bei I\textsuperscript{2}C-Timeout
+wird eine Warnung geloggt, der Thread läuft jedoch weiter.
+Während des Betriebs belegt der Poll-Thread weniger als
+\SI{1}{\percent} CPU-Last auf dem Raspberry Pi~4.
+Hilfsfunktionen erlauben Soft-/Hard-Reset, Änderung der
+I\textsuperscript{2}C-Adresse
+sowie das dauerhafte Speichern der Konfiguration im TF-Luna-Flash.
 
 \subsubsection*{Kamera}
 
