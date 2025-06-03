@@ -10,9 +10,60 @@
 
 \section{Funktionsbeschreibung}
 
-\subsection{Allgemeine Hardfacts}
+\subsection{Übersicht}
 
--- wie in Pren 1 - allgemeine Übersicht
+Im Rahmen dieses Projekts wurde ein autonomes Fahrzeug entwickelt, das sich selbstständig 
+durch ein Wegenetzwerk navigieren kann. Das System wurde speziell dafür konzipiert, dynamisch 
+auf Hindernisse und Einschränkungen zu reagieren und stets den optimalen Weg von einem 
+definierten Startpunkt zu einem Zielpunkt zu finden.
+
+Das Fahrzeug zeichnet sich durch eine modulare Bauweise aus, welche die Integration verschiedenster 
+Technologien ermöglicht. Die zentralen Komponenten sind:
+
+\paragraph{Chassis und Antrieb}
+
+Das Fahrzeug besitzt ein dreirädriges Chassis mit zwei angetriebenen Rädern und einem 
+stabilisierenden Auflagepunkt. Die Bewegung erfolgt über präzise steuerbare Schrittmotoren, 
+die eine hohe Wendigkeit ermöglichen. Das Chassis ist leicht und stabil genug, um den 
+Gewichtsvorgaben zu entsprechen.
+
+\paragraph{Sensorik}
+
+Zur Umgebungswahrnehmung kommen verschiedene Sensoren zum Einsatz:
+
+\begin{itemize}
+  \item \textbf{Liniensensoren}: Erfassen die UV-aktive Leitlinie und erkennen Knotenpunkte.
+  \item \textbf{Ultraschallsensoren}: Detektieren Hindernisse im Nahbereich.
+  \item \textbf{LiDAR}: Identifiziert auf definierter Höhe Pylonen, welche gesperrte Wegpunkte markieren.
+  \item \textbf{Kamera}: Erkennt Knotenpunkte frühzeitig und identifiziert das Ziel eindeutig.
+\end{itemize}
+
+Alle Sensoren liefern gemeinsam ein Echtzeitbild der Umgebung und bilden die Grundlage für Navigation und Reaktion.
+
+
+\paragraph{Steuerungseinheit}
+
+Ein Mikrocontroller-System verarbeitet die Sensordaten, steuert die Motoren und führt den 
+Navigationsalgorithmus aus. Dieser erlaubt eine flexible Reaktion auf Umgebungsveränderungen 
+und unterstützt eine autonome Entscheidungsfindung.
+
+\paragraph{Greifeinheit}
+
+Ein motorisierter Greifer ermöglicht das präzise Aufnehmen, Bewegen und Ablegen von Hindernissen 
+zur Freiräumung des Wegs.
+
+\paragraph{Energieversorgung}
+
+Das System wird durch einen kompakten Lithium-Polymer-Akku betrieben, der eine ausreichende 
+Betriebsdauer für die vorgegebene Aufgabenstellung sicherstellt. Zusätzliche Sicherheitsfunktionen 
+wie eine Überwachung der Zellspannung und ein Not-Aus-Knopf garantieren die Betriebssicherheit.
+
+\paragraph{Benutzerinterface}
+
+Über einen Wahlschalter kann vor dem Start die Zielposition
+ausgewählt werden. Visuelle und akustische Signale zeigen den Abschluss der Aufgabe an.
+
+\newpage
 
 \subsection{Orientierung des Roboters im Wegenetz - kurz und knapp}
 
