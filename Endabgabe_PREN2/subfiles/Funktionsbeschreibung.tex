@@ -125,6 +125,37 @@ Elektronikteil vorallem die Ansteuerung dieser Komponenten beleuchtet. Der
 Informatikteil schliesslich behandelt im Detail, wie der Wegfindealgorithmus
 arbeitet um den Roboter autonom durch das Wegenetz zu navigieren.
 
+\newpage
+
+\subsection{Hardfacts}
+
+Die folgenden technischen Daten beschreiben die wichtigsten Eigenschaften und
+Leistungsparameter des entwickelten Fahrzeugs:
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|l|p{7cm}|}
+        \hline
+        \textbf{Eigenschaft}               & \textbf{Wert}                                                             \\ \hline
+        Energieversorgung                  & 4S LiPo-Akku (14.4V, 1300 mAh)                                            \\ \hline
+        Betriebsdauer                      & ca. 20 Minuten (durchschnittlich)                                         \\ \hline
+        Maximale Traglast der Greifeinheit & 300 g                                                                     \\ \hline % korrigiert auf 300g
+        Abmessungen                        & 30 cm x 30 cm x 30 cm                                                     \\ \hline
+        Gewicht                            & 2 kg                                                                      \\ \hline
+        Navigationsalgorithmus             & Greedy-Algorithmus                                                    \\ \hline
+        Sensoren                           & Liniensensor, LiDAR, Ultraschallsensor, Kamera, Endschalter, Gyroskop \\ \hline
+        Kommunikationsschnittstellen       & UART, I2C                                                                 \\ \hline
+        Steuerungseinheit                  & Raspberry Pi 5                                                            \\ \hline % korrigiert auf Raspberry Pi 4
+        Greifermechanik                    & Motorisierter Parallelgreifer                                             \\ \hline
+        Entwicklungstool für Simulation    & Svelte.js-basierter Simulator                                             \\ \hline
+    \end{tabular}
+    \caption{Technische Daten des autonomen Fahrzeugs}
+    \label{tab:hardfacts}
+\end{table}
+
+
+\newpage
 \section{Entwicklung}
 
 \subfile{./Funktionsbeschreibung_subfiles/Mechanik.tex}
