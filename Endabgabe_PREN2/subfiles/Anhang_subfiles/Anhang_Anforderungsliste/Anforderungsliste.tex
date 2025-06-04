@@ -1,0 +1,22 @@
+\documentclass[main.tex]{subfiles} % Subfile-Class
+
+%==============================================================================%
+%                                   Subfile                                    %
+%==============================================================================%
+
+\begin{document}
+
+\includepdf[
+  pages=1,
+  scale=0.85,
+  pagecommand={\section{Anforderungsliste und Erfüllungsgrad}\label{apx:Anforderungsliste}}
+]{Anforderung.pdf}
+
+\includepdf[
+  pages=2-3,
+  scale=0.85,
+  pagecommand={}
+]{Anforderung.pdf}
+
+
+\end{document}
