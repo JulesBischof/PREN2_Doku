@@ -1,0 +1,56 @@
+\documentclass[main.tex]{subfiles} % Subfile-Class
+
+
+%==============================================================================%
+%                                   Subfile                                    %
+%==============================================================================%
+
+\begin{document}
+
+% Template
+
+\section{Testing}
+In diesem Kapitel werden die wichtigsten Teilsysteme des Fahrzeugs getestet. Da die Entwicklung laufend angepasst und verbessert wurde,
+macht eine testdatum-basierte Darstellung wenig Sinn. Stattdessen wurde jeweils geprüft, ob die definierten Sprintziele erreicht wurden.
+Dadurch konnte direkt im Entwicklungsprozess verifiziert werden, ob ein System wie geplant funktioniert oder noch Optimierungen im nächsten
+Sprint nötig sind.
+
+\subsection*{Linienverfolgung}
+Die Funktionsfähigkeit des Liniensensors in Kombination mit dem Antriebssystem wurde iterativ über mehrere Sprints hinweg überprüft.
+In Sprint 1 lag der Fokus auf dem zuverlässigen Erkennen und Folgen der Linie sowie dem Erkennen von Knotenpunkten. Zu diesem Zweck
+wurden erste Fahrtests durchgeführt, um zu beobachten, wie das Fahrzeug auf die Reglerausgabe reagiert. Dabei zeigte sich, dass der
+Regler zu leichten Schwingungen neigte und weiter optimiert werden musste. Das wiederholte Anhalten auf Knotenpunkten funktionierte
+hingegen zuverlässig. Die Tests erfolgten nicht auf dem Wettkampfuntergrund und dienten primär der funktionalen Umsetzung, nicht
+der finalen Abstimmung auf Wettkampfbedingungen.\\
+In Sprint 2 wurden verschiedene Optimierungen am Regelsystem vorgenommen. Ziel war ein schnelleres und stabileres Einregeln des Fahrzeugs
+gemäss den Anforderungen des Wettkampfs. Der Regelprozess wurde aufgezeichnet und anschliessend in MATLAB analysiert~\ref{apdx:Regler_Parametrierung}.
+Die daraus gewonnenen Erkenntnisse ermöglichten eine gezielte Anpassung der Reglerparameter. Im Anschluss daran erfolgte die Validierung auf
+dem vorgesehenen Wettkampfuntergrund, welche erfolgreich verlief.
+Während der Tests zeigte sich jedoch, dass einzelne Fugen irrtümlich als Knotenpunkte erkannt wurden. Im Anhang~\ref{apdx:Liniensensor_Liniendetektion}
+ist die Streuung der Messwerte dargestellt, welche die Unterscheidung zwischen Fliesen, Fugen und Linie durch den Liniensensor veranschaulicht.
+Um eine mögliche Überlappung der Messbereiche von Fuge und Linie zu reduzieren, wurde der Sensorbereich mit einem lichtdichten Schwamm abgeschirmt.
+Dadurch konnte der Kontrast zur tatsächlichen Linie verstärkt und die fehlerhafte Interpretation der Fugen verhindert werden. In den anschliessenden
+Testläufen traten keine Störungen mehr auf.
+
+\subsection*{Hindernishandling}
+Die Hindernisbewältigung wurde in Sprint 2 als Ziel definiert. Die Teilfunktionen wurden nacheinander getestet und schrittweise zum Gesamtsystem zusammengeführt.\\
+Zuerst wurde die Hinderniserkennung mittels Ultraschallsensor überprüft. In den ersten Tests wurde das Hindernis regelmässig zu spät erkannt
+und überfahren. Um dieses Problem zu beheben, mussten die Geschwindigkeit angepasst und ein Zwischenhalt kurz vor dem Hindernis eingebaut werden.
+Details dazu sind im Anhang~\ref{apdx:Sensorverhalten} ersichtlich. Durch anschliessende Tests konnte die Positionierungsgenauigkeit beim Anfahren
+des Hindernisses verbessert und in die gewünschte Toleranz der Greiferbacken gebracht werden.\\
+Das Greifen mit den zwei Servos wurde mehrfach getestet. Der Ablauf funktionierte stets zuverlässig, das Hindernis wurde nie fallengelassen.
+Lediglich die Geschwindigkeit der Servos wurde mehrmals feinjustiert, um den Greifvorgang möglichst schnell auszuführen.\\
+Das Drehen mit aufgenommenem Hindernis stellte aufgrund von Schlupf zunächst eine Herausforderung dar. Daher wurde beim Testen die Beschleunigung schrittweise
+reduziert, bis eine Drehung mit vertretbarem Schlupf möglich war.\\
+Das Abstellen des Hindernisses innerhalb der Toleranz wurde in mehreren Durchläufen geprüft. Dazu wurde vor der Hindernisbewältigung ein Markierungsstrich
+auf der Linie angebracht. Nach der Bewältigung des Hindernisses wurde der Abstand zur Markierung gemessen. Auch hier musste die Beschleunigung schrittweise
+zurückgenommen werden, bis der Schlupf keinen gravierenden Einfluss mehr hatte. Bei den abschliessenden Tests wurde das Hindernis konstant innerhalb der
+vorgegebenen Toleranz abgesetzt.
+
+\subsection*{Notstopp}
+Der Notstopp wurde in Sprint 3 implementiert. Nach jeder Erweiterung der Firmware wurde die Funktion erneut getestet, um sicherzustellen,
+dass sie weiterhin korrekt funktioniert.
+
+
+
+\end{document}

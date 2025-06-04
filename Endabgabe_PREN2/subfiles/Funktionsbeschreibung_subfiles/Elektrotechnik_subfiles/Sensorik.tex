@@ -16,8 +16,9 @@ Der Liniensensor aus dem Konzept aus PREN1 hat sich als sehr zuverlässig
 erwiesen. Er arbeitet mit UV-Licht, das das weisse Klebeband auf den Fugen
 fluoreszieren lässt, während die Fugen zwischen den Fliesen nicht
 fluoreszieren. Die Beleuchtungsstärke wird im sichtbaren Spektrum ausgewertet,
-sodass ausschliesslich das fluoreszierende Klebeband erfasst wird. Dies
-ermöglicht einen starken Kontrast zur Umgebung.
+sodass ausschliesslich das fluoreszierende Klebeband erfasst wird. Um den
+Kontrast zur Umgebung zusätzlich zu verbessern und unerwünschten Lichteinfall
+zu vermeiden, ist der Sensorbereich mit einem Schwamm abgeschirmt.
 
 \begin{figure}[H]
     \centering
@@ -137,8 +138,11 @@ GABRIEL/SANDRO .. ?
 
 GABRIEL
 
-\subsubsection*{Greiferposition}
-
-MANUEL
+\subsubsection*{Positionsbestimmung des Greifers}
+Wie bereits in Abschnitt~\ref{sec:Konstruktive_Umsetzung} erwähnt, sind zur Begrenzung der Endpositionen bei der
+Höhenverstellung des Greifers zwei Endschalter verbaut. Dadurch kann der Greifarm zuverlässig in die jeweilige Endlage
+gefahren werden, ohne dass feste Positionen im Code hinterlegt werden müssen. Dies erhöht die Flexibilität und Robustheit
+des Systems gegenüber leichten Positionsänderungen des Greifers in der Umsetzungsphase. Beim eigentlichen Greifvorgang hingegen werden keine Endschalter
+verbaut, da dieser Bewegungsablauf fix ist und eine Hardcodierung hier ausreichend und unproblematisch ist.
 
 \end{document}

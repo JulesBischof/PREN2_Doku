@@ -38,7 +38,7 @@ Bedeutung interdisziplinärer Planung nochmals unterstrich.
 Im Rahmen der Entwicklung ergaben sich im Bereich der Hardware- und Firmware-Umsetzung verschiedene relevante
 Erkenntnisse. So wurde für das Projekt FreeRTOS in Verbindung mit der Programmiersprache C++ eingesetzt. Durch
 die praktische Anwendung konnten die Kenntnisse im Umgang mit dem Echtzeitbetriebssystem sowie der objektorientierten
-Programmierung gefestigt und erweitert werden. Auch das Bestücken der Leiterplatten, das Prüfen von Signalen
+Programmierung gefestigt und erweitert werden. Auch das Bestücken der PCB's, das Prüfen von Signalen
 und Spannungen sowie die Fehlersuche an den gefertigten PCBs erwiesen sich als besonders lehrreich.
 Neben diesen eher allgemeinen Erkenntnissen traten im Projektverlauf jedoch auch spezifische Herausforderungen auf,
 aus denen besonders prägende Lessons Learned hervorgingen, die nachfolgend dargestellt werden:
@@ -58,6 +58,12 @@ fehlerhafte PWM-Ansteuerung hindeutete. Erst deutlich später stellte sich herau
 maximal 3 A Ausgangsstrom unterdimensioniert war und somit die eigentliche Ursache des Problems dartstellte.
 Zukünftig soll die Stromversorgung bei ähnlichen Fehlersymptomen frühzeitig als mögliche Fehlerquelle in Betracht
 gezogen werden.
+
+Beim Testen kam es auf einem PCB infolge einer Stromrückspeisung zur Zerstörung des LDO-Reglers, da dieser gegenüber
+rückfließenden Strömen sehr empfindlich ist. Die Ursache lag in der getrennten Versorgung der Servomotoren. 
+Ohne geeignete Schutzmaßnahmen kam es dadurch zu einem unkontrollierten Rückstrom von den Servomotoren über die
+PWM-Pins zum LDO. Wenn mehrere Spannungsversorgungen ein einzelnes System versorgen und es keine andere
+Lösungsmöglichkeit gibt, muss unbedingt ein Schutz vor Rückspeisung eingeplant werden, um Bauteilschäden zu vermeiden.
 
 
 
