@@ -78,7 +78,49 @@ Erst wenn der erkannte Buchstabe dem
 Schalterziel entspricht, setzt der Navigator das Flag
 \texttt{goal\_node\_detected}.
 
-\paragraph{Knackpunkte und Lösungen (Gabriel?)}
-jadadi dadada
+\paragraph{Knackpunkte und Lösungen}
+
+\paragraph{Störfaktoren bei der Bilderkennung:}  
+Spiegelungen, Rauschen auf dem Boden und stark schwankende Lichtverhältnisse 
+erschwerten eine robuste Kantenerkennung. Selbst mit fein justiertem Canny-Filter 
+wurden oft unerwünschte Linien erkannt – insbesondere entlang der Fugen zwischen 
+Bodenplatten.
+
+\textbf{Lösung:}  
+Die Kameraauswertung wurde so konzipiert, dass Kanten ausschliesslich analysiert 
+werden, wenn ein Knoten detektiert wurde. Hintergrund ist, dass gemäss Aufgabenstellung 
+Knoten nur im Zentrum von Fugen platziert sein dürfen. Dadurch können Fugen nicht 
+fälschlicherweise als Abgänge interpretiert werden, solange kein Knoten erkannt ist. 
+Diese Einschränkung erhöht die Robustheit der Kantenerkennung deutlich und reduziert 
+Fehlklassifikationen.
+
+\paragraph{Erkennung unter unstetigen Lichtverhältnissen:}  
+Stark schwankende Lichtverhältnisse führten zu inkonsistenter Kantenerkennung.
+
+\textbf{Lösung:}  
+Eine gezielte LED-Beleuchtung im Kamerasichtfeld stabilisierte die Lichtverhältnisse 
+und verbesserte die Bildqualität und Zuverlässigkeit der Erkennung.
+
+\paragraph{Asynchrone Datenerfassung und Verarbeitung:}  
+Durch die gleichzeitige Bewegung des Fahrzeugs und die kontinuierliche Bilderfassung 
+wurden relevante Kanteninformationen über die Zeit verteilt erkannt. Eine sofortige 
+Verarbeitung hätte inkonsistente Resultate erzeugt.
+
+\textbf{Lösung:}  
+Sämtliche relevanten Kanten werden nur gespeichert, solange \texttt{node\_detected == True} 
+ist. Wird während 20 aufeinanderfolgender Frames kein Knoten mehr erkannt, gilt der 
+aktuelle Abschnitt als abgeschlossen. Erst dann werden die bis dahin gesammelten 
+Kanteninformationen verarbeitet: Mittels DBSCAN-Clustering werden Hauptabgänge 
+identifiziert und als strukturierte Daten zur weiteren Verwendung bereitgestellt.
+
+\paragraph{Performanceprobleme:}  
+Die parallele Ausführung von OCR, Kantenerkennung und Clustering führte zu temporären 
+Leistungseinbrüchen.
+
+\textbf{Lösung:}  
+Die Verwendung eines reduzierten Kamerastreams mit 320 x 320 px, die Auslagerung 
+der Bildverarbeitung in einen eigenen Thread sowie gezielte Optimierungen 
+(z.\,B. Region-of-Interest, Filterbedingungen) konnten stabile 20 FPS 
+sicherstellen.
 
 \end{document}
