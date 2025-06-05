@@ -23,9 +23,9 @@ zu vermeiden, ist der Sensorbereich mit einem Schwamm abgeschirmt.
 \begin{figure}[H]
   \centering
   \includegraphics[width =
-  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Schema_Messzelle_Liniensensor.pdf}
+    0.5\linewidth]{./fig_Antriebsregelung_Firmware/Schema_Messzelle_Liniensensor.pdf}
   \caption{Schema einer einzelnen Messzelle des
-  Liniensensors}~\label{fig:Schema_Messtelle_Liniensensor}
+    Liniensensors}~\label{fig:Schema_Messtelle_Liniensensor}
 \end{figure}
 
 Die Dimensionierung des Sensors, welcher in
@@ -51,9 +51,9 @@ beschriftet.
 \begin{figure}[H]
   \centering
   \includegraphics[width =
-  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Gehaeuse_Isometrisch.pdf}
+    0.5\linewidth]{./fig_Antriebsregelung_Firmware/Gehaeuse_Isometrisch.pdf}
   \caption{Schema einer einzelnen Messzelle des
-  Liniensensors}~\label{fig:Gehaeuse_Liniensensor}
+    Liniensensors}~\label{fig:Gehaeuse_Liniensensor}
 \end{figure}
 
 Aus Sicherheitsgründen ist die Elektronik, die diesen Sensor ansteuert, in der
@@ -83,7 +83,7 @@ Fliesenboden durchgeführt werden und dauert weniger als $1 s$.
 \begin{figure}[H]
   \centering
   \includegraphics[width =
-  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Liniensensor_Bottom.pdf}
+    0.5\linewidth]{./fig_Antriebsregelung_Firmware/Liniensensor_Bottom.pdf}
   \caption{Ansicht des Liniensensors}~\label{fig:LinienSensor_bottom}
 \end{figure}
 
@@ -92,7 +92,7 @@ Anhang~\ref{apdx:Liniensensor_auswertung} nebst seiner eigentlichen Funktion
 nochmals beleuchtet wird.
 
 \subsubsection*{Streckenrückverfolgung – Distanz und
-Rotation}~\label{sec:Sensorik_Streckenrueckverfolgung}
+  Rotation}~\label{sec:Sensorik_Streckenrueckverfolgung}
 
 Die gefahrene Strecke kann vollständig über die registrierten Schritte der
 Schrittmotoren bestimmt werden. Dazu wurde die Motorbeschleunigung auf ein Mass
@@ -122,7 +122,7 @@ Abbildung~\ref{fig:HcSr04_Messkegel} gezeigt.
 \begin{figure}[H]
   \centering
   \includegraphics[width =
-  0.5\linewidth]{./fig_Antriebsregelung_Firmware/Auslesegenauigkeit_Ultraschall.pdf}
+    0.5\linewidth]{./fig_Antriebsregelung_Firmware/Auslesegenauigkeit_Ultraschall.pdf}
   \caption{Messkegel des Ultraschallsensors}~\label{fig:HcSr04_Messkegel}
 \end{figure}
 
@@ -174,9 +174,39 @@ Hilfsfunktionen erlauben Soft-/Hard-Reset, Änderung der
 I\textsuperscript{2}C-Adresse
 sowie das dauerhafte Speichern der Konfiguration im TF-Luna-Flash.
 
-\subsubsection*{Kamera}
+\subsubsection*{Kamera}~\label{sec:Sensorik_Kamera}
 
-GABRIEL
+Die Kamera basiert auf der Raspberry Pi-kompatiblen Bibliothek 
+\texttt{picamera2} und liefert zwei parallele Videostreams: einen 
+hochauflösenden und einen niedrig aufgelösten (320~$\times$~320~px). 
+In der tatsächlichen Implementierung wird ausschliesslich der reduzierte 
+Lores-Stream verwendet, um eine performante Verarbeitung in Echtzeit 
+zu gewährleisten.
+
+Für die Kantenerkennung wird auf jedem Frame ein Canny-Filter angewendet, 
+dessen Ausgaben durch heuristische Kriterien (Kantenlänge, Abstand zum 
+Bildzentrum, Orientierung) zu sogenannten \textit{EdgeCandidates} gefiltert 
+werden. Um diese redundant erkannten Kanten in robust nutzbare Richtungen 
+zu überführen, wird ein DBSCAN-Clustering durchgeführt. Dabei werden Gruppen 
+von ähnlich orientierten Kanten gebildet und zu einer einzigen Kante 
+(\textit{Edge}) zusammengefasst.
+
+Die so erkannten Kantenwinkel werden in einer Liste gespeichert und über 
+\texttt{get\_data()} bereitgestellt. Jeder Winkel entspricht dabei der 
+relativen Richtung einer möglichen Weiterfahrt. 
+\textbf{0° entspricht der Blickrichtung nach oben}, die Winkel steigen 
+im \textbf{Uhrzeigersinn} bis 359° an (90° = rechts, 180° = unten, 270° = 
+links, 360° = 0°).
+
+Parallel dazu wird im selben Bild der Zielknotenbuchstabe (A, B oder C) mittels 
+binarisierter OCR-Erkennung gesucht. Um Lageabweichungen zu kompensieren, wird 
+das Bild dabei in \SI{15}{\degree}-Schritten rotiert analysiert. Sobald der 
+gesuchte Buchstabe erkannt wird, liefert die Methode \texttt{get\_goal\_node\_reached()} 
+den Wert \texttt{True} zurück.
+
+Die Kamera ist vollständig in den Kontrollfluss eingebunden und arbeitet in einem 
+eigenen Thread parallel zur restlichen Sensorik.
+
 
 \subsubsection*{Positionsbestimmung des Greifers}
 Wie bereits in Abschnitt~\ref{sec:Konstruktive_Umsetzung} erwähnt, sind zur Begrenzung der Endpositionen bei der
