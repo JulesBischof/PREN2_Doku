@@ -8,14 +8,63 @@
 
 % Template
 
-\section{Funktionsbeschreibung}
+\section{Funktionsübersicht}
 
-\subsection{Übersicht}
+\subsection{Systemaufbau im Überblick}
 
-Im Rahmen dieses Projekts wurde ein autonomes Fahrzeug entwickelt, das sich selbstständig 
-durch ein Wegenetzwerk navigieren kann. Das System wurde speziell dafür konzipiert, dynamisch 
-auf Hindernisse und Einschränkungen zu reagieren und stets den optimalen Weg von einem 
-definierten Startpunkt zu einem Zielpunkt zu finden.
+Das entwickelte Fahrzeug ist ein autonomer Roboter, der sich selbstständig durch ein 
+vordefiniertes Wegenetz zum gewählten Zielpunkt navigiert. Dabei reagiert er 
+dynamisch auf Hindernisse, gesperrte Wegpunkte und fehlende Streckenabschnitte. Der 
+Systemaufbau folgt einer modularen Struktur und wurde hinsichtlich Gewicht, 
+Steuerbarkeit und Wartbarkeit optimiert.
+
+Die \textbf{zentralen Systemkomponenten} sind in Abbildung~\ref{fig:Gesamtuebersicht} 
+dargestellt und lassen sich in folgende Hauptgruppen unterteilen:
+
+\begin{itemize}
+    \item \textbf{Chassis und Antrieb:} 
+    Das Fahrzeug basiert auf einer leichten, vollständig 3D-gedruckten PLA-Konstruktion. 
+    Zwei hintere Schrittmotoren treiben speziell entwickelte Felgen mit Vollgummireifen 
+    an. Eine freilaufende Laufkugel an der Front sorgt für Stabilität und enge 
+    Wendemanöver auf Knotenpunkten. Die kompakte Bauweise mit Distanzbolzen statt 
+    Etagenkonstruktion verbessert die Zugänglichkeit aller Komponenten.
+    
+    \item \textbf{Sensorik:} 
+    Zur Umgebungswahrnehmung werden mehrere Sensortechnologien kombiniert: ein 
+    UV-basierter Liniensensor zur Spurverfolgung, ein Ultraschallsensor zur 
+    Hinderniserkennung, ein LiDAR-Modul zur Detektion gesperrter Wegpunkte (Pylonen) 
+    sowie eine Kamera zur Knoten- und Zielerkennung.
+    
+    \item \textbf{Steuerungseinheit:} 
+    Die Logik ist zweistufig aufgebaut: Ein Raspberry Pi 5 übernimmt die Navigation, 
+    Bilderkennung und Strategie, während ein Mikrocontroller (Raspberry Pi Pico) unter 
+    FreeRTOS für die Echtzeitsteuerung von Antrieb, Greifer und Sensorik verantwortlich 
+    ist. Die Kommunikation erfolgt über ein eigenes 64-Bit-UART-Protokoll mit 
+    CRC-Fehlerprüfung.
+    
+    \item \textbf{Greifeinheit:} 
+    Die Greifmechanik ist modular konstruiert und besteht aus zwei synchron bewegten 
+    Backen mit Anti-Rutsch-Belag. Ein zusätzlicher Servomotor erlaubt die vertikale 
+    Positionierung entlang einer Gleitführung. Endschalter sichern die obere und untere 
+    Endlage ab. Die gesamte Einheit ist für hohe Wiederholgenauigkeit und minimales 
+    Gewicht ausgelegt.
+    
+    \item \textbf{Energieversorgung:} 
+    Ein 4S-LiPo-Akku versorgt das System mit 14.4 V. Die Spannungsaufbereitung erfolgt 
+    über ein Power-Board mit 12 V-Ausgang und lokalen Reglern auf jedem PCB. Während 
+    der Entwicklung kann über ein externes Netzteil betrieben werden. Ein 
+    softwarebasierter Not-Aus unterbricht bei Bedarf alle Bewegungen sofort.
+    
+    \item \textbf{Benutzerschnittstelle:} 
+    Vor Fahrtbeginn kann über einen Wahlschalter das gewünschte Ziel (A, B oder C) 
+    eingestellt werden. Nach Zielerreichung gibt ein Piezo-Summer akustisches Feedback. 
+    Weitere Schnittstellen wie UART-Debug oder eine einfache GUI stehen für Entwicklungs- 
+    und Testzwecke zur Verfügung.
+\end{itemize}
+
+Die klare Trennung zwischen Hardware-Ansteuerung und Navigationslogik sowie die modulare 
+Konstruktion erlauben einfache Wartung, gezielte Optimierungen und ein robustes Verhalten 
+im Wettbewerbsbetrieb.
 
 \begin{figure}[H]
     \centering
@@ -23,117 +72,44 @@ definierten Startpunkt zu einem Zielpunkt zu finden.
     \caption{Gesamtübersicht des Fahrzeugs mit Bildlegende}~\label{fig:Gesamtuebersicht}
 \end{figure}
 
-Das Fahrzeug zeichnet sich durch eine modulare Bauweise aus, welche die Integration verschiedenster 
-Technologien ermöglicht. Die zentralen Komponenten sind:
+\vspace{1em}
 
-\paragraph{Chassis und Antrieb}
+\subsection{Navigation und Zielfindung}
 
-Das Fahrzeug besitzt ein dreirädriges Chassis mit zwei angetriebenen Rädern und einem 
-stabilisierenden Auflagepunkt. Die Bewegung erfolgt über präzise steuerbare Schrittmotoren, 
-die eine hohe Wendigkeit ermöglichen. Das Chassis ist leicht und stabil genug, um den 
-Gewichtsvorgaben zu entsprechen.
+Die Navigation basiert auf der kontinuierlichen Verfolgung der Leitlinie mittels einem 
+Liniensensor. Knotenpunkte werden automatisch erkannt und das Fahrzeug stoppt exakt auf 
+diesen zur Ausrichtung.
 
-\paragraph{Sensorik}
+Ein Kamera-Node erfasst die Umgebung, erkennt die Abgänge des Knotens und leitet daraus 
+die möglichen Weiterfahrtrichtungen ab. Anhand eines greedy-orientierten Algorithmus wählt 
+das Fahrzeug stets die Richtung, die es der gewählten Zielposition (A, B oder C) am 
+stärksten annähert. Pylonen werden mittels LiDAR erkannt und bei der Richtungswahl 
+ignoriert.
 
-Zur Umgebungswahrnehmung kommen verschiedene Sensoren zum Einsatz:
+Die Positionierung erfolgt durch Odometrie über Schrittzählung der Motoren in Kombination 
+mit der Fahrtrichtung. Zielknoten werden visuell identifiziert und mit einem akustischen 
+Signal quittiert.
 
-\begin{itemize}
-  \item \textbf{Liniensensoren}: Erfassen die UV-aktive Leitlinie und erkennen Knotenpunkte.
-  \item \textbf{Ultraschallsensoren}: Detektieren Hindernisse im Nahbereich.
-  \item \textbf{LiDAR}: Identifiziert auf definierter Höhe Pylonen, welche gesperrte Wegpunkte markieren.
-  \item \textbf{Kamera}: Erkennt Knotenpunkte frühzeitig und identifiziert das Ziel eindeutig.
-\end{itemize}
+\subsection{Hinderniserkennung und -beseitigung}
 
-Alle Sensoren liefern gemeinsam ein Echtzeitbild der Umgebung und bilden die Grundlage für Navigation und Reaktion.
+Ein Ultraschallsensor erkennt Hindernisse im Nahbereich. Bei Annäherung reduziert das 
+Fahrzeug seine Geschwindigkeit, stoppt in Greifposition und aktiviert die motorisierte 
+Greifeinheit.
 
+Der Ablauf umfasst:
+\begin{enumerate}
+    \item Absenken des Greifers bis zum unteren Endschalter,
+    \item Schließen der Greifbacken,
+    \item Anheben des Hindernisses,
+    \item Weiterfahrt und 180\textdegree-Drehung,
+    \item Ablegen des Hindernisses,
+    \item Rückdrehung und Fortsetzung der Linienverfolgung.
+\end{enumerate}
 
-\paragraph{Steuerungseinheit}
+Die Vorwärtsfahrt während des Handlings nutzt die höhere Traktion durch den Heckantrieb. 
+Die Positioniergenauigkeit beim Platzieren liegt innerhalb der geforderten Toleranz.
 
-Ein Mikrocontroller-System verarbeitet die Sensordaten, steuert die Motoren und führt den 
-Navigationsalgorithmus aus. Dieser erlaubt eine flexible Reaktion auf Umgebungsveränderungen 
-und unterstützt eine autonome Entscheidungsfindung.
-
-\paragraph{Greifeinheit}
-
-Ein motorisierter Greifer ermöglicht das präzise Aufnehmen, Bewegen und Ablegen von Hindernissen 
-zur Freiräumung des Wegs.
-
-\paragraph{Energieversorgung}
-
-Das System wird durch einen kompakten Lithium-Polymer-Akku betrieben, der eine ausreichende 
-Betriebsdauer für die vorgegebene Aufgabenstellung sicherstellt. Zusätzliche Sicherheitsfunktionen 
-wie eine Überwachung der Zellspannung und ein Not-Aus-Knopf garantieren die Betriebssicherheit.
-
-\paragraph{Benutzerinterface}
-
-Über einen Wahlschalter kann vor dem Start die Zielposition
-ausgewählt werden. Visuelle und akustische Signale zeigen den Abschluss der Aufgabe an.
-
-\newpage
-
-\subsection{Orientierung des Roboters im Wegenetz - kurz und knapp}
-
-Das Fahrzeug bewegt sich grundsätzlich entlang der aufgeklebten Linie von Punkt
-zu Punkt. Diese wird mithilfe des eigens entwickelten Liniensensors, der mit
-UV-Licht arbeitet, abgetastet. Über diesen Liniensensor werden auch
-Knotenpunkte erkannt. Auf den Liniensensor wird im
-Abschnitt~\ref{sec:Sensorik_Liniensensor} näher eingegangen.
-
-Tritt ein solches Ereignis ein, wird das Fahrzeug angehalten und so
-ausgerichtet, dass seine Achse mittig auf dem Knotenpunkt steht. Anschliessend
-wird die nächste anzufahrende Linie ermittelt. Zu diesem Zweck ist am vorderen
-Ende des Roboters eine Kamera montiert, die die Umgebung kontinuierlich
-erfasst. Hat der Raspberry Pi eine Entscheidung für die nächste Linie
-getroffen, wird der Roboter entsprechend gedreht und die Fahrt fortgesetzt.
-
-Der Roboter folgt bei der Entscheidung, welcher Linie gefolgt werden soll,
-grundsätzlich einem „best guess”. Das bedeutet, wenn das Ziel auf dem rechten
-Rand des Spielfelds erwartet wird, wird versucht, möglichst immer in dessen
-Richtung zu fahren. Erkennt der LIDAR am Fahrzeug allerdings eine Pylone, wird
-diese Richtung ignoriert und die nächstbeste gewählt. Der so verlassene
-Best-Guess-Pfad wird so bald wie möglich wieder angefahren. Ein Ziel wird als
-solches erkannt, sobald die Kamera den Buchstaben auf dem Knotenpunkt lesen
-kann. In diesem Fall wird ein Piepton ausgegeben.
-
-Seine Orientierung und seine Position im Wegenetz erhält der Roboter über die
-bisher angesteuerten Winkel und die zurückgelegten Strecken. Wie diese
-ermittelt werden, ist im Abschnitt~\ref{sec:Sensorik_Streckenrueckverfolgung}
-erläutert.
-
-% referenz Algorhitmus Abschnitt
-
-\subsection{Hindernishandling - kurz und knapp}
-
-Der Roboter ist über den Ultraschallsensor am vorderen Ende des Fahrzeugs in
-der Lage, Hindernisse zu erkennen. Wird ein Hindernis in einem Abstand von
-maximal $200 mm$ erkannt, wird zunächst die Geschwindigkeit reduziert, um die
-Reaktionszeit und die Abtastrate des Sensors zu erhöhen. Befindet sich das
-Hindernis nun in der Bremsreichweite, wird das Fahrzeug gestoppt, die Position
-nochmals final korrigiert und das Hindernis vom Greifer aufgenommen.
-
-Auf die Sensorik und Ansteuerung des Ultraschallsensors wird im
-Abschnitt~\ref{sec:Sensorik_Ultraschall} detaillierter ausgeführt.
-
-Anschliessend wird das Fahrzeug nach vorne bewegt, um 180° gedreht und das
-Hindernis wieder abgesetzt. Eine erneute 180°-Drehung bringt das Fahrzeug
-wieder auf Kurs und es kann mit dem Folgen der Linie fortfahren.
-
-Es wurde sich bewusst für die Fahrtrichtung nach vorne entschieden, da durch
-den Heckantrieb des Fahrzeugs eine grössere Traktion und damit eine grössere
-Geschwindigkeit möglich ist.
-
-% - - - - - - subfiles - - - - - -
-
-Die nun folgenden Abschnitte erläutern Teilfunktionen des Roboters im Detail
-aufgeteilt in den verschiedenen Fachdisziplinen. Währrend es im Mechanikteil
-vor allem um das Chassis und die Konstruktion des Greifers geht, wird im
-Elektronikteil vorallem die Ansteuerung dieser Komponenten beleuchtet. Der
-Informatikteil schliesslich behandelt im Detail, wie der Wegfindealgorithmus
-arbeitet um den Roboter autonom durch das Wegenetz zu navigieren.
-
-\newpage
-
-\subsection{Hardfacts}
+\subsection{Technische Kenndaten}
 
 Die folgenden technischen Daten beschreiben die wichtigsten Eigenschaften und
 Leistungsparameter des entwickelten Fahrzeugs:
@@ -147,8 +123,8 @@ Leistungsparameter des entwickelten Fahrzeugs:
         Energieversorgung                  & 4S LiPo-Akku (14.4V, 1300 mAh)                                            \\ \hline
         Betriebsdauer                      & ca. 20 Minuten (durchschnittlich)                                         \\ \hline
         Maximale Traglast der Greifeinheit & 300 g                                                                     \\ \hline % korrigiert auf 300g
-        Abmessungen                        & 30 cm x 30 cm x 30 cm                                                     \\ \hline
-        Gewicht                            & 2 kg                                                                      \\ \hline
+        Abmessungen (B, L, H)              & 29.5 cm x 25.5 cm x 21.5 cm                                                     \\ \hline
+        Gewicht                            & 1.84 kg                                                                      \\ \hline
         Navigationsalgorithmus             & Greedy-Algorithmus                                                    \\ \hline
         Sensoren                           & Liniensensor, LiDAR, Ultraschallsensor, Kamera, Endschalter, Gyroskop \\ \hline
         Kommunikationsschnittstellen       & UART, I2C                                                                 \\ \hline

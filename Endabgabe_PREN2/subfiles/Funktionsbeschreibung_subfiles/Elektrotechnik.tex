@@ -10,7 +10,22 @@
 
 \subsection{Elektrotechnik}
 
-Kurze Einleitung ET-Konzept
+Die elektrische Architektur des Fahrzeugs ist modular aufgebaut und trennt bewusst 
+zwischen leistungsführender Hardwareansteuerung und übergeordneter Navigationslogik. 
+Ziel war es, eine robuste, fehlertolerante und servicefreundliche Elektronikstruktur 
+zu realisieren, die gleichzeitig den Anforderungen an Echtzeitfähigkeit, 
+Energieeffizienz und Gewicht entspricht.
+
+Kern des Systems ist ein aus drei Funktionsgruppen bestehendes Steuerungskonzept: 
+ein Raspberry Pi zur Zielwahl und Bildverarbeitung, ein MotionController zur 
+Ansteuerung aller Aktoren sowie ein PowerBoard zur Spannungsaufbereitung. Die 
+Kommunikation zwischen den Einheiten erfolgt über ein eigens entwickeltes, 
+minimalistisches UART-Protokoll mit integrierter Fehlerprüfung. Sensoren und Motoren 
+sind gezielt aufgeteilt, um kurze Signalwege und eine klare Zuordnung zu gewährleisten.
+
+Die folgenden Abschnitte beschreiben den Aufbau und die Aufgabenverteilung der 
+elektrischen Komponenten, ihre Verschaltung sowie die softwareseitige Ansteuerung 
+der verschiedenen Teilsysteme.
 
 \subfile{./Elektrotechnik_subfiles/Elektronik_Gesamtuebersicht.tex}
 \newpage
