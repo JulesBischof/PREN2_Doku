@@ -15,11 +15,20 @@ Kern des Systems ist ein Raspberry-Pi-basiertes Steuergerät, das eine
 endliche Zustandsmaschine zur Navigation auf einem weiss markierten
 Knoten-Kanten-Netz ausführt. Die Bildverarbeitung der PiCamera2
 liefert in Echtzeit die Richtung der befahrbaren Kanten sowie den
-jeweiligen Knotenpunkt, während ein LIDAR Kurzstreckenhindernisse
-detektiert. Ein Greedy-Algorithmus wählt fortlaufend jene Fahrtrichtung,
+jeweiligen Knotenpunkt für die Zielerkennung. Wegpunkte, die nicht befahren
+werden dürfen, werden durch ein LIDAR erkannt und gemieden. Ein Greedy-Algorithmus wählt fortlaufend jene Fahrtrichtung,
 die die euklidische Distanz zum vor dem Start gewählten Zielknoten
 (\texttt{A}, \texttt{B} oder \texttt{C}) am stärksten reduziert; dadurch
 konnte auf komplexe globale Re-Planning-Strategien verzichtet werden.\\
+
+Über eine UART-Verbindung steht der Raspberry Pi in Kontakt mit dem Raspberry
+Pi Pico, der unter dem Echtzeitbetriebssystem FreeRTOS den Antrieb, die
+Linienverfolgung und das Hindernishandling steuert. Die Linienverfolgung erfolgt
+mittels UV-LEDs und Fototransistoren, welche das im sichtbaren Bereich rückgestrahlte
+fluoreszierende Licht auswerten. Hindernisse werden über einen Ultraschallsensor
+erkannt, aktiv aus dem Fahrweg entfernt und anschliessend wieder zurückgestellt.
+Ein softwarebasierter Notstopp sichert das System bei unvorhergesehenen
+Ereignissen zuverlässig ab.\\
 
 Auch mechanisch wurde das System gezielt optimiert. Das Chassis besteht 
 vollständig aus PLA und wurde im 3D-Druck gefertigt, um Gewicht und Bauraum 
