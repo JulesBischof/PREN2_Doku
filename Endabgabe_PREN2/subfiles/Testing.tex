@@ -85,6 +85,25 @@ Der Notstopp wurde in Sprint 3 implementiert. Nach jeder Erweiterung
 der Firmware wurde die Funktion erneut getestet, um sicherzustellen,
 dass sie weiterhin korrekt funktioniert.
 
+\subsection*{Kamera}
+
+Die Erkennung von Knotenpunkten sowie Abgängen wurden parallel zur
+Entwicklung kontinuierlich getestet. Um eine ortsunabhängige Validierung zu ermöglichen,
+wurde der Programmcode so aufgebaut, dass der Kamera-Live-Stream durch aufgezeichnetes
+Videomaterial ersetzt werden konnte. Dadurch liess sich die
+Abgangerkennung effizient in verschiedenen Lichtumgebungen testen, ohne dass der physische
+Roboter verfügbar sein musste. Dafür wurden einige Videoaufnahmen unter
+unterschiedlichen Lichtverhältnissen aufgenommen. Ziel war es, die Parameter der
+Kantenerkennung so zu justieren, dass diese auch bei Herausforderungen wie Reflexionen am
+Boden, Schattenwurf oder starker Ausleuchtung zuverlässig funktionierten.\\
+
+Die Zielpunkterkennung wurde auf
+Basis einzelner Standbilder getestet. Im Programmcode wird hierzu jeweils ein Einzelbild
+in verschiedenen Rotationen analysiert, um die Lage des Buchstabens unabhängig von der
+Kameraausrichtung erkennen zu können. Als Grundlage dienten fotografierte Zielpunkte
+unter realen Bedingungen. Durch diese Methodik konnte eine
+Erkennung der Zielpunkte auch bei unterschiedlichen Kamerapositionen erreicht werden.
+
 \subsection*{LIDAR}
 Die LIDAR-Integration wurde als eigenständiges Teilziel
 festgelegt. Zunächst entstand in Python eine dedizierte
