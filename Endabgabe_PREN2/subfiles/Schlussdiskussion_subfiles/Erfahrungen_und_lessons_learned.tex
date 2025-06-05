@@ -6,69 +6,131 @@
 
 \begin{document}
 
-% Template
-
 \subsection{Erfahrungen und Lessons Learned}
 
 \subsubsection{Mechanik}
-Die ursprünglich in PREN 1 vorgesehene Etagenlösung wurde verworfen. Stattdessen wurde eine flache und 
-wartungsfreundliche Konstruktion mit nur einer Grundplatte umgesetzt. Durch die Anbringung der 
-Motoren und des Powerboards unterhalb der Grundplatte konnte wertvoller Raum auf der Oberseite eingespart 
+Die ursprünglich in PREN 1 vorgesehene Etagenlösung wurde verworfen.
+Stattdessen wurde eine flache und
+wartungsfreundliche Konstruktion mit nur einer Grundplatte umgesetzt.
+Durch die Anbringung der
+Motoren und des Powerboards unterhalb der Grundplatte konnte
+wertvoller Raum auf der Oberseite eingespart
 und die Zugänglichkeit der Komponenten verbessert werden.
 
-Im Bereich der Antriebseinheit zeigte sich, dass es sich lohnt, bestehende Bauteile kritisch zu hinterfragen. 
-So wurden zahlreiche Iterationen eines Adapterteils durchgeführt, um die ursprünglich vorgesehenen Felgen 
-mit den Motorwellen zu verbinden. Letztlich erwies sich diese Lösung als zu aufwändig und unzuverlässig. 
-Stattdessen wurde eine komplett neue Felge mitsamt Motoraufnahme im CAD konstruiert, wodurch lediglich 
-der Reifen des Komplettrads weiterverwendet wurde. Diese Entscheidung führte zu einer robusteren und 
-funktionaleren Umsetzung und verdeutlichte, dass bestehende Komponenten nicht zwangsläufig übernommen werden 
+Im Bereich der Antriebseinheit zeigte sich, dass es sich lohnt,
+bestehende Bauteile kritisch zu hinterfragen.
+So wurden zahlreiche Iterationen eines Adapterteils durchgeführt, um
+die ursprünglich vorgesehenen Felgen
+mit den Motorwellen zu verbinden. Letztlich erwies sich diese Lösung
+als zu aufwändig und unzuverlässig.
+Stattdessen wurde eine komplett neue Felge mitsamt Motoraufnahme im
+CAD konstruiert, wodurch lediglich
+der Reifen des Komplettrads weiterverwendet wurde. Diese Entscheidung
+führte zu einer robusteren und
+funktionaleren Umsetzung und verdeutlichte, dass bestehende
+Komponenten nicht zwangsläufig übernommen werden
 müssen, wenn eine bessere Eigenkonstruktion möglich ist.
 
-Das Chassis wurde vollständig aus PLA im 3D-Druckverfahren gefertigt. Die Möglichkeit, mehrere Iterationen 
-rasch umzusetzen, erwies sich als grosser Vorteil im Entwicklungsprozess. Dabei konnte gezielt Gewicht 
-eingespart werden, beispielsweise durch Materialaussparungen und eine kompakte, funktionale Gestaltung. 
-Das Fahrzeug blieb trotz vollständiger Integration aller Komponenten deutlich unter dem Gewichtslimit von 2 kg.
+Das Chassis wurde vollständig aus PLA im 3D-Druckverfahren gefertigt.
+Die Möglichkeit, mehrere Iterationen
+rasch umzusetzen, erwies sich als grosser Vorteil im
+Entwicklungsprozess. Dabei konnte gezielt Gewicht
+eingespart werden, beispielsweise durch Materialaussparungen und eine
+kompakte, funktionale Gestaltung.
+Das Fahrzeug blieb trotz vollständiger Integration aller Komponenten
+deutlich unter dem Gewichtslimit von 2 kg.
 
-Die Montage der Sensorik und der Kamera erforderte eine präzise Abstimmung mit der Informatik. Eine frühere 
-Festlegung dieser Schnittstellen hätte Doppelarbeiten und Nachjustierungen reduziert. Insgesamt zeigte sich, 
-dass mechanische Änderungen in vielen Fällen Auswirkungen auf die angrenzenden Disziplinen haben, was die 
+Die Montage der Sensorik und der Kamera erforderte eine präzise
+Abstimmung mit der Informatik. Eine frühere
+Festlegung dieser Schnittstellen hätte Doppelarbeiten und
+Nachjustierungen reduziert. Insgesamt zeigte sich,
+dass mechanische Änderungen in vielen Fällen Auswirkungen auf die
+angrenzenden Disziplinen haben, was die
 Bedeutung interdisziplinärer Planung nochmals unterstrich.
 
 \subsubsection{Elektronik}
-Im Rahmen der Entwicklung ergaben sich im Bereich der Hardware- und Firmware-Umsetzung verschiedene relevante
-Erkenntnisse. So wurde für das Projekt FreeRTOS in Verbindung mit der Programmiersprache C++ eingesetzt. Durch
-die praktische Anwendung konnten die Kenntnisse im Umgang mit dem Echtzeitbetriebssystem sowie der objektorientierten
-Programmierung gefestigt und erweitert werden. Auch das Bestücken der PCB's, das Prüfen von Signalen
-und Spannungen sowie die Fehlersuche an den gefertigten PCBs erwiesen sich als besonders lehrreich.
-Neben diesen eher allgemeinen Erkenntnissen traten im Projektverlauf jedoch auch spezifische Herausforderungen auf,
-aus denen besonders prägende Lessons Learned hervorgingen, die nachfolgend dargestellt werden:
+Im Rahmen der Entwicklung ergaben sich im Bereich der Hardware- und
+Firmware-Umsetzung verschiedene relevante
+Erkenntnisse. So wurde für das Projekt FreeRTOS in Verbindung mit der
+Programmiersprache C++ eingesetzt. Durch
+die praktische Anwendung konnten die Kenntnisse im Umgang mit dem
+Echtzeitbetriebssystem sowie der objektorientierten
+Programmierung gefestigt und erweitert werden. Auch das Bestücken der
+PCB's, das Prüfen von Signalen
+und Spannungen sowie die Fehlersuche an den gefertigten PCBs erwiesen
+sich als besonders lehrreich.
+Neben diesen eher allgemeinen Erkenntnissen traten im Projektverlauf
+jedoch auch spezifische Herausforderungen auf,
+aus denen besonders prägende Lessons Learned hervorgingen, die
+nachfolgend dargestellt werden:
 
 Obwohl QFN-Gehäuse aufgrund ihrer kompakten Bauweise für platzsparende Designs
-vorteilhaft erscheinen, hat sich im praktischen Einsatz gezeigt, dass sie für die manuelle Bestückung
-und Nachbearbeitung nur bedingt geeignet sind. Bereits wenn nur ein wenig zu viel Lötzinn auf der
-Lötstelle aufliegt, kann es zu Kurzschlüssen führen. Weil die Lötstellen sich auf der Unterseite des
-Bauteils befinden, ist keine optische Prüfung auf Kurzschlüsse möglich. Aus diesem Grund sollte in
-zukünftigen Projekten auf SOIC-Gehäuse zurückgegriffen werden. Diese verfügen über
+vorteilhaft erscheinen, hat sich im praktischen Einsatz gezeigt, dass
+sie für die manuelle Bestückung
+und Nachbearbeitung nur bedingt geeignet sind. Bereits wenn nur ein
+wenig zu viel Lötzinn auf der
+Lötstelle aufliegt, kann es zu Kurzschlüssen führen. Weil die
+Lötstellen sich auf der Unterseite des
+Bauteils befinden, ist keine optische Prüfung auf Kurzschlüsse
+möglich. Aus diesem Grund sollte in
+zukünftigen Projekten auf SOIC-Gehäuse zurückgegriffen werden. Diese
+verfügen über
 seitlich herausgeführte Anschlussbeine, die das manuelle Löten sowie
 notwendige Nacharbeiten erheblich erleichtern.
 
 Die Stromaufnahme der Servomotoren wurde in der Entwurfsphase unterschätzt.
-Während der Entwicklungsphase zeigten die Servomotoren ein ungewöhnliches Verhalten, das zunächst auf eine
-fehlerhafte PWM-Ansteuerung hindeutete. Erst deutlich später stellte sich heraus, dass die Stromversorgung von
-maximal 3 A Ausgangsstrom unterdimensioniert war und somit die eigentliche Ursache des Problems dartstellte.
-Zukünftig soll die Stromversorgung bei ähnlichen Fehlersymptomen frühzeitig als mögliche Fehlerquelle in Betracht
+Während der Entwicklungsphase zeigten die Servomotoren ein
+ungewöhnliches Verhalten, das zunächst auf eine
+fehlerhafte PWM-Ansteuerung hindeutete. Erst deutlich später stellte
+sich heraus, dass die Stromversorgung von
+maximal 3 A Ausgangsstrom unterdimensioniert war und somit die
+eigentliche Ursache des Problems dartstellte.
+Zukünftig soll die Stromversorgung bei ähnlichen Fehlersymptomen
+frühzeitig als mögliche Fehlerquelle in Betracht
 gezogen werden.
 
-Beim Testen kam es auf einem PCB infolge einer Stromrückspeisung zur Zerstörung des LDO-Reglers, da dieser gegenüber
-rückfließenden Strömen sehr empfindlich ist. Die Ursache lag in der getrennten Versorgung der Servomotoren. 
-Ohne geeignete Schutzmaßnahmen kam es dadurch zu einem unkontrollierten Rückstrom von den Servomotoren über die
-PWM-Pins zum LDO. Wenn mehrere Spannungsversorgungen ein einzelnes System versorgen und es keine andere
-Lösungsmöglichkeit gibt, muss unbedingt ein Schutz vor Rückspeisung eingeplant werden, um Bauteilschäden zu vermeiden.
-
-
+Beim Testen kam es auf einem PCB infolge einer Stromrückspeisung zur
+Zerstörung des LDO-Reglers, da dieser gegenüber
+rückfließenden Strömen sehr empfindlich ist. Die Ursache lag in der
+getrennten Versorgung der Servomotoren.
+Ohne geeignete Schutzmaßnahmen kam es dadurch zu einem
+unkontrollierten Rückstrom von den Servomotoren über die
+PWM-Pins zum LDO. Wenn mehrere Spannungsversorgungen ein einzelnes
+System versorgen und es keine andere
+Lösungsmöglichkeit gibt, muss unbedingt ein Schutz vor Rückspeisung
+eingeplant werden, um Bauteilschäden zu vermeiden.
 
 \subsubsection{Informatik}
+Die Arbeit an der Software zeigte rasch, dass sich viele Entscheidungen
+nicht isoliert treffen lassen: Funktionalität, Timing und Zuverlässigkeit
+hängen direkt von der zugrundeliegenden Hardware ab. Gerade beim
+LIDAR-Modul, dem Zielwahl-Schalter \texttt{A/B/C} oder der kleinen
+PWM-Stufe für das Zielsignal wurde deutlich, dass Spannungspegel,
+Pull-Ups, Entprellung und Interrupt-Latenzen ebenso zur
+Softwarearchitektur gehören wie Klassendesign oder Thread-Handling.
+Erst ein regelmässiger Austausch mit der Elektronik stellte sicher, dass
+Signale sauber anliegen, Poll-Schleifen stabil laufen und Events im
+richtigen Moment ausgelöst werden. Diese Erfahrung hat den Stellenwert
+frühzeitiger, interdisziplinärer Abstimmung im Team nachhaltig erhöht.
 
-Text here
+Eine besondere Herausforderung war die Gestaltung des UART-Protokolls
+zwischen dem Python-Stack auf dem Raspberry Pi und der C++-Firmware des
+Motion-Controllers. Notwendig war ein binäres Frame-Format mit fester
+Header-Struktur, eindeutigem Kommandoraum und CRC-Prüfsumme, das beide
+Seiten gleichermassen interpretieren konnten. Der iterative Aufbau, erst einfacher
+Ping-/Pong-Test, dann Ergänzung um PollIds und
+Response-Rückmeldungen erwies sich als zielführend und vermittelte wert-
+volle Einblicke in Serialisierung, Endianess und Debugging
+plattformübergreifender Systeme.
+
+Rückblickend haben Unit-Tests und Software-Simulatoren zwar
+schnelles Prototyping ermöglicht, echte Sicherheit brachte aber erst das
+kontinuierliche Testen auf der realen Hardware. Kurze
+Implementierungs-Zyklen, ausführlicher Austausch mit der Elektronik und kleinere
+dedizierte Subprogramme zum Testen von Einzelfunktionen halfen,
+Fehlverhalten früh zu erkennen und systematisch zu beheben. Damit
+konnte die Informatik einen entscheidenden Beitrag leisten, den Roboter
+zu einem robusten Gesamtsystem zu formen, das Hardware und Software
+gleichermassen integriert.
 
 \end{document}
