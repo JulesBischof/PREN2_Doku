@@ -12,16 +12,16 @@
 
 Die elektrische Architektur des Fahrzeugs ist modular aufgebaut und trennt bewusst 
 zwischen leistungsführender Hardwareansteuerung und übergeordneter Navigationslogik. 
-Ziel war es, eine robuste, fehlertolerante und servicefreundliche Elektronikstruktur 
-zu realisieren, die gleichzeitig den Anforderungen an Echtzeitfähigkeit, 
-Energieeffizienz und Gewicht entspricht.
+Ziel war es, eine robuste und servicefreundliche Elektronikstruktur 
+zu realisieren, welche eine parallele Entwicklung und Verifikation erlaubte.
+Ausserdem galt die Anforderung, dass das System Echtzeitfähig ist und nicht
+zu viel Gewicht beansprucht.
 
 Kern des Systems ist ein aus drei Funktionsgruppen bestehendes Steuerungskonzept: 
-ein Raspberry Pi zur Zielwahl und Bildverarbeitung, ein MotionController zur 
+ein Raspberry-HAT zur Zielwahl, Navigation und Bildverarbeitung, ein MotionController zur 
 Ansteuerung aller Aktoren sowie ein PowerBoard zur Spannungsaufbereitung. Die 
-Kommunikation zwischen den Einheiten erfolgt über ein eigens entwickeltes, 
-minimalistisches UART-Protokoll mit integrierter Fehlerprüfung. Sensoren und Motoren 
-sind gezielt aufgeteilt, um kurze Signalwege und eine klare Zuordnung zu gewährleisten.
+Kommunikation zwischen den Einheiten erfolgt über ein eigens entwickeltes 
+UART-Protokoll.
 
 Die folgenden Abschnitte beschreiben den Aufbau und die Aufgabenverteilung der 
 elektrischen Komponenten, ihre Verschaltung sowie die softwareseitige Ansteuerung 
