@@ -9,13 +9,22 @@
 % Template
 
 \section{Testing}
-In diesem Kapitel werden die wichtigsten Teilsysteme des Fahrzeugs
-getestet. Da die Entwicklung laufend angepasst und verbessert wurde,
-macht eine testdatum-basierte Darstellung wenig Sinn. Stattdessen
-wurde jeweils geprüft, ob die definierten Sprintziele erreicht wurden.
-Dadurch konnte direkt im Entwicklungsprozess verifiziert werden, ob
-ein System wie geplant funktioniert oder noch Optimierungen im nächsten
-Sprint nötig sind.
+Das Kapitel beschreibt die Tests, mit denen zentrale Teilsysteme des entwickelten 
+Roboters validiert wurden. Die Überprüfung erfolgte iterativ im Rahmen der 
+Sprintstruktur und nicht anhand eines fixen Testplans mit vorgegebenen Testdaten. 
+Nach Fertigstellung einzelner Funktionen wurde jeweils geprüft, ob das Verhalten 
+im Praxistest den Anforderungen entsprach oder gezielte Optimierungen notwendig waren.
+
+Im Fokus standen dabei insbesondere die Linienverfolgung, das Hindernishandling, 
+die Notstopp-Funktion sowie die kamerabasierte Knoten- und Zielerkennung. Ergänzend 
+wurden die LIDAR-Sensorik sowie die Positioniergenauigkeit der Greifeinheit evaluiert. 
+Die Tests erfolgten zunächst isoliert für einzelne Komponenten und später integriert 
+im Gesamtsystem unter realitätsnahen Bedingungen.
+
+Erkannte Schwächen wurden durch gezielte Anpassungen in Hard- und Software behoben. 
+Die Ergebnisse der wichtigsten Testphasen sind in diesem Kapitel dokumentiert. 
+Technische Details und Messdaten finden sich in den Anhängen \ref{apdx:Sensorverhalten} 
+und \ref{apdx:Regler_Parametrierung}.
 
 \subsection*{Linienverfolgung}
 Die Funktionsfähigkeit des Liniensensors in Kombination mit dem
